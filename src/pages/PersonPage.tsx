@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { TaskSquare, MessageSquare } from "lucide-react"
+import { Square, MessageSquare } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 type Task = {
@@ -61,7 +61,7 @@ export default function PersonPage() {
         <Card className="col-span-2 p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold flex items-center gap-2">
-              <TaskSquare className="h-5 w-5" />
+              <Square className="h-5 w-5" />
               Assigned Tasks
             </h2>
             <Button>Assign New Task</Button>
