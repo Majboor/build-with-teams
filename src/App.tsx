@@ -25,6 +25,11 @@ const App = () => (
             <Route path="/person" element={<PersonPage />} />
             <Route path="/workspace" element={<WorkspacePage />} />
             <Route path="/modal" element={<ModalPage />} />
+            <Route path="/task" element={<NotFound />} />
+            <Route path="/calendar" element={<NotFound />} />
+            <Route path="/dashboard" element={<NotFound />} />
+            <Route path="/pricing" element={<NotFound />} />
+            <Route path="/about" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

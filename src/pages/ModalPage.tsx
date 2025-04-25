@@ -338,13 +338,13 @@ const ModalPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-20">
       <Navigation />
       
-      <div className="container mx-auto py-12 px-4">
+      <div className="container mx-auto py-20 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Progress bar */}
-          <div className="mb-8">
+          <div className="mb-8 pt-6">
             <div className="flex items-center justify-between">
               {[1, 2, 3, 4, 5].map((s) => (
                 <div key={s} className="flex flex-col items-center">
