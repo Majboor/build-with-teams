@@ -18,10 +18,8 @@ const queryClient = new QueryClient();
 const App = () => (
   <ThemeProvider defaultTheme="system" storageKey="build-teams-theme">
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+      <BrowserRouter>
+        <TooltipProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/person" element={<PersonPage />} />
@@ -34,8 +32,10 @@ const App = () => (
             <Route path="/about" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   </ThemeProvider>
 );
