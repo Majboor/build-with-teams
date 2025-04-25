@@ -14,11 +14,12 @@ function Bubble({ position }: { position: [number, number, number] }) {
 
   return (
     <Sphere ref={meshRef} position={position} args={[0.3]} castShadow>
-      <meshGlassMaterial
+      <meshPhysicalMaterial
         transparent
         opacity={0.3}
         roughness={0}
         clearcoat={1}
+        transmission={0.9}
         color="#9b87f5"
       />
     </Sphere>
