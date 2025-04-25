@@ -12,6 +12,7 @@ import ModalPage from "./pages/ModalPage";
 import NotFound from "./pages/NotFound";
 import TaskPage from "./pages/TaskPage";
 import CalendarPage from "./pages/CalendarPage";
+import DashboardPage from "./pages/DashboardPage";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +28,7 @@ const App = () => (
             <Route path="/modal" element={<ModalPage />} />
             <Route path="/task" element={<TaskPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/dashboard" element={<NotFound />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/pricing" element={<NotFound />} />
             <Route path="/about" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
