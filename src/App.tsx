@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import TaskPage from "./pages/TaskPage";
 import CalendarPage from "./pages/CalendarPage";
 import DashboardPage from "./pages/DashboardPage";
+import PricingPage from "./pages/PricingPage";  {/* Added import for PricingPage */}
 
 const queryClient = new QueryClient();
 
@@ -42,3 +43,4 @@ const App = () => (
 );
 
 export default App;
+
