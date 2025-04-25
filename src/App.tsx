@@ -13,7 +13,8 @@ import NotFound from "./pages/NotFound";
 import TaskPage from "./pages/TaskPage";
 import CalendarPage from "./pages/CalendarPage";
 import DashboardPage from "./pages/DashboardPage";
-import PricingPage from "./pages/PricingPage";  {/* Added import for PricingPage */}
+import PricingPage from "./pages/PricingPage";
+import AboutPage from "./pages/AboutPage";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +32,7 @@ const App = () => (
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/about" element={<NotFound />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
@@ -43,4 +44,3 @@ const App = () => (
 );
 
 export default App;
-
