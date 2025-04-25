@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import PersonPage from "./pages/PersonPage";
 import WorkspacePage from "./pages/WorkspacePage";
+import ModalPage from "./pages/ModalPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/person" element={<PersonPage />} />
             <Route path="/workspace" element={<WorkspacePage />} />
+            <Route path="/modal" element={<ModalPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

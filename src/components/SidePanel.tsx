@@ -14,7 +14,7 @@ export function SidePanel() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="fixed top-4 right-4 z-50">
+        <Button variant="ghost" size="icon" className="md:flex">
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
