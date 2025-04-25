@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -37,7 +38,7 @@ export default function PersonPage() {
   return (
     <div>
       <Navigation />
-      <div className="container mx-auto p-8">
+      <div className="container mx-auto pt-20 p-8">
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex items-center justify-between">

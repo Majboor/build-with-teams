@@ -1,5 +1,5 @@
+
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -36,7 +36,7 @@ export default function TaskPage() {
   return (
     <div>
       <Navigation />
-      <div className="container mx-auto p-8">
+      <div className="container mx-auto pt-20 p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Task Details Section */}
           <Card className="col-span-2 p-6">
