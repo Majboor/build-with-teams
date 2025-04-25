@@ -1,7 +1,6 @@
 
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { SidePanel } from "./SidePanel";
 
 export function Navigation() {
   return (
@@ -20,9 +19,6 @@ export function Navigation() {
           <div className="hidden sm:flex gap-4">
             <Button variant="ghost" className="text-sm">Login</Button>
             <Button className="text-sm">Sign Up</Button>
-          </div>
-          <div className="md:hidden">
-            <SidePanel />
           </div>
         </div>
       </div>
