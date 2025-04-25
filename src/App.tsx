@@ -1,4 +1,3 @@
-
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -10,6 +9,7 @@ import PersonPage from "./pages/PersonPage";
 import WorkspacePage from "./pages/WorkspacePage";
 import ModalPage from "./pages/ModalPage";
 import NotFound from "./pages/NotFound";
+import TaskPage from "./pages/TaskPage";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +25,7 @@ const App = () => (
             <Route path="/person" element={<PersonPage />} />
             <Route path="/workspace" element={<WorkspacePage />} />
             <Route path="/modal" element={<ModalPage />} />
-            <Route path="/task" element={<NotFound />} />
+            <Route path="/task" element={<TaskPage />} />
             <Route path="/calendar" element={<NotFound />} />
             <Route path="/dashboard" element={<NotFound />} />
             <Route path="/pricing" element={<NotFound />} />

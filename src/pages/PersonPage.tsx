@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -11,8 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Square, MessageSquare } from "lucide-react"
+import { Square, MessageSquare, ArrowLeft } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { useNavigate } from "react-router-dom"
 
 type Task = {
   id: number
@@ -34,8 +34,23 @@ const statusColorMap = {
 }
 
 export default function PersonPage() {
+  const navigate = useNavigate();
+  
   return (
     <div className="container mx-auto p-8">
+      {/* Navigation */}
+      <div className="mb-6">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="gap-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back
+        </Button>
+      </div>
+
       {/* Header Section */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
