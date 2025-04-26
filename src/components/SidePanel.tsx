@@ -29,7 +29,7 @@ export function SidePanel() {
       </SheetTrigger>
       <SheetContent className="w-[300px] sm:w-[400px] bg-background/80 backdrop-blur-lg">
         <SheetHeader>
-          <SheetTitle>TaaS Menu</SheetTitle>
+          <SheetTitle>TaaS Menu - Apply for Beta Access</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col gap-4 mt-6">
           {[
@@ -56,6 +56,7 @@ export function SidePanel() {
               </Button>
               <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] flex items-center justify-center">
                 <Lock className="h-4 w-4 text-muted-foreground" />
+                <span className="ml-2 text-sm text-muted-foreground">Apply for Beta</span>
               </div>
             </div>
           ))}

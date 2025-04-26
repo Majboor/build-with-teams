@@ -4,13 +4,39 @@ import { Navigation } from "@/components/navigation";
 import { ArrowRight, Check } from "lucide-react";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const features = [
-  "AI-powered development",
-  "Real-time collaboration", 
-  "Expert team matching",
-  "24/7 support",
-  "Scalable infrastructure",
+  {
+    title: "Workspace Overview",
+    description: "A comprehensive workspace that brings all your project management needs into one place.",
+    image: "https://i.ibb.co/tMdpVPWK/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
+  },
+  {
+    title: "Task Management",
+    description: "Efficiently organize and track tasks with our intuitive task management system.",
+    image: "https://i.ibb.co/FkqRv7Tj/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
+  },
+  {
+    title: "Calendar Integration",
+    description: "Stay on schedule with our powerful calendar integration feature.",
+    image: "https://i.ibb.co/m5K3DDYJ/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
+  },
+  {
+    title: "Quick Actions & Notifications",
+    description: "Stay informed and take quick actions with our smart notification system.",
+    image: "https://i.ibb.co/6cnKgRyr/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
+  },
+  {
+    title: "Developer Dashboard",
+    description: "A personalized space for developers to manage their tasks and progress.",
+    image: "https://i.ibb.co/VrWt8Bt/86-F5-D48-D-AD4-D-4-F38-BB84-DE178-F2755-D2-export.png"
+  },
+  {
+    title: "Task Details",
+    description: "Dive deep into task details with our comprehensive task view.",
+    image: "https://i.ibb.co/DHZZVMQ7/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
+  }
 ];
 
 const steps = [
@@ -90,6 +116,30 @@ export default function Index() {
         onOpenChange={setShowBetaDialog}
       />
 
+      {/* Features Showcase */}
+      <section className="container py-20 border-t">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Powerful Features for Your Team
+        </h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <Card key={index} className="overflow-hidden transform hover:scale-105 transition-transform duration-200">
+              <div className="aspect-video relative overflow-hidden rounded-t-lg">
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <CardContent className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="container py-20 border-t" id="features">
         <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
@@ -110,7 +160,7 @@ export default function Index() {
           {features.map((feature, i) => (
             <div key={i} className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
               <Check className="h-5 w-5 text-primary" />
-              <span>{feature}</span>
+              <span>{feature.title}</span>
             </div>
           ))}
         </div>
