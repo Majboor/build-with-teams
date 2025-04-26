@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
 import React from "react";
 import { Progress } from "@/components/ui/progress";
+import { CrmFeatures } from "@/components/CrmFeatures";
 
 const builtProjects = [
   {
@@ -198,63 +199,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CRM Features Section */}
-      <section className="container py-20">
-        <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-16">
-          Finally, a CRM that works <span className="text-primary">for you</span>
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="space-y-4 p-6 border rounded-lg">
-            <div className="space-y-2">
-              <div className="p-4 bg-gray-50 rounded-lg w-fit">
-                <div className="flex items-center gap-2 p-2 border rounded-md bg-white">
-                  <Check className="h-4 w-4" />
-                  <span className="font-medium">Sales</span>
-                </div>
-                <div className="flex items-center gap-2 p-2 mt-2 border rounded-md bg-white opacity-50">
-                  <span className="font-medium">Partnerships</span>
-                </div>
-              </div>
-            </div>
-            <h3 className="text-2xl font-semibold">Absurdly simple to setup</h3>
-          </div>
-
-          <div className="space-y-4 p-6 border rounded-lg">
-            <div className="grid grid-cols-4 gap-2">
-              {[...Array(12)].map((_, i) => (
-                <div key={i} className="aspect-square border rounded-md p-1 flex items-center justify-center bg-gray-50">
-                  {i < 11 && <div className="w-6 h-6 bg-gray-200 rounded" />}
-                  {i === 11 && <span className="text-sm text-gray-500">+99</span>}
-                </div>
-              ))}
-            </div>
-            <h3 className="text-2xl font-semibold">A single source of truth</h3>
-          </div>
-
-          <div className="space-y-4 p-6 border rounded-lg">
-            <div className="relative">
-              <div className="w-full h-32 bg-gray-50 rounded-lg flex items-center justify-center">
-                <div className="flex gap-4">
-                  <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">Admin</span>
-                  <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">Editor</span>
-                  <span className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">Viewer</span>
-                </div>
-              </div>
-            </div>
-            <h3 className="text-2xl font-semibold">Built for team-selling</h3>
-          </div>
-
-          <div className="space-y-4 p-6 border rounded-lg">
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center gap-2 p-3 border rounded-md bg-white">
-                <div className="w-5 h-5 bg-gray-200 rounded" />
-                <span className="font-medium">Follow-up with Walt</span>
-              </div>
-            </div>
-            <h3 className="text-2xl font-semibold">Surprisingly proactive</h3>
-          </div>
-        </div>
-      </section>
+      <CrmFeatures />
 
       {/* What TaaS Has Built Section */}
       <section className="container py-20 border-t">
