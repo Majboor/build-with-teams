@@ -6,18 +6,19 @@ import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
+import React from "react";
 
 const builtProjects = [
   {
     title: "AI Interior Designing",
     description: "Transform spaces with AI-powered interior design solutions. Create stunning interior designs with the help of artificial intelligence.",
-    image: "https://i.ibb.co/23gCWK1z/Screenshot-2025-04-27-at-2-38-50-AM.png",
+    image: "https://i.ibb.co/23gCWK1/Screenshot-2025-04-27-at-2-38-50-AM.png",
     link: "https://interior.techrealm.pk"
   },
   {
     title: "AI Meals & Nutrition App",
     description: "Personalized meal plans and nutrition tracking using AI. Get customized meal recommendations and track your nutrition goals effortlessly.",
-    image: "https://i.ibb.co/qLFnQpRv/Screenshot-2025-04-27-at-2-39-21-AM.png",
+    image: "https://i.ibb.co/qLFnQpR/Screenshot-2025-04-27-at-2-39-21-AM.png",
     link: "https://meals.techrealm.pk/"
   },
   {
@@ -29,19 +30,19 @@ const builtProjects = [
   {
     title: "AI Fashion Design",
     description: "Design trendy fashion pieces with AI technology. Create unique and stylish fashion designs with the power of artificial intelligence.",
-    image: "https://i.ibb.co/qFgT88Kx/Screenshot-2025-04-27-at-2-41-14-AM.png",
+    image: "https://i.ibb.co/qFgT88K/Screenshot-2025-04-27-at-2-41-14-AM.png",
     link: "https://fashion.techrealm.pk/"
   },
   {
     title: "AI Document Creator",
     description: "Generate professional documents using AI. Create polished documents quickly and efficiently with AI-powered assistance.",
-    image: "https://i.ibb.co/Pz9dqSsP/Screenshot-2025-04-27-at-2-41-50-AM.png",
+    image: "https://i.ibb.co/Pz9dqSs/Screenshot-2025-04-27-at-2-41-50-AM.png",
     link: "https://documents.techrealm.pk/"
   },
   {
     title: "AI Presentation Creator",
     description: "Create engaging presentations with AI assistance. Build impressive presentations effortlessly using our AI-powered tools.",
-    image: "https://i.ibb.co/5hSZZbhW/Screenshot-2025-04-27-at-2-42-19-AM.png",
+    image: "https://i.ibb.co/5hSZZbh/Screenshot-2025-04-27-at-2-42-19-AM.png",
     link: "https://presentations.techrealm.pk/"
   }
 ];
@@ -116,12 +117,57 @@ export default function Index() {
   const [showBetaDialog, setShowBetaDialog] = useState(false);
   const [appIdea, setAppIdea] = useState("");
   const [selectedApp, setSelectedApp] = useState<typeof builtProjects[0] | null>(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  React.useEffect(() => {
+    let loadedCount = 0;
+    const totalImages = builtProjects.length + features.length;
+
+    const preloadImage = (src: string) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          loadedCount++;
+          setLoadingProgress((loadedCount / totalImages) * 100);
+          resolve(true);
+        };
+        img.onerror = reject;
+      });
+    };
+
+    const loadAllImages = async () => {
+      try {
+        const projectImages = builtProjects.map(project => preloadImage(project.image));
+        const featureImages = features.map(feature => preloadImage(feature.image));
+        await Promise.all([...projectImages, ...featureImages]);
+        setImagesLoaded(true);
+      } catch (error) {
+        console.error('Error loading images:', error);
+        setImagesLoaded(true); // Show content even if some images fail to load
+      }
+    };
+
+    loadAllImages();
+  }, []);
 
   const handleStartBuild = () => {
     if (appIdea.trim()) {
       setShowBetaDialog(true);
     }
   };
+
+  if (!imagesLoaded) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="w-full max-w-md space-y-4">
+          <Progress value={loadingProgress} className="w-full" />
+          <p className="text-center text-muted-foreground">Loading content... {Math.round(loadingProgress)}%</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">

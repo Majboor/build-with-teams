@@ -2,6 +2,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface AppDetailsDialogProps {
   open: boolean;
@@ -11,10 +12,12 @@ interface AppDetailsDialogProps {
     description: string;
     image: string;
     link: string;
-  };
+  } | null;
 }
 
 export function AppDetailsDialog({ open, onOpenChange, app }: AppDetailsDialogProps) {
+  if (!app) return null;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[800px]">
