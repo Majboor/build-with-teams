@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Navigation } from "@/components/navigation";
@@ -177,27 +178,35 @@ export default function Index() {
       
       {/* Hero Section */}
       <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
-        <div className="container relative z-10">
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
+        <div className="container relative z-10 pt-24 pb-32">
+          <div className="text-center space-y-8 max-w-4xl mx-auto">
             <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-tight">
               Like the sales assistant your team never had
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               TaaS handles the busy work for you, so you can focus on growing your service business.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-              <Button onClick={handleStartBuild} className="w-full sm:w-auto text-lg px-8 py-6" size="lg">
-                Try for free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setShowBetaDialog(true)}
-                className="w-full sm:w-auto text-lg px-8 py-6" 
-                size="lg"
-              >
-                Get a demo
-              </Button>
+            <div className="flex flex-wrap sm:flex-nowrap justify-center gap-4 mt-8">
+              <div className="w-full sm:w-auto">
+                <Button 
+                  onClick={handleStartBuild} 
+                  className="w-full text-lg px-8 py-6 flex items-center justify-center"
+                  size="lg"
+                >
+                  <span>Try for free</span>
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+              <div className="w-full sm:w-auto">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowBetaDialog(true)}
+                  className="w-full text-lg px-8 py-6 flex items-center justify-center"
+                  size="lg"
+                >
+                  Get a demo
+                </Button>
+              </div>
             </div>
           </div>
         </div>
