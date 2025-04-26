@@ -6,35 +6,68 @@ import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
+const builtProjects = [
+  {
+    title: "AI Interior Designing",
+    description: "Transform spaces with AI-powered interior design solutions",
+    image: "https://i.ibb.co/23gCWK1z/Screenshot-2025-04-27-at-2-38-50-AM.png"
+  },
+  {
+    title: "AI Meals & Nutrition App",
+    description: "Personalized meal plans and nutrition tracking using AI",
+    image: "https://i.ibb.co/qLFnQpRv/Screenshot-2025-04-27-at-2-39-21-AM.png"
+  },
+  {
+    title: "AI 3D Model Creator",
+    description: "Create stunning 3D models with AI assistance",
+    image: "https://i.ibb.co/kb5HxFc/Screenshot-2025-04-27-at-2-40-43-AM.png"
+  },
+  {
+    title: "AI Fashion Design",
+    description: "Design trendy fashion pieces with AI technology",
+    image: "https://i.ibb.co/qFgT88Kx/Screenshot-2025-04-27-at-2-41-14-AM.png"
+  },
+  {
+    title: "AI Document Creator",
+    description: "Generate professional documents using AI",
+    image: "https://i.ibb.co/Pz9dqSsP/Screenshot-2025-04-27-at-2-41-50-AM.png"
+  },
+  {
+    title: "AI Presentation Creator",
+    description: "Create engaging presentations with AI assistance",
+    image: "https://i.ibb.co/5hSZZbhW/Screenshot-2025-04-27-at-2-42-19-AM.png"
+  }
+];
+
 const features = [
   {
     title: "Workspace Overview",
-    description: "A comprehensive workspace that brings all your project management needs into one place.",
+    description: "A comprehensive workspace that brings all your project management needs into one place. Streamline your workflow and boost productivity with our intuitive interface.",
     image: "https://i.ibb.co/tMdpVPWK/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
   },
   {
     title: "Task Management",
-    description: "Efficiently organize and track tasks with our intuitive task management system.",
+    description: "Efficiently organize and track tasks with our intuitive task management system. Keep your team aligned and projects on schedule.",
     image: "https://i.ibb.co/FkqRv7Tj/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
   },
   {
     title: "Calendar Integration",
-    description: "Stay on schedule with our powerful calendar integration feature.",
+    description: "Stay on schedule with our powerful calendar integration feature. Never miss a deadline or important meeting again.",
     image: "https://i.ibb.co/m5K3DDYJ/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
   },
   {
     title: "Quick Actions & Notifications",
-    description: "Stay informed and take quick actions with our smart notification system.",
+    description: "Stay informed and take quick actions with our smart notification system. Keep your finger on the pulse of your projects.",
     image: "https://i.ibb.co/6cnKgRyr/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
   },
   {
     title: "Developer Dashboard",
-    description: "A personalized space for developers to manage their tasks and progress.",
+    description: "A personalized space for developers to manage their tasks and track progress. Everything you need at your fingertips.",
     image: "https://i.ibb.co/VrWt8Bt/86-F5-D48-D-AD4-D-4-F38-BB84-DE178-F2755-D2-export.png"
   },
   {
     title: "Task Details",
-    description: "Dive deep into task details with our comprehensive task view.",
+    description: "Dive deep into task details with our comprehensive task view. Get all the information you need in one place.",
     image: "https://i.ibb.co/DHZZVMQ7/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
   }
 ];
@@ -110,32 +143,55 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Beta Signup Dialog */}
-      <BetaSignupDialog 
-        open={showBetaDialog} 
-        onOpenChange={setShowBetaDialog}
-      />
-
-      {/* Features Showcase */}
+      {/* What TaaS Has Built Section */}
       <section className="container py-20 border-t">
         <h2 className="text-3xl font-bold text-center mb-12">
-          Powerful Features for Your Team
+          What TaaS Has Built
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+          {builtProjects.map((project, index) => (
             <Card key={index} className="overflow-hidden transform hover:scale-105 transition-transform duration-200">
               <div className="aspect-video relative overflow-hidden rounded-t-lg">
                 <img
-                  src={feature.image}
-                  alt={feature.title}
+                  src={project.image}
+                  alt={project.title}
                   className="object-cover w-full h-full"
                 />
               </div>
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                <p className="text-muted-foreground">{project.description}</p>
               </CardContent>
             </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Features Section with Alternating Layout */}
+      <section className="container py-20 border-t">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Powerful Features for Your Team
+        </h2>
+        <div className="space-y-20">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className={`flex flex-col ${
+                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+              } gap-8 items-center`}
+            >
+              <div className="flex-1 space-y-4">
+                <h3 className="text-2xl font-bold">{feature.title}</h3>
+                <p className="text-lg text-muted-foreground">{feature.description}</p>
+              </div>
+              <div className="flex-1">
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  className="rounded-lg shadow-lg w-full h-auto"
+                />
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -203,6 +259,11 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      <BetaSignupDialog 
+        open={showBetaDialog} 
+        onOpenChange={setShowBetaDialog}
+      />
     </div>
   );
 }
