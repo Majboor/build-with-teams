@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
 import React from "react";
+import { Progress } from "@/components/ui/progress";
 
 const builtProjects = [
   {
