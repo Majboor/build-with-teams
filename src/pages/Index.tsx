@@ -21,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 
 type CrmFeature = {
   title: string;
@@ -227,6 +228,7 @@ export default function Index() {
   const [selectedApp, setSelectedApp] = useState<typeof builtProjects[0] | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [prompt, setPrompt] = useState("");
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -262,7 +264,7 @@ export default function Index() {
   }, []);
 
   const handleStartBuild = () => {
-    if (appIdea.trim()) {
+    if (prompt.trim()) {
       setShowBetaDialog(true);
     }
   };
@@ -301,6 +303,28 @@ export default function Index() {
               On-demand team solutions to scale your business.
             </p>
 
+            {/* Prompt Bar */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Input
+                type="text"
+                placeholder="Enter your idea or prompt..."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="h-12 sm:h-14 text-lg"
+              />
+              <Button 
+                onClick={() => {
+                  if (prompt.trim()) {
+                    setShowBetaDialog(true);
+                  }
+                }}
+                className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
+                size="lg"
+              >
+                Try for free
+              </Button>
+            </div>
+
             {/* Show image on mobile between title and buttons */}
             <div className="lg:hidden w-full max-w-md mx-auto">
               <img 
@@ -310,14 +334,7 @@ export default function Index() {
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto lg:mx-0">
-              <Button 
-                onClick={handleStartBuild} 
-                className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
-                size="lg"
-              >
-                Try for free
-              </Button>
+            <div className="flex justify-center lg:justify-start">
               <Button 
                 variant="outline" 
                 onClick={() => setShowBetaDialog(true)}
