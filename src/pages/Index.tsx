@@ -176,41 +176,44 @@ export default function Index() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-4 md:px-6 text-center relative">
-        <div className="w-full max-w-4xl mx-auto space-y-8 md:space-y-12">
-          <div className="space-y-4">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight">
-              TaaS
-            </h1>
-            <p className="text-2xl sm:text-3xl md:text-4xl text-muted-foreground">
-              Team as a Service
+      <section className="min-h-screen flex flex-col px-6 relative bg-background">
+        <div className="flex-1 flex flex-col justify-center items-center text-center mt-16">
+          <div className="w-full max-w-[400px] mx-auto space-y-6 md:space-y-8">
+            <div className="space-y-3">
+              <h1 className="text-[56px] font-bold tracking-tight">
+                TaaS
+              </h1>
+              <p className="text-[32px] text-foreground">
+                Team as a<br />Service
+              </p>
+            </div>
+            
+            <p className="text-xl text-foreground/80 mt-4">
+              On-demand team solutions to scale your business.
             </p>
-          </div>
-          
-          <p className="text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto">
-            On-demand team solutions to scale your business.
-          </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-xs sm:max-w-md mx-auto">
-            <Button 
-              onClick={handleStartBuild} 
-              className="w-full text-lg py-6 px-8"
-              size="lg"
-            >
-              Try for free
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={() => setShowBetaDialog(true)}
-              className="w-full text-lg py-6 px-8"
-              size="lg"
-            >
-              Get a demo
-            </Button>
+            <div className="flex flex-col gap-4 w-full mt-8">
+              <Button 
+                onClick={handleStartBuild} 
+                className="w-full h-14 text-lg rounded-full"
+                size="lg"
+              >
+                Try for free
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowBetaDialog(true)}
+                className="w-full h-14 text-lg rounded-full"
+                size="lg"
+              >
+                Get a demo
+              </Button>
+            </div>
           </div>
         </div>
 
-        <div className="w-full max-w-2xl mx-auto mt-12 md:mt-16 px-4">
+        {/* Only show image on desktop */}
+        <div className="hidden md:block w-full max-w-2xl mx-auto mt-12">
           <img
             src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
             alt="TaaS platform interface"
