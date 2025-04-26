@@ -177,30 +177,30 @@ export default function Index() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative flex items-center justify-center overflow-hidden bg-background text-foreground min-h-[85vh]">
-        <div className="container relative z-10">
-          <div className="text-center mx-auto flex flex-col items-center justify-center py-16">
-            <div className="space-y-6 max-w-4xl mb-16">
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
+      <section className="relative flex items-center justify-center overflow-hidden bg-background text-foreground pb-32 pt-16 md:pt-24 md:min-h-[80vh]">
+        <div className="container relative z-10 max-w-6xl mx-auto px-4">
+          <div className="text-center mx-auto flex flex-col items-center justify-center">
+            <div className="space-y-4 max-w-3xl mb-8 md:mb-12">
+              <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-tight">
                 Like the sales assistant your team never had
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mt-3">
                 TaaS handles the busy work for you, so you can focus on growing your service business.
               </p>
             </div>
             
-            <div className="flex space-x-4 mb-16">
+            <div className="flex flex-wrap justify-center gap-4 mb-16 md:mb-24">
               <Button 
                 onClick={handleStartBuild} 
-                className="text-base px-6 py-2 h-auto"
+                className="text-sm md:text-base px-4 py-1 h-auto"
               >
                 Try for free
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-1 h-3 w-3 md:h-4 md:w-4" />
               </Button>
               <Button 
                 variant="outline" 
                 onClick={() => setShowBetaDialog(true)}
-                className="text-base px-6 py-2 h-auto"
+                className="text-sm md:text-base px-4 py-1 h-auto"
               >
                 Get a demo
               </Button>
@@ -208,7 +208,7 @@ export default function Index() {
           </div>
         </div>
         
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[90%] max-w-[1200px]">
+        <div className="absolute bottom-0 left-0 right-0 w-full max-w-[1200px] mx-auto px-4">
           <img
             src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
             alt="TaaS platform interface"
