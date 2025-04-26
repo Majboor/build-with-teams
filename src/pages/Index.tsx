@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Navigation } from "@/components/navigation";
@@ -178,15 +177,15 @@ export default function Index() {
       
       {/* Hero Section */}
       <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
-        <div className="container relative z-10 pt-24 pb-32">
-          <div className="text-center space-y-8 max-w-4xl mx-auto">
+        <div className="container relative z-10 pt-12 pb-0">
+          <div className="text-center space-y-8 max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[80vh]">
             <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-tight">
               Like the sales assistant your team never had
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               TaaS handles the busy work for you, so you can focus on growing your service business.
             </p>
-            <div className="flex flex-wrap sm:flex-nowrap justify-center gap-4 mt-8">
+            <div className="flex flex-wrap sm:flex-nowrap justify-center gap-4">
               <div className="w-full sm:w-auto">
                 <Button 
                   onClick={handleStartBuild} 
