@@ -1,10 +1,10 @@
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Mail } from "lucide-react";
+import { Mail, AlertTriangle } from "lucide-react";
 
 interface BetaSignupDialogProps {
   open: boolean;
@@ -31,8 +31,9 @@ export function BetaSignupDialog({ open, onOpenChange }: BetaSignupDialogProps) 
 
       if (response.ok) {
         toast({
-          title: "Success!",
+          title: "Beta Access Requested",
           description: "Thank you for joining our beta list. We'll be in touch soon!",
+          variant: "default",
         });
         onOpenChange(false);
       } else {
@@ -54,6 +55,15 @@ export function BetaSignupDialog({ open, onOpenChange }: BetaSignupDialogProps) 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Join TaaS Beta</DialogTitle>
+          <DialogDescription>
+            <div className="flex items-center text-yellow-600 bg-yellow-50 p-3 rounded-md mb-4">
+              <AlertTriangle className="mr-2 h-5 w-5" />
+              <span>
+                This is an open submission form. Your email might end up in the SPAM folder. 
+                We recommend using a primary email address you check regularly.
+              </span>
+            </div>
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col gap-2">
