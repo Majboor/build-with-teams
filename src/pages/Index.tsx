@@ -177,30 +177,30 @@ export default function Index() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="min-h-[90vh] relative flex items-center justify-center overflow-hidden bg-[#1A1F2C] text-white">
+      <section className="relative flex items-center justify-center overflow-hidden bg-background text-foreground min-h-[85vh]">
         <div className="container relative z-10">
-          <div className="text-center mx-auto flex flex-col items-center justify-center py-20">
-            <div className="space-y-6 max-w-4xl mb-24">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+          <div className="text-center mx-auto flex flex-col items-center justify-center py-16">
+            <div className="space-y-6 max-w-4xl mb-16">
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-none">
                 Like the sales assistant your team never had
               </h1>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto mt-6">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
                 TaaS handles the busy work for you, so you can focus on growing your service business.
               </p>
             </div>
             
-            <div className="absolute bottom-[220px] flex space-x-4">
+            <div className="flex space-x-4 mb-16">
               <Button 
                 onClick={handleStartBuild} 
-                className="text-lg px-8 py-6 h-auto bg-[#1EAEDB] hover:bg-[#1EAEDB]/90"
+                className="text-base px-6 py-2 h-auto"
               >
                 Try for free
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button 
                 variant="outline" 
                 onClick={() => setShowBetaDialog(true)}
-                className="text-lg px-8 py-6 h-auto border-gray-600 hover:bg-gray-800"
+                className="text-base px-6 py-2 h-auto"
               >
                 Get a demo
               </Button>
