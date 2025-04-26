@@ -302,6 +302,15 @@ export default function Index() {
               On-demand team solutions to scale your business.
             </p>
 
+            {/* Show image on mobile between title and buttons */}
+            <div className="lg:hidden w-full max-w-md mx-auto">
+              <img 
+                src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
+                alt="TaaS product interface"
+                className="w-full rounded-lg shadow-xl"
+              />
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto lg:mx-0">
               <Button 
                 onClick={handleStartBuild} 
