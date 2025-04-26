@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -8,16 +7,14 @@ import { Check } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
-
-// Let's create the CrmFeatures component right in this file for now
-// (later we can extract it to its own file)
-import { Check as CheckIcon } from "lucide-react";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type CrmFeature = {
   title: string;
@@ -33,7 +30,7 @@ const crmFeatures: CrmFeature[] = [
       <div className="space-y-2">
         <div className="p-4 bg-gray-50 rounded-lg w-fit">
           <div className="flex items-center gap-2 p-2 border rounded-md bg-white">
-            <CheckIcon className="h-4 w-4" />
+            <Check className="h-4 w-4" />
             <span className="font-medium">Sales</span>
           </div>
           <div className="flex items-center gap-2 p-2 mt-2 border rounded-md bg-white opacity-50">
@@ -85,33 +82,6 @@ const crmFeatures: CrmFeature[] = [
     ),
   },
 ];
-
-export function CrmFeatures() {
-  return (
-    <section className="container py-20">
-      <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-16">
-        Finally, a CRM that works <span className="text-primary">for you</span>
-      </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {crmFeatures.map((feature, index) => (
-          <TooltipProvider key={index}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="space-y-4 p-6 border rounded-lg cursor-help transition-all hover:shadow-lg">
-                  {feature.content}
-                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="max-w-[200px] text-center">
-                <p>{feature.tooltip}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 const builtProjects = [
   {
@@ -218,12 +188,40 @@ const plans = [
   },
 ];
 
+export function CrmFeatures() {
+  return (
+    <section className="container py-20">
+      <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-16">
+        Finally, a CRM that works <span className="text-primary">for you</span>
+      </h2>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {crmFeatures.map((feature, index) => (
+          <TooltipProvider key={index}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="space-y-4 p-6 border rounded-lg cursor-help transition-all hover:shadow-lg">
+                  {feature.content}
+                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-[200px] text-center">
+                <p>{feature.tooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function Index() {
   const [showBetaDialog, setShowBetaDialog] = useState(false);
   const [appIdea, setAppIdea] = useState("");
   const [selectedApp, setSelectedApp] = useState<typeof builtProjects[0] | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     let loadedCount = 0;
@@ -333,27 +331,56 @@ export default function Index() {
         <h2 className="text-3xl font-bold text-center mb-12">
           What TaaS Has Built
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {builtProjects.map((project, index) => (
-            <Card 
-              key={index} 
-              className="overflow-hidden transform hover:scale-105 transition-transform duration-200 cursor-pointer"
-              onClick={() => setSelectedApp(project)}
-            >
-              <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                <p className="text-muted-foreground">{project.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {isMobile ? (
+          <Carousel className="w-full max-w-xs mx-auto">
+            <CarouselContent>
+              {builtProjects.map((project, index) => (
+                <CarouselItem key={index}>
+                  <Card 
+                    className="overflow-hidden cursor-pointer"
+                    onClick={() => setSelectedApp(project)}
+                  >
+                    <div className="aspect-video relative overflow-hidden rounded-t-lg">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                      <p className="text-muted-foreground">{project.description}</p>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden sm:flex" />
+            <CarouselNext className="hidden sm:flex" />
+          </Carousel>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {builtProjects.map((project, index) => (
+              <Card 
+                key={index} 
+                className="overflow-hidden transform hover:scale-105 transition-transform duration-200 cursor-pointer"
+                onClick={() => setSelectedApp(project)}
+              >
+                <div className="aspect-video relative overflow-hidden rounded-t-lg">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                  <p className="text-muted-foreground">{project.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Features Section */}
