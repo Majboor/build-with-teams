@@ -176,38 +176,48 @@ export default function Index() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col px-6 relative bg-background">
-        <div className="flex-1 flex flex-col justify-center items-center text-center mt-16">
-          <div className="w-full max-w-[400px] mx-auto space-y-6 md:space-y-8">
-            <div className="space-y-3">
-              <h1 className="text-[56px] font-bold tracking-tight">
+      <section className="min-h-screen flex flex-col px-6 pt-20">
+        <div className="flex-1 flex flex-col justify-center items-start">
+          <div className="w-full space-y-20">
+            <div className="space-y-2">
+              <h1 className="text-[64px] font-normal leading-none">
                 TaaS
               </h1>
-              <p className="text-[32px] text-foreground">
-                Team as a<br />Service
-              </p>
+              <div className="space-y-2">
+                <p className="text-[40px] font-normal leading-tight">
+                  Team as
+                </p>
+                <p className="text-[40px] font-normal leading-tight">
+                  a
+                </p>
+                <p className="text-[40px] font-normal leading-tight">
+                  Service
+                </p>
+              </div>
             </div>
             
-            <p className="text-xl text-foreground/80 mt-4">
-              On-demand team solutions to scale your business.
-            </p>
+            <div className="space-y-4">
+              <p className="text-xl font-normal">
+                On-demand team solutions to scale your business.
+              </p>
 
-            <div className="flex flex-col gap-4 w-full mt-8">
-              <Button 
-                onClick={handleStartBuild} 
-                className="w-full h-14 text-lg rounded-full"
-                size="lg"
-              >
-                Try for free
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setShowBetaDialog(true)}
-                className="w-full h-14 text-lg rounded-full"
-                size="lg"
-              >
-                Get a demo
-              </Button>
+              <div className="flex flex-col gap-4 w-full">
+                <Button 
+                  onClick={handleStartBuild} 
+                  className="w-full h-14 text-lg rounded-full bg-black text-white hover:bg-black/90"
+                  size="lg"
+                >
+                  Try for free
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowBetaDialog(true)}
+                  className="w-full h-14 text-lg rounded-full border-2"
+                  size="lg"
+                >
+                  Get a demo
+                </Button>
+              </div>
             </div>
           </div>
         </div>
