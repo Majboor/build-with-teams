@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -322,8 +323,8 @@ export default function Index() {
 
           <div className="flex-1 hidden lg:block">
             <img 
-              src="https://i.ibb.co/y8B1PPk/photo-1649972904349-6e44c42644a7"
-              alt="Person using laptop"
+              src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
+              alt="TaaS product interface"
               className="w-full max-w-xl mx-auto rounded-lg shadow-xl"
             />
           </div>
