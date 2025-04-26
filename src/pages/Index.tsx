@@ -13,13 +13,13 @@ const builtProjects = [
   {
     title: "AI Interior Designing",
     description: "Transform spaces with AI-powered interior design solutions. Create stunning interior designs with the help of artificial intelligence.",
-    image: "https://i.ibb.co/23gCWK1/Screenshot-2025-04-27-at-2-38-50-AM.png",
+    image: "https://i.ibb.co/23gCWK1z/Screenshot-2025-04-27-at-2-38-50-AM.png",
     link: "https://interior.techrealm.pk"
   },
   {
     title: "AI Meals & Nutrition App",
     description: "Personalized meal plans and nutrition tracking using AI. Get customized meal recommendations and track your nutrition goals effortlessly.",
-    image: "https://i.ibb.co/qLFnQpR/Screenshot-2025-04-27-at-2-39-21-AM.png",
+    image: "https://i.ibb.co/qLFnQpRv/Screenshot-2025-04-27-at-2-39-21-AM.png",
     link: "https://meals.techrealm.pk/"
   },
   {
@@ -31,19 +31,19 @@ const builtProjects = [
   {
     title: "AI Fashion Design",
     description: "Design trendy fashion pieces with AI technology. Create unique and stylish fashion designs with the power of artificial intelligence.",
-    image: "https://i.ibb.co/qFgT88K/Screenshot-2025-04-27-at-2-41-14-AM.png",
+    image: "https://i.ibb.co/qFgT88Kx/Screenshot-2025-04-27-at-2-41-14-AM.png",
     link: "https://fashion.techrealm.pk/"
   },
   {
     title: "AI Document Creator",
     description: "Generate professional documents using AI. Create polished documents quickly and efficiently with AI-powered assistance.",
-    image: "https://i.ibb.co/Pz9dqSs/Screenshot-2025-04-27-at-2-41-50-AM.png",
+    image: "https://i.ibb.co/Pz9dqSsP/Screenshot-2025-04-27-at-2-41-50-AM.png",
     link: "https://documents.techrealm.pk/"
   },
   {
     title: "AI Presentation Creator",
     description: "Create engaging presentations with AI assistance. Build impressive presentations effortlessly using our AI-powered tools.",
-    image: "https://i.ibb.co/5hSZZbh/Screenshot-2025-04-27-at-2-42-19-AM.png",
+    image: "https://i.ibb.co/5hSZZbhW/Screenshot-2025-04-27-at-2-42-19-AM.png",
     link: "https://presentations.techrealm.pk/"
   }
 ];
@@ -52,22 +52,22 @@ const features = [
   {
     title: "Workspace Overview",
     description: "A comprehensive workspace that brings all your project management needs into one place. Streamline your workflow and boost productivity with our intuitive interface.",
-    image: "https://i.ibb.co/tMdpVPW/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
+    image: "https://i.ibb.co/tMdpVPWK/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
   },
   {
     title: "Task Management",
     description: "Efficiently organize and track tasks with our intuitive task management system. Keep your team aligned and projects on schedule.",
-    image: "https://i.ibb.co/FkqRv7T/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
+    image: "https://i.ibb.co/FkqRv7Tj/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
   },
   {
     title: "Calendar Integration",
     description: "Stay on schedule with our powerful calendar integration feature. Never miss a deadline or important meeting again.",
-    image: "https://i.ibb.co/m5K3DDY/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
+    image: "https://i.ibb.co/m5K3DDYJ/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
   },
   {
     title: "Quick Actions & Notifications",
     description: "Stay informed and take quick actions with our smart notification system. Keep your finger on the pulse of your projects.",
-    image: "https://i.ibb.co/6cnKgRy/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
+    image: "https://i.ibb.co/6cnKgRyr/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
   },
   {
     title: "Developer Dashboard",
@@ -77,7 +77,7 @@ const features = [
   {
     title: "Task Details",
     description: "Dive deep into task details with our comprehensive task view. Get all the information you need in one place.",
-    image: "https://i.ibb.co/DHZZVMQ/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
+    image: "https://i.ibb.co/DHZZVMQ7/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
   }
 ];
 
@@ -227,31 +227,29 @@ export default function Index() {
       </section>
 
       {/* Features Section */}
-      <section className="container py-20 border-t">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Powerful Features for Your Team
-        </h2>
-        <div className="space-y-20">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className={`flex flex-col ${
-                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-              } gap-8 items-center`}
-            >
-              <div className="flex-1 space-y-4">
-                <h3 className="text-2xl font-bold">{feature.title}</h3>
-                <p className="text-lg text-muted-foreground">{feature.description}</p>
+      <section className="py-16">
+        <div className="container">
+          <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
+          <div className="space-y-16">
+            {features.map((feature, index) => (
+              <div 
+                key={feature.title} 
+                className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}
+              >
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </div>
+                <div className="flex-1">
+                  <img 
+                    src={feature.image} 
+                    alt={feature.title} 
+                    className="rounded-lg shadow-lg w-full"
+                  />
+                </div>
               </div>
-              <div className="flex-1">
-                <img
-                  src={feature.image}
-                  alt={feature.title}
-                  className="rounded-lg shadow-lg w-full h-auto"
-                />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
