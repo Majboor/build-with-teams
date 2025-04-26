@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Navigation } from "@/components/navigation";
 import { ArrowRight, Check } from "lucide-react";
+import { BetaSignupDialog } from "@/components/BetaSignupDialog";
+import { useState } from "react";
 
 const features = [
   "AI-powered development",
@@ -45,6 +47,15 @@ const plans = [
 ];
 
 export default function Index() {
+  const [showBetaDialog, setShowBetaDialog] = useState(false);
+  const [appIdea, setAppIdea] = useState("");
+
+  const handleStartBuild = () => {
+    if (appIdea.trim()) {
+      setShowBetaDialog(true);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -62,14 +73,22 @@ export default function Index() {
             <Input 
               placeholder="What type of app do you want to build?"
               className="text-center sm:text-left"
+              value={appIdea}
+              onChange={(e) => setAppIdea(e.target.value)}
             />
-            <Button className="w-full sm:w-auto">
+            <Button onClick={handleStartBuild} className="w-full sm:w-auto">
               Start Your Build
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>
       </section>
+
+      {/* Beta Signup Dialog */}
+      <BetaSignupDialog 
+        open={showBetaDialog} 
+        onOpenChange={setShowBetaDialog}
+      />
 
       {/* How It Works */}
       <section className="container py-20 border-t" id="features">
