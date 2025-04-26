@@ -52,22 +52,22 @@ const features = [
   {
     title: "Workspace Overview",
     description: "A comprehensive workspace that brings all your project management needs into one place. Streamline your workflow and boost productivity with our intuitive interface.",
-    image: "https://i.ibb.co/tMdpVPWK/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
+    image: "https://i.ibb.co/tMdpVPW/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
   },
   {
     title: "Task Management",
     description: "Efficiently organize and track tasks with our intuitive task management system. Keep your team aligned and projects on schedule.",
-    image: "https://i.ibb.co/FkqRv7Tj/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
+    image: "https://i.ibb.co/FkqRv7T/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
   },
   {
     title: "Calendar Integration",
     description: "Stay on schedule with our powerful calendar integration feature. Never miss a deadline or important meeting again.",
-    image: "https://i.ibb.co/m5K3DDYJ/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
+    image: "https://i.ibb.co/m5K3DDY/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
   },
   {
     title: "Quick Actions & Notifications",
     description: "Stay informed and take quick actions with our smart notification system. Keep your finger on the pulse of your projects.",
-    image: "https://i.ibb.co/6cnKgRyr/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
+    image: "https://i.ibb.co/6cnKgRy/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
   },
   {
     title: "Developer Dashboard",
@@ -77,7 +77,7 @@ const features = [
   {
     title: "Task Details",
     description: "Dive deep into task details with our comprehensive task view. Get all the information you need in one place.",
-    image: "https://i.ibb.co/DHZZVMQ7/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
+    image: "https://i.ibb.co/DHZZVMQ/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
   }
 ];
 
