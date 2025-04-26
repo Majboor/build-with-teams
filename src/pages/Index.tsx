@@ -1,14 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Navigation } from "@/components/navigation";
-import { ArrowRight, Check } from "lucide-react";
-import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { AppDetailsDialog } from "@/components/AppDetailsDialog";
-import React from "react";
-import { Progress } from "@/components/ui/progress";
-import { CrmFeatures } from "@/components/CrmFeatures";
 
 const builtProjects = [
   {
@@ -177,13 +169,13 @@ export default function Index() {
       
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col px-6 pt-20">
-        <div className="flex-1 flex flex-col justify-center items-start">
+        <div className="flex-1 flex flex-col justify-center items-center text-center">
           <div className="w-full space-y-20">
             <div className="space-y-2">
-              <h1 className="text-[64px] font-normal leading-none">
+              <h1 className="text-[64px] font-normal leading-none text-center">
                 TaaS
               </h1>
-              <div className="space-y-2">
+              <div className="space-y-2 text-center">
                 <p className="text-[40px] font-normal leading-tight">
                   Team as
                 </p>
@@ -197,14 +189,14 @@ export default function Index() {
             </div>
             
             <div className="space-y-4">
-              <p className="text-xl font-normal">
+              <p className="text-xl font-normal text-center">
                 On-demand team solutions to scale your business.
               </p>
 
-              <div className="flex flex-col gap-4 w-full">
+              <div className="flex flex-col gap-4 w-full max-w-md mx-auto">
                 <Button 
                   onClick={handleStartBuild} 
-                  className="w-full h-14 text-lg rounded-full bg-black text-white hover:bg-black/90"
+                  className="w-full h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
                   size="lg"
                 >
                   Try for free
@@ -212,7 +204,7 @@ export default function Index() {
                 <Button 
                   variant="outline" 
                   onClick={() => setShowBetaDialog(true)}
-                  className="w-full h-14 text-lg rounded-full border-2"
+                  className="w-full h-14 text-lg rounded-full border-2 flex items-center justify-center"
                   size="lg"
                 >
                   Get a demo
@@ -220,15 +212,6 @@ export default function Index() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Only show image on desktop */}
-        <div className="hidden md:block w-full max-w-2xl mx-auto mt-12">
-          <img
-            src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
-            alt="TaaS platform interface"
-            className="w-full h-auto rounded-2xl shadow-xl"
-          />
         </div>
       </section>
 
