@@ -5,37 +5,44 @@ import { ArrowRight, Check } from "lucide-react";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { AppDetailsDialog } from "@/components/AppDetailsDialog";
 
 const builtProjects = [
   {
     title: "AI Interior Designing",
-    description: "Transform spaces with AI-powered interior design solutions",
-    image: "https://i.ibb.co/23gCWK1z/Screenshot-2025-04-27-at-2-38-50-AM.png"
+    description: "Transform spaces with AI-powered interior design solutions. Create stunning interior designs with the help of artificial intelligence.",
+    image: "https://i.ibb.co/23gCWK1z/Screenshot-2025-04-27-at-2-38-50-AM.png",
+    link: "https://interior.techrealm.pk"
   },
   {
     title: "AI Meals & Nutrition App",
-    description: "Personalized meal plans and nutrition tracking using AI",
-    image: "https://i.ibb.co/qLFnQpRv/Screenshot-2025-04-27-at-2-39-21-AM.png"
+    description: "Personalized meal plans and nutrition tracking using AI. Get customized meal recommendations and track your nutrition goals effortlessly.",
+    image: "https://i.ibb.co/qLFnQpRv/Screenshot-2025-04-27-at-2-39-21-AM.png",
+    link: "https://meals.techrealm.pk/"
   },
   {
     title: "AI 3D Model Creator",
-    description: "Create stunning 3D models with AI assistance",
-    image: "https://i.ibb.co/kb5HxFc/Screenshot-2025-04-27-at-2-40-43-AM.png"
+    description: "Create stunning 3D models with AI assistance. Transform your ideas into professional 3D models with our innovative AI technology.",
+    image: "https://i.ibb.co/kb5HxFc/Screenshot-2025-04-27-at-2-40-43-AM.png",
+    link: "https://3dmodel.techrealm.pk/"
   },
   {
     title: "AI Fashion Design",
-    description: "Design trendy fashion pieces with AI technology",
-    image: "https://i.ibb.co/qFgT88Kx/Screenshot-2025-04-27-at-2-41-14-AM.png"
+    description: "Design trendy fashion pieces with AI technology. Create unique and stylish fashion designs with the power of artificial intelligence.",
+    image: "https://i.ibb.co/qFgT88Kx/Screenshot-2025-04-27-at-2-41-14-AM.png",
+    link: "https://fashion.techrealm.pk/"
   },
   {
     title: "AI Document Creator",
-    description: "Generate professional documents using AI",
-    image: "https://i.ibb.co/Pz9dqSsP/Screenshot-2025-04-27-at-2-41-50-AM.png"
+    description: "Generate professional documents using AI. Create polished documents quickly and efficiently with AI-powered assistance.",
+    image: "https://i.ibb.co/Pz9dqSsP/Screenshot-2025-04-27-at-2-41-50-AM.png",
+    link: "https://documents.techrealm.pk/"
   },
   {
     title: "AI Presentation Creator",
-    description: "Create engaging presentations with AI assistance",
-    image: "https://i.ibb.co/5hSZZbhW/Screenshot-2025-04-27-at-2-42-19-AM.png"
+    description: "Create engaging presentations with AI assistance. Build impressive presentations effortlessly using our AI-powered tools.",
+    image: "https://i.ibb.co/5hSZZbhW/Screenshot-2025-04-27-at-2-42-19-AM.png",
+    link: "https://presentations.techrealm.pk/"
   }
 ];
 
@@ -108,6 +115,7 @@ const plans = [
 export default function Index() {
   const [showBetaDialog, setShowBetaDialog] = useState(false);
   const [appIdea, setAppIdea] = useState("");
+  const [selectedApp, setSelectedApp] = useState<typeof builtProjects[0] | null>(null);
 
   const handleStartBuild = () => {
     if (appIdea.trim()) {
@@ -150,7 +158,11 @@ export default function Index() {
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {builtProjects.map((project, index) => (
-            <Card key={index} className="overflow-hidden transform hover:scale-105 transition-transform duration-200">
+            <Card 
+              key={index} 
+              className="overflow-hidden transform hover:scale-105 transition-transform duration-200 cursor-pointer"
+              onClick={() => setSelectedApp(project)}
+            >
               <div className="aspect-video relative overflow-hidden rounded-t-lg">
                 <img
                   src={project.image}
@@ -167,7 +179,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Features Section with Alternating Layout */}
+      {/* Features Section */}
       <section className="container py-20 border-t">
         <h2 className="text-3xl font-bold text-center mb-12">
           Powerful Features for Your Team
@@ -263,6 +275,12 @@ export default function Index() {
       <BetaSignupDialog 
         open={showBetaDialog} 
         onOpenChange={setShowBetaDialog}
+      />
+
+      <AppDetailsDialog
+        open={!!selectedApp}
+        onOpenChange={(open) => !open && setSelectedApp(null)}
+        app={selectedApp!}
       />
     </div>
   );
