@@ -177,35 +177,31 @@ export default function Index() {
       
       {/* Hero Section */}
       <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
-        <div className="container relative z-10 pt-12 pb-0">
-          <div className="text-center space-y-8 max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[80vh]">
+        <div className="container relative z-10 py-8">
+          <div className="text-center space-y-10 max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[70vh] mt-10">
             <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-tight">
               Like the sales assistant your team never had
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               TaaS handles the busy work for you, so you can focus on growing your service business.
             </p>
-            <div className="flex flex-wrap sm:flex-nowrap justify-center gap-4">
-              <div className="w-full sm:w-auto">
-                <Button 
-                  onClick={handleStartBuild} 
-                  className="w-full text-lg px-8 py-6 flex items-center justify-center"
-                  size="lg"
-                >
-                  <span>Try for free</span>
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-              <div className="w-full sm:w-auto">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowBetaDialog(true)}
-                  className="w-full text-lg px-8 py-6 flex items-center justify-center"
-                  size="lg"
-                >
-                  Get a demo
-                </Button>
-              </div>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 w-full max-w-md mx-auto">
+              <Button 
+                onClick={handleStartBuild} 
+                className="w-full text-lg h-14 px-8"
+                size="lg"
+              >
+                <span>Try for free</span>
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowBetaDialog(true)}
+                className="w-full text-lg h-14 px-8"
+                size="lg"
+              >
+                Get a demo
+              </Button>
             </div>
           </div>
         </div>
