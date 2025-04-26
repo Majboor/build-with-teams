@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Navigation } from "@/components/navigation";
@@ -176,27 +177,30 @@ export default function Index() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
-        <div className="container relative z-10 pt-8 pb-0">
-          <div className="text-center space-y-6 max-w-4xl mx-auto flex flex-col items-center justify-center min-h-[70vh]">
-            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight">
-              Like the sales assistant your team never had
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              TaaS handles the busy work for you, so you can focus on growing your service business.
-            </p>
-            <div className="flex space-x-4">
+      <section className="min-h-[90vh] relative flex items-center justify-center overflow-hidden bg-[#1A1F2C] text-white">
+        <div className="container relative z-10">
+          <div className="text-center mx-auto flex flex-col items-center justify-center py-20">
+            <div className="space-y-6 max-w-4xl mb-24">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+                Like the sales assistant your team never had
+              </h1>
+              <p className="text-xl text-gray-300 max-w-2xl mx-auto mt-6">
+                TaaS handles the busy work for you, so you can focus on growing your service business.
+              </p>
+            </div>
+            
+            <div className="absolute bottom-[220px] flex space-x-4">
               <Button 
                 onClick={handleStartBuild} 
-                className="text-lg px-6 py-3"
+                className="text-lg px-8 py-6 h-auto bg-[#1EAEDB] hover:bg-[#1EAEDB]/90"
               >
                 Try for free
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 
                 variant="outline" 
                 onClick={() => setShowBetaDialog(true)}
-                className="text-lg px-6 py-3"
+                className="text-lg px-8 py-6 h-auto border-gray-600 hover:bg-gray-800"
               >
                 Get a demo
               </Button>
