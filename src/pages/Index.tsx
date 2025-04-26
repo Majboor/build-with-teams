@@ -284,48 +284,48 @@ export default function Index() {
       
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col px-6 pt-20">
-        <div className="flex-1 flex flex-col justify-center items-center text-center">
-          <div className="w-full space-y-20">
+        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-12 py-8">
+          <div className="flex-1 text-center lg:text-left space-y-8">
             <div className="space-y-2">
-              <h1 className="text-[64px] font-normal leading-none text-center">
+              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-normal leading-none">
                 TaaS
               </h1>
-              <div className="space-y-2 text-center">
-                <p className="text-[40px] font-normal leading-tight">
-                  Team as
-                </p>
-                <p className="text-[40px] font-normal leading-tight">
-                  a
-                </p>
-                <p className="text-[40px] font-normal leading-tight">
-                  Service
+              <div className="space-y-2">
+                <p className="text-2xl sm:text-3xl lg:text-[40px] font-normal leading-tight">
+                  Team as a Service
                 </p>
               </div>
             </div>
             
-            <div className="space-y-4">
-              <p className="text-xl font-normal text-center">
-                On-demand team solutions to scale your business.
-              </p>
+            <p className="text-lg sm:text-xl font-normal max-w-md mx-auto lg:mx-0">
+              On-demand team solutions to scale your business.
+            </p>
 
-              <div className="flex flex-col gap-4 w-full max-w-md mx-auto">
-                <Button 
-                  onClick={handleStartBuild} 
-                  className="w-full h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
-                  size="lg"
-                >
-                  Try for free
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowBetaDialog(true)}
-                  className="w-full h-14 text-lg rounded-full border-2 flex items-center justify-center"
-                  size="lg"
-                >
-                  Get a demo
-                </Button>
-              </div>
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto lg:mx-0">
+              <Button 
+                onClick={handleStartBuild} 
+                className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
+                size="lg"
+              >
+                Try for free
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowBetaDialog(true)}
+                className="h-12 sm:h-14 text-lg rounded-full border-2 flex items-center justify-center"
+                size="lg"
+              >
+                Get a demo
+              </Button>
             </div>
+          </div>
+
+          <div className="flex-1 hidden lg:block">
+            <img 
+              src="https://i.ibb.co/y8B1PPk/photo-1649972904349-6e44c42644a7"
+              alt="Person using laptop"
+              className="w-full max-w-xl mx-auto rounded-lg shadow-xl"
+            />
           </div>
         </div>
       </section>
