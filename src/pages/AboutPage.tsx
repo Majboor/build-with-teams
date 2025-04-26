@@ -1,4 +1,3 @@
-
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Award, Briefcase, History, Star, Users } from "lucide-react";
@@ -7,19 +6,19 @@ const teamMembers = [
   {
     name: "Sarah Johnson",
     role: "Chief Technology Officer",
-    bio: "15+ years of experience in software architecture and team leadership",
+    bio: "15+ years of experience in Team as a Service (TaaS) architecture and team leadership",
     icon: Star
   },
   {
     name: "Michael Chen",
     role: "Chief Operations Officer",
-    bio: "Expert in scaling operations and optimizing team workflows",
+    bio: "Expert in scaling TaaS operations and optimizing team workflows",
     icon: Briefcase
   },
   {
     name: "Emily Rodriguez",
     role: "Project Manager",
-    bio: "Certified PMP with a track record of successful project deliveries",
+    bio: "Certified PMP with a track record of successful TaaS project deliveries",
     icon: Users
   }
 ];
@@ -27,22 +26,22 @@ const teamMembers = [
 const milestones = [
   {
     year: "2021",
-    title: "Company Founded",
-    description: "Started with a vision to revolutionize team collaboration"
+    title: "TaaS Inception",
+    description: "Started with a vision to revolutionize team collaboration through our Team as a Service model"
   },
   {
     year: "2022",
     title: "First Enterprise Client",
-    description: "Successfully onboarded our first major enterprise client"
+    description: "Successfully onboarded our first major enterprise client using TaaS"
   },
   {
     year: "2023",
-    title: "Global Expansion",
-    description: "Expanded operations to serve clients worldwide"
+    title: "Global TaaS Expansion",
+    description: "Expanded operations worldwide to serve clients with our Team as a Service solution"
   },
   {
     year: "2024",
-    title: "AI Integration",
+    title: "AI-Powered TaaS",
     description: "Launched advanced AI-powered team management features"
   }
 ];
@@ -53,11 +52,10 @@ export default function AboutPage() {
       <Navigation />
       
       <main className="container mx-auto px-4 pt-24 pb-16">
-        {/* Mission Section */}
         <section className="mb-16 text-center max-w-3xl mx-auto">
-          <h1 className="text-4xl font-bold tracking-tight mb-6">About Us</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-6">About TaaS</h1>
           <p className="text-lg text-muted-foreground mb-8">
-            Building the future of team collaboration through innovative solutions
+            Revolutionizing team collaboration through innovative Team as a Service solutions
             and cutting-edge technology.
           </p>
           <div className="flex items-center justify-center">
@@ -65,7 +63,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team Section */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-8">Our Team</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -88,7 +85,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Company History */}
         <section>
           <h2 className="text-3xl font-bold text-center mb-8">Our Journey</h2>
           <div className="max-w-3xl mx-auto">

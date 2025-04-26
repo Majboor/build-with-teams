@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Navigation } from "@/components/navigation";
@@ -6,7 +5,7 @@ import { ArrowRight, Check } from "lucide-react";
 
 const features = [
   "AI-powered development",
-  "Real-time collaboration",
+  "Real-time collaboration", 
   "Expert team matching",
   "24/7 support",
   "Scalable infrastructure",
@@ -54,7 +53,7 @@ export default function Index() {
       <section className="container pt-32 pb-20">
         <div className="text-center space-y-6 max-w-3xl mx-auto animate-fade-in">
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">
-            Build Your App with Real Teams, Powered by AI
+            Team as a Service: Powering Your Projects with AI
           </h1>
           <p className="text-lg text-muted-foreground">
             From concept to launch, we handle everything so you can focus on your business.
@@ -125,7 +124,7 @@ export default function Index() {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-muted-foreground">
-              © 2024 Build Teams. All rights reserved.
+              © 2024 TaaS - Team as a Service. All rights reserved.
             </div>
             <div className="flex gap-6 text-sm">
               <a href="#" className="hover:text-primary">Privacy Policy</a>

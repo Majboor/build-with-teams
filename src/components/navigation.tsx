@@ -8,7 +8,7 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-background/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <a href="/" className="font-bold text-xl">Build Teams</a>
+          <a href="/" className="font-bold text-xl">TaaS</a>
           <div className="hidden md:flex gap-6">
             <a href="#features" className="text-sm hover:text-primary">Features</a>
             <a href="#pricing" className="text-sm hover:text-primary">Pricing</a>

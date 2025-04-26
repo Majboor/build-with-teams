@@ -20,7 +20,7 @@ export function SidePanel() {
       </SheetTrigger>
       <SheetContent className="w-[300px] sm:w-[400px] bg-background/80 backdrop-blur-lg">
         <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
+          <SheetTitle>TaaS Menu</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col gap-4 mt-6">
           <Button asChild variant="ghost" className="justify-start gap-2">
