@@ -7,10 +7,19 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { Menu, LayoutGrid, User, CheckSquare, Calendar, LayoutDashboard, DollarSign, Info } from "lucide-react"
+import { Menu, LayoutGrid, User, CheckSquare, Calendar, LayoutDashboard, DollarSign, Info, Lock } from "lucide-react"
 import { Link } from "react-router-dom"
+import { useState } from "react"
+import { BetaSignupDialog } from "./BetaSignupDialog"
 
 export function SidePanel() {
+  const [showBetaDialog, setShowBetaDialog] = useState(false);
+
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowBetaDialog(true);
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -23,55 +32,39 @@ export function SidePanel() {
           <SheetTitle>TaaS Menu</SheetTitle>
         </SheetHeader>
         <div className="flex flex-col gap-4 mt-6">
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/modal">
-              <LayoutGrid className="h-5 w-5" />
-              Pop-Up Modal
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/workspace">
-              <LayoutGrid className="h-5 w-5" />
-              Workspace View
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/person">
-              <User className="h-5 w-5" />
-              Single Person Page
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/task">
-              <CheckSquare className="h-5 w-5" />
-              Single Task Page
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/calendar">
-              <Calendar className="h-5 w-5" />
-              Calendar Page
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/dashboard">
-              <LayoutDashboard className="h-5 w-5" />
-              Worker/Employee Dashboard
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/pricing">
-              <DollarSign className="h-5 w-5" />
-              Pricing Page
-            </Link>
-          </Button>
-          <Button asChild variant="ghost" className="justify-start gap-2">
-            <Link to="/about">
-              <Info className="h-5 w-5" />
-              About Us Page
-            </Link>
-          </Button>
+          {[
+            { to: "/modal", icon: LayoutGrid, label: "Pop-Up Modal" },
+            { to: "/workspace", icon: LayoutGrid, label: "Workspace View" },
+            { to: "/person", icon: User, label: "Single Person Page" },
+            { to: "/task", icon: CheckSquare, label: "Single Task Page" },
+            { to: "/calendar", icon: Calendar, label: "Calendar Page" },
+            { to: "/dashboard", icon: LayoutDashboard, label: "Worker/Employee Dashboard" },
+            { to: "/pricing", icon: DollarSign, label: "Pricing Page" },
+            { to: "/about", icon: Info, label: "About Us Page" }
+          ].map((item) => (
+            <div key={item.to} className="relative">
+              <Button
+                asChild
+                variant="ghost"
+                className="justify-start gap-2 w-full relative"
+                onClick={handleLinkClick}
+              >
+                <Link to={item.to}>
+                  <item.icon className="h-5 w-5" />
+                  {item.label}
+                </Link>
+              </Button>
+              <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] flex items-center justify-center">
+                <Lock className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </div>
+          ))}
         </div>
+
+        <BetaSignupDialog 
+          open={showBetaDialog} 
+          onOpenChange={setShowBetaDialog} 
+        />
       </SheetContent>
     </Sheet>
   )
