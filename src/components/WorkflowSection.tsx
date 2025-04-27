@@ -49,10 +49,10 @@ const steps = [
 export function WorkflowSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const circleRefs = useRef<HTMLDivElement[]>([]);
+  const [pathD, setPathD] = useState<string>("");
   const [dims, setDims] = useState({ width: 0, height: 0 });
-  const [segments, setSegments] = useState<string[]>([]);
 
-  // Build the same H-V-H segments we had before
+  // Build one continuous H-V-H path (no breaks)
   useLayoutEffect(() => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -69,17 +69,20 @@ export function WorkflowSection() {
     });
 
     const spineX = rect.width / 2;
-    const segs: string[] = [];
+    // start at first point
+    let d = `M ${points[0].x} ${points[0].y}`;
+    // for each next point, go H→V→H
     for (let i = 1; i < points.length; i++) {
-      const prev = points[i - 1];
       const curr = points[i];
-      // exactly the same path commands as before
-      segs.push(`M ${prev.x} ${prev.y} H ${spineX} V ${curr.y} H ${curr.x}`);
+      d += ` H ${spineX}`;
+      d += ` V ${curr.y}`;
+      d += ` H ${curr.x}`;
     }
-    setSegments(segs);
+
+    setPathD(d);
   }, []);
 
-  // Animate pathLength on scroll
+  // Animate path drawing on scroll
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -96,7 +99,7 @@ export function WorkflowSection() {
         </h2>
 
         <div className="relative" ref={containerRef}>
-          {/* Connector SVG (static shape, animated on scroll) */}
+          {/* Continuous SVG connector */}
           <svg
             width={dims.width}
             height={dims.height}
@@ -119,35 +122,30 @@ export function WorkflowSection() {
               </marker>
             </defs>
 
-            {segments.map((d, i) => (
-              <motion.path
-                key={i}
-                d={d}
-                stroke="#FF0080"
-                strokeWidth="4"
-                strokeDasharray="10,10"
-                strokeLinecap="round"
-                markerEnd="url(#arrowhead)"
-                style={{ pathLength }}
-              />
-            ))}
+            <motion.path
+              d={pathD}
+              stroke="#FF0080"
+              strokeWidth="4"
+              strokeDasharray="10,10"
+              strokeLinecap="round"
+              markerEnd="url(#arrowhead)"
+              style={{ pathLength }}
+            />
           </svg>
 
-          {/* Steps */}
+          {/* Steps with reduced vertical gap */}
           <div className="grid gap-y-20 relative z-10">
             {steps.map((step, idx) => (
               <div
                 key={step.number}
+                ref={(el) => {
+                  if (el) circleRefs.current[idx] = el;
+                }}
                 className={`flex items-start gap-6 ${
                   idx % 2 === 0 ? "lg:ml-0" : "lg:ml-[50%]"
                 }`}
               >
-                <div
-                  ref={(el) => {
-                    if (el) circleRefs.current[idx] = el;
-                  }}
-                  className="w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0"
-                >
+                <div className="w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0">
                   {step.number}
                 </div>
                 <div className="max-w-sm">
