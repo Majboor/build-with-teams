@@ -1,7 +1,8 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
-import { useState } from "react";
+// Remove the duplicate useState import
 import { Card, CardContent } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
