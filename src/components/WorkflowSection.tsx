@@ -50,6 +50,14 @@ const pathVariants = {
   }
 };
 
+const arrowVariants = {
+  initial: { opacity: 0 },
+  animate: (custom: number) => ({
+    opacity: 1,
+    transition: { delay: 0.5 + custom * 0.4 }
+  })
+};
+
 export function WorkflowSection() {
   return (
     <section className="bg-black text-white py-20">
@@ -64,7 +72,7 @@ export function WorkflowSection() {
             className="absolute hidden lg:block"
             width="100%"
             height="100%"
-            viewBox="0 0 1200 1000"
+            viewBox="0 0 1200 900"
             fill="none"
             style={{ 
               position: 'absolute',
@@ -74,15 +82,16 @@ export function WorkflowSection() {
               zIndex: 0
             }}
           >
+            {/* Main path connecting all steps */}
             <motion.path
-              d="M100 100 L600 100
-                 M600 100 L600 300
-                 M600 300 L100 300
-                 M100 300 L100 500
-                 M100 500 L600 500
-                 M600 500 L600 700
-                 M600 700 L100 700
-                 M100 700 L100 900"
+              d="M200 80 L600 80
+                 M600 80 L600 240
+                 M600 240 L200 240
+                 M200 240 L200 400
+                 M200 400 L600 400
+                 M600 400 L600 560
+                 M600 560 L200 560
+                 M200 560 L200 720"
               stroke="#FF0080"
               strokeWidth="4"
               strokeDasharray="10,10"
@@ -92,75 +101,127 @@ export function WorkflowSection() {
               fill="none"
             />
             
-            {/* Arrow markers at turns */}
+            {/* Arrow markers at each turning point */}
             <motion.path 
-              d="M590 100 L600 100 L600 110"
+              d="M590 80 L600 80 L600 90"
               stroke="#FF0080"
               strokeWidth="4"
               fill="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+              variants={arrowVariants}
+              custom={0}
+              initial="initial"
+              animate="animate"
             />
             
             <motion.path 
-              d="M600 290 L600 300 L590 300"
+              d="M600 230 L600 240 L590 240"
               stroke="#FF0080"
               strokeWidth="4"
               fill="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
+              variants={arrowVariants}
+              custom={1}
+              initial="initial"
+              animate="animate"
             />
             
             <motion.path 
-              d="M110 300 L100 300 L100 310"
+              d="M210 240 L200 240 L200 250"
               stroke="#FF0080"
               strokeWidth="4"
               fill="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1 }}
+              variants={arrowVariants}
+              custom={2}
+              initial="initial"
+              animate="animate"
             />
             
             <motion.path 
-              d="M100 490 L100 500 L110 500"
+              d="M200 390 L200 400 L210 400"
               stroke="#FF0080"
               strokeWidth="4"
               fill="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.4 }}
+              variants={arrowVariants}
+              custom={3}
+              initial="initial"
+              animate="animate"
             />
             
             <motion.path 
-              d="M590 500 L600 500 L600 510"
+              d="M590 400 L600 400 L600 410"
               stroke="#FF0080"
               strokeWidth="4"
               fill="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.7 }}
+              variants={arrowVariants}
+              custom={4}
+              initial="initial"
+              animate="animate"
             />
             
             <motion.path 
-              d="M600 690 L600 700 L590 700"
+              d="M600 550 L600 560 L590 560"
               stroke="#FF0080"
               strokeWidth="4"
               fill="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.0 }}
+              variants={arrowVariants}
+              custom={5}
+              initial="initial"
+              animate="animate"
             />
             
             <motion.path 
-              d="M110 700 L100 700 L100 710"
+              d="M210 560 L200 560 L200 570"
               stroke="#FF0080"
               strokeWidth="4"
               fill="none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.3 }}
+              variants={arrowVariants}
+              custom={6}
+              initial="initial"
+              animate="animate"
+            />
+            
+            {/* Terminal arrowheads pointing directly at each step */}
+            <motion.path 
+              d="M595 240 L605 230 L615 240"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              variants={arrowVariants}
+              custom={1.5}
+              initial="initial"
+              animate="animate"
+            />
+            
+            <motion.path 
+              d="M195 400 L205 390 L215 400"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              variants={arrowVariants}
+              custom={2.5}
+              initial="initial"
+              animate="animate"
+            />
+            
+            <motion.path 
+              d="M595 560 L605 550 L615 560"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              variants={arrowVariants}
+              custom={3.5}
+              initial="initial"
+              animate="animate"
+            />
+            
+            <motion.path 
+              d="M195 720 L205 710 L215 720"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              variants={arrowVariants}
+              custom={4.5}
+              initial="initial"
+              animate="animate"
             />
           </svg>
 
