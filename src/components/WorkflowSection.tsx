@@ -48,36 +48,39 @@ const steps = [
 
 export function WorkflowSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const stepRefs = useRef<HTMLDivElement[]>([]);
-  const [pathD, setPathD] = useState<string>("");
+  const circleRefs = useRef<HTMLDivElement[]>([]);
+  const [dims, setDims] = useState({ width: 0, height: 0 });
+  const [segments, setSegments] = useState<string[]>([]);
 
   useLayoutEffect(() => {
     if (!containerRef.current) return;
+    // Measure container dimensions
     const rect = containerRef.current.getBoundingClientRect();
-    const circleRadius = 32; // half of 64px icon
+    setDims({ width: rect.width, height: rect.height });
 
-    // compute anchor points at each circle's center
-    const points = stepRefs.current.map((el) => {
+    // Compute circle-center anchors
+    const radius = 32; // half of 64px diameter
+    const points = circleRefs.current.map((el) => {
       if (!el) return { x: 0, y: 0 };
       const r = el.getBoundingClientRect();
       return {
-        x: r.left - rect.left + circleRadius,
-        y: r.top - rect.top + circleRadius,
+        x: r.left - rect.left + radius,
+        y: r.top - rect.top + radius,
       };
     });
 
-    // build zig-zag path: H → V → H between each pair of points
-    let d = `M ${points[0].x} ${points[0].y}`;
+    // Fixed vertical spine at center of container
+    const spineX = rect.width * 0.5;
+
+    // Build one H→V→H path per step
+    const segs: string[] = [];
     for (let i = 1; i < points.length; i++) {
       const prev = points[i - 1];
       const curr = points[i];
-      const midX = (prev.x + curr.x) / 2;
-      d += ` H ${midX}`;      // horizontal to midpoint
-      d += ` V ${curr.y}`;     // vertical to target y
-      d += ` H ${curr.x}`;     // horizontal to target x
+      const d = `M ${prev.x} ${prev.y} H ${spineX} V ${curr.y} H ${curr.x}`;
+      segs.push(d);
     }
-
-    setPathD(d);
+    setSegments(segs);
   }, []);
 
   return (
@@ -92,8 +95,10 @@ export function WorkflowSection() {
         <div className="relative" ref={containerRef}>
           {/* Connector SVG */}
           <svg
+            width={dims.width}
+            height={dims.height}
+            viewBox={`0 0 ${dims.width} ${dims.height}`}
             className="absolute inset-0 hidden lg:block"
-            viewBox="0 0 1200 900"
             fill="none"
             pointerEvents="none"
           >
@@ -105,42 +110,45 @@ export function WorkflowSection() {
                 refX="6"
                 refY="3"
                 orient="auto"
-                markerUnits="strokeWidth"
               >
                 <path d="M0,0 L0,6 L6,3 z" fill="#FF0080" />
               </marker>
             </defs>
 
-            <motion.path
-              d={pathD}
-              stroke="#FF0080"
-              strokeWidth="4"
-              strokeDasharray="10,10"
-              markerEnd="url(#arrowhead)"
-              initial={{ pathLength: 0 }}
-              animate={{
-                pathLength: 1,
-                transition: { duration: 1.5, ease: "easeInOut" },
-              }}
-            />
+            {segments.map((d, i) => (
+              <motion.path
+                key={i}
+                d={d}
+                stroke="#FF0080"
+                strokeWidth="4"
+                strokeDasharray="10,10"
+                markerEnd="url(#arrowhead)"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{
+                  delay: i * 0.4,
+                  duration: 1.2,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
           </svg>
 
           {/* Steps */}
           <div className="grid gap-40 relative z-10">
             {steps.map((step, idx) => (
-              <motion.div
+              <div
                 key={step.number}
-                ref={(el) => {
-                  if (el) stepRefs.current[idx] = el;
-                }}
                 className={`flex items-start gap-6 ${
                   idx % 2 === 0 ? "lg:ml-0" : "lg:ml-[50%]"
                 }`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.2 }}
               >
-                <div className="flex-shrink-0 w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl">
+                <div
+                  ref={(el) => {
+                    if (el) circleRefs.current[idx] = el;
+                  }}
+                  className="flex-shrink-0 w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl"
+                >
                   {step.number}
                 </div>
                 <div className="max-w-sm">
@@ -150,7 +158,7 @@ export function WorkflowSection() {
                   </div>
                   <p className="text-gray-400">{step.description}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
