@@ -1,5 +1,5 @@
 import React, { useRef, useState, useLayoutEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   User,
   FileEdit,
@@ -52,6 +52,7 @@ export function WorkflowSection() {
   const [dims, setDims] = useState({ width: 0, height: 0 });
   const [segments, setSegments] = useState<string[]>([]);
 
+  // Measure container & circle positions and build H-V-H segments
   useLayoutEffect(() => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -72,12 +73,17 @@ export function WorkflowSection() {
     for (let i = 1; i < points.length; i++) {
       const prev = points[i - 1];
       const curr = points[i];
-      segs.push(
-        `M ${prev.x} ${prev.y} H ${spineX} V ${curr.y} H ${curr.x}`
-      );
+      segs.push(`M ${prev.x} ${prev.y} H ${spineX} V ${curr.y} H ${curr.x}`);
     }
     setSegments(segs);
   }, []);
+
+  // tie animation to scroll within this section
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+  const pathLen = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <section className="bg-black text-white py-20">
@@ -89,6 +95,7 @@ export function WorkflowSection() {
         </h2>
 
         <div className="relative" ref={containerRef}>
+          {/* Connector SVG */}
           <svg
             width={dims.width}
             height={dims.height}
@@ -105,6 +112,7 @@ export function WorkflowSection() {
                 refX="6"
                 refY="3"
                 orient="auto"
+                markerUnits="strokeWidth"
               >
                 <path d="M0,0 L0,6 L6,3 z" fill="#FF0080" />
               </marker>
@@ -118,31 +126,29 @@ export function WorkflowSection() {
                 strokeWidth="4"
                 strokeDasharray="10,10"
                 markerEnd="url(#arrowhead)"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{
-                  delay: i * 0.3,
-                  duration: 1,
-                  ease: "easeInOut",
-                }}
+                style={{ pathLength: pathLen }}
+                strokeLinecap="round"
               />
             ))}
           </svg>
 
+          {/* Steps */}
           <div className="grid gap-y-20 relative z-10">
             {steps.map((step, idx) => (
-              <div
+              <motion.div
                 key={step.number}
+                ref={(el) => {
+                  if (el) circleRefs.current[idx] = el;
+                }}
                 className={`flex items-start gap-6 ${
                   idx % 2 === 0 ? "lg:ml-0" : "lg:ml-[50%]"
                 }`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
-                <div
-                  ref={(el) => {
-                    if (el) circleRefs.current[idx] = el;
-                  }}
-                  className="w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0"
-                >
+                <div className="w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0">
                   {step.number}
                 </div>
                 <div className="max-w-sm">
@@ -152,7 +158,7 @@ export function WorkflowSection() {
                   </div>
                   <p className="text-gray-400">{step.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
