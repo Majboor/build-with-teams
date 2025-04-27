@@ -201,7 +201,7 @@ export function CrmFeatures() {
   return (
     <section className="container py-20">
       <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-16">
-        Finally, a CRM that works <span className="text-primary">for you</span>
+        Finally, an AI that works <span className="text-primary">for you</span>
       </h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
         {crmFeatures.map((feature, index) => (
