@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
 import { useState } from "react";
@@ -22,6 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
+import { WorkflowSection } from "@/components/WorkflowSection";
 
 type CrmFeature = {
   title: string;
@@ -357,6 +358,9 @@ export default function Index() {
       </section>
 
       <CrmFeatures />
+
+      {/* Workflow Section */}
+      <WorkflowSection />
 
       {/* What TaaS Has Built Section */}
       <section className="container py-20 border-t">
