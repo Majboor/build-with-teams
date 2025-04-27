@@ -64,7 +64,7 @@ export function WorkflowSection() {
             className="absolute hidden lg:block"
             width="100%"
             height="100%"
-            viewBox="0 0 1200 800"
+            viewBox="0 0 1200 1000"
             fill="none"
             style={{ 
               position: 'absolute',
@@ -75,14 +75,14 @@ export function WorkflowSection() {
             }}
           >
             <motion.path
-              d="M100 100 L200 100 
-                 M200 100 L600 100 
-                 M600 100 L600 250
-                 M600 250 L200 250
-                 M200 250 L200 400
-                 M200 400 L600 400
-                 M600 400 L600 550
-                 M600 550 L200 550"
+              d="M100 100 L600 100
+                 M600 100 L600 300
+                 M600 300 L100 300
+                 M100 300 L100 500
+                 M100 500 L600 500
+                 M600 500 L600 700
+                 M600 700 L100 700
+                 M100 700 L100 900"
               stroke="#FF0080"
               strokeWidth="2"
               strokeDasharray="8,8"
@@ -94,18 +94,18 @@ export function WorkflowSection() {
           </svg>
 
           {/* Steps */}
-          <div className="grid gap-16 relative z-10">
+          <div className="grid gap-24 relative z-10">
             {steps.map((step, index) => (
               <motion.div
                 key={step.number}
                 className={`flex items-start gap-6 ${
                   index % 2 === 0 ? 'lg:ml-0' : 'lg:ml-[50%]'
-                } ${index !== 0 ? 'mt-8' : ''}`}
+                }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.2 }}
               >
-                <div className="flex-shrink-0 w-12 h-12 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-xl">
+                <div className="flex-shrink-0 w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl">
                   {step.number}
                 </div>
                 <div>
