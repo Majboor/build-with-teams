@@ -54,12 +54,10 @@ export function WorkflowSection() {
 
   useLayoutEffect(() => {
     if (!containerRef.current) return;
-    // Measure container dimensions
     const rect = containerRef.current.getBoundingClientRect();
     setDims({ width: rect.width, height: rect.height });
 
-    // Compute circle-center anchors
-    const radius = 32; // half of 64px diameter
+    const radius = 32;
     const points = circleRefs.current.map((el) => {
       if (!el) return { x: 0, y: 0 };
       const r = el.getBoundingClientRect();
@@ -69,16 +67,14 @@ export function WorkflowSection() {
       };
     });
 
-    // Fixed vertical spine at center of container
-    const spineX = rect.width * 0.5;
-
-    // Build one H→V→H path per step
+    const spineX = rect.width / 2;
     const segs: string[] = [];
     for (let i = 1; i < points.length; i++) {
       const prev = points[i - 1];
       const curr = points[i];
-      const d = `M ${prev.x} ${prev.y} H ${spineX} V ${curr.y} H ${curr.x}`;
-      segs.push(d);
+      segs.push(
+        `M ${prev.x} ${prev.y} H ${spineX} V ${curr.y} H ${curr.x}`
+      );
     }
     setSegments(segs);
   }, []);
@@ -93,7 +89,6 @@ export function WorkflowSection() {
         </h2>
 
         <div className="relative" ref={containerRef}>
-          {/* Connector SVG */}
           <svg
             width={dims.width}
             height={dims.height}
@@ -126,16 +121,15 @@ export function WorkflowSection() {
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 transition={{
-                  delay: i * 0.4,
-                  duration: 1.2,
+                  delay: i * 0.3,
+                  duration: 1,
                   ease: "easeInOut",
                 }}
               />
             ))}
           </svg>
 
-          {/* Steps */}
-          <div className="grid gap-40 relative z-10">
+          <div className="grid gap-y-20 relative z-10">
             {steps.map((step, idx) => (
               <div
                 key={step.number}
@@ -147,7 +141,7 @@ export function WorkflowSection() {
                   ref={(el) => {
                     if (el) circleRefs.current[idx] = el;
                   }}
-                  className="flex-shrink-0 w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl"
+                  className="w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0"
                 >
                   {step.number}
                 </div>
