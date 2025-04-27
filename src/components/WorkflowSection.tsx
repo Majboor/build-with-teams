@@ -44,7 +44,7 @@ const steps = [
 
 const pathVariants = {
   initial: { pathLength: 0 },
-  animate: { 
+  animate: {
     pathLength: 1,
     transition: { duration: 2, ease: "easeInOut" }
   }
@@ -75,10 +75,17 @@ export function WorkflowSection() {
             }}
           >
             <motion.path
-              d="M100 100 L400 100 L400 250 L800 250 L800 400 L400 400 L400 550 L800 550"
+              d="M100 100 L200 100 
+                 M200 100 L600 100 
+                 M600 100 L600 250
+                 M600 250 L200 250
+                 M200 250 L200 400
+                 M200 400 L600 400
+                 M600 400 L600 550
+                 M600 550 L200 550"
               stroke="#FF0080"
               strokeWidth="2"
-              strokeDasharray="5,5"
+              strokeDasharray="8,8"
               variants={pathVariants}
               initial="initial"
               animate="animate"
@@ -87,18 +94,18 @@ export function WorkflowSection() {
           </svg>
 
           {/* Steps */}
-          <div className="grid gap-12 relative z-10">
+          <div className="grid gap-16 relative z-10">
             {steps.map((step, index) => (
               <motion.div
                 key={step.number}
                 className={`flex items-start gap-6 ${
                   index % 2 === 0 ? 'lg:ml-0' : 'lg:ml-[50%]'
-                }`}
+                } ${index !== 0 ? 'mt-8' : ''}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.2 }}
               >
-                <div className="flex-shrink-0 w-12 h-12 bg-[#FF0080] rounded-full flex items-center justify-center">
+                <div className="flex-shrink-0 w-12 h-12 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-xl">
                   {step.number}
                 </div>
                 <div>
