@@ -11,37 +11,37 @@ import {
 const steps = [
   {
     number: "1",
-    title: "Initial Consultation",
+    title: "Submit Your Idea",
     description:
-      "We start with a comprehensive consultation to understand your business needs, goals, and current AI capabilities",
+      "Enter your app concept and requirements in our prompt bar—AI kicks off the planning immediately.",
     icon: User,
   },
   {
     number: "2",
-    title: "Tailored Proposal",
+    title: "Blueprint & Team Assembly",
     description:
-      "Based on our assessment, we provide a detailed proposal outlining the scope of work, timeline, and team composition",
+      "AI generates page mockups, feature lists, timeline and cost. A vetted human team is automatically assigned.",
     icon: FileEdit,
   },
   {
     number: "3",
-    title: "Onboarding",
+    title: "Interactive Design & Planning",
     description:
-      "Once approved, we assemble your AI team and begin the onboarding process, integrating seamlessly with your existing workflows",
+      "Refine mockups and functionality via AI chat or on-demand meetings with designers and CTO.",
     icon: Users,
   },
   {
     number: "4",
-    title: "Execution and Support",
+    title: "Development & Collaboration",
     description:
-      "Our team works closely with you to execute the project, providing regular updates and ongoing support to ensure success",
+      "Track progress, chat with developers, and adjust tasks in real time until your app is ready.",
     icon: ArrowRight,
   },
   {
     number: "5",
-    title: "Continuous Improvement",
+    title: "Launch & Ongoing Optimization",
     description:
-      "Post-deployment, we offer continuous monitoring and optimization to ensure your AI solutions deliver maximum value",
+      "Go live with hosting, domain setup, mobile bundling, and continue to improve with AI-driven insights.",
     icon: CircleArrowRight,
   },
 ];

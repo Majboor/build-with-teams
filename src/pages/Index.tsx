@@ -134,32 +134,32 @@ const builtProjects = [
 const features = [
   {
     title: "Workspace Overview",
-    description: "A comprehensive workspace that brings all your project management needs into one place. Streamline your workflow and boost productivity with our intuitive interface.",
+    description: "TaaS's unified workspace combines AI-driven planning, real-time team collaboration, and end-to-end project tracking. From your initial prompt through deployment, every step—mockups, timelines, cost estimates, and live updates—is managed in one intuitive interface.",
     image: "https://i.ibb.co/tMdpVPWK/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
   },
   {
     title: "Task Management",
-    description: "Efficiently organize and track tasks with our intuitive task management system. Keep your team aligned and projects on schedule.",
+    description: "Leverage AI to automatically assign, prioritize, and balance tasks across your team. Drag-and-drop cards or let the system reallocate work based on skills and availability—ensuring nothing falls through the cracks.",
     image: "https://i.ibb.co/FkqRv7Tj/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
   },
   {
     title: "Calendar Integration",
-    description: "Stay on schedule with our powerful calendar integration feature. Never miss a deadline or important meeting again.",
+    description: "Our smart calendar syncs milestones, deadlines, and on-demand meetings with your team and AI PM Assistant. Automated reminders and scheduling suggestions keep everyone aligned and on schedule.",
     image: "https://i.ibb.co/m5K3DDYJ/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
   },
   {
     title: "Quick Actions & Notifications",
-    description: "Stay informed and take quick actions with our smart notification system. Keep your finger on the pulse of your projects.",
+    description: "Stay in control with contextual quick-action buttons—approve mockups, request changes, or launch sprints in a single click. Real-time alerts notify you of completed tasks, meeting invites, and critical updates.",
     image: "https://i.ibb.co/6cnKgRyr/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
   },
   {
-    title: "Developer Dashboard",
-    description: "A personalized space for developers to manage their tasks and track progress. Everything you need at your fingertips.",
+    title: "Hire a Developer",
+    description: "Spot top talent within your project's workspace and bring them on board instantly. Click to view a developer's profile, see their rate for your project, hire them for this build—or engage them for future work—all in one place.",
     image: "https://i.ibb.co/VrWt8Bt/86-F5-D48-D-AD4-D-4-F38-BB84-DE178-F2755-D2-export.png"
   },
   {
     title: "Task Details",
-    description: "Dive deep into task details with our comprehensive task view. Get all the information you need in one place.",
+    description: "Click any task to reveal AI-generated specs, design notes, code snippets, and a full activity log. Edit requirements on the fly, leave feedback, and watch the AI update assignments and timelines accordingly.",
     image: "https://i.ibb.co/DHZZVMQ7/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
   }
 ];
