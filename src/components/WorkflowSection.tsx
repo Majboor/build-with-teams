@@ -84,17 +84,88 @@ export function WorkflowSection() {
                  M600 700 L100 700
                  M100 700 L100 900"
               stroke="#FF0080"
-              strokeWidth="2"
-              strokeDasharray="8,8"
+              strokeWidth="4"
+              strokeDasharray="10,10"
               variants={pathVariants}
               initial="initial"
               animate="animate"
               fill="none"
             />
+            
+            {/* Arrow markers at turns */}
+            <motion.path 
+              d="M590 100 L600 100 L600 110"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            />
+            
+            <motion.path 
+              d="M600 290 L600 300 L590 300"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            />
+            
+            <motion.path 
+              d="M110 300 L100 300 L100 310"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.1 }}
+            />
+            
+            <motion.path 
+              d="M100 490 L100 500 L110 500"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.4 }}
+            />
+            
+            <motion.path 
+              d="M590 500 L600 500 L600 510"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.7 }}
+            />
+            
+            <motion.path 
+              d="M600 690 L600 700 L590 700"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.0 }}
+            />
+            
+            <motion.path 
+              d="M110 700 L100 700 L100 710"
+              stroke="#FF0080"
+              strokeWidth="4"
+              fill="none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.3 }}
+            />
           </svg>
 
           {/* Steps */}
-          <div className="grid gap-24 relative z-10">
+          <div className="grid gap-40 relative z-10">
             {steps.map((step, index) => (
               <motion.div
                 key={step.number}
@@ -108,12 +179,12 @@ export function WorkflowSection() {
                 <div className="flex-shrink-0 w-16 h-16 bg-[#FF0080] rounded-full flex items-center justify-center font-bold text-2xl">
                   {step.number}
                 </div>
-                <div>
+                <div className="max-w-sm">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="text-2xl font-semibold">{step.title}</h3>
                     <step.icon className="w-6 h-6" />
                   </div>
-                  <p className="text-gray-400 max-w-md">{step.description}</p>
+                  <p className="text-gray-400">{step.description}</p>
                 </div>
               </motion.div>
             ))}
