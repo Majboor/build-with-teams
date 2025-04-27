@@ -54,29 +54,27 @@ export function WorkflowSection() {
   useLayoutEffect(() => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
+    const circleRadius = 32; // half of 64px icon
 
-    // compute anchor points for each step
-    const points = stepRefs.current.map((el, i) => {
+    // compute anchor points at each circle's center
+    const points = stepRefs.current.map((el) => {
       if (!el) return { x: 0, y: 0 };
       const r = el.getBoundingClientRect();
-      const isLeft = i % 2 === 0;
-      const x = isLeft
-        ? r.left - rect.left - 8    // 8px gap on left
-        : r.right - rect.left + 8;  // 8px gap on right
-      const y = r.top - rect.top + r.height / 2; // vertical center
-      return { x, y };
+      return {
+        x: r.left - rect.left + circleRadius,
+        y: r.top - rect.top + circleRadius,
+      };
     });
 
-    // build zig-zag path: H to midpoint, V to next y, H to next x
+    // build zig-zag path: H → V → H between each pair of points
     let d = `M ${points[0].x} ${points[0].y}`;
     for (let i = 1; i < points.length; i++) {
       const prev = points[i - 1];
       const curr = points[i];
       const midX = (prev.x + curr.x) / 2;
-
-      d += ` H ${midX}`;
-      d += ` V ${curr.y}`;
-      d += ` H ${curr.x}`;
+      d += ` H ${midX}`;      // horizontal to midpoint
+      d += ` V ${curr.y}`;     // vertical to target y
+      d += ` H ${curr.x}`;     // horizontal to target x
     }
 
     setPathD(d);
@@ -86,13 +84,13 @@ export function WorkflowSection() {
     <section className="bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl sm:text-5xl font-bold mb-16">
-          How does an  
+          How does an
           <br />
           AI SaaS Team Work?
         </h2>
 
         <div className="relative" ref={containerRef}>
-          {/* SVG connector */}
+          {/* Connector SVG */}
           <svg
             className="absolute inset-0 hidden lg:block"
             viewBox="0 0 1200 900"
@@ -120,17 +118,20 @@ export function WorkflowSection() {
               strokeDasharray="10,10"
               markerEnd="url(#arrowhead)"
               initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1, transition: { duration: 1.5, ease: "easeInOut" } }}
+              animate={{
+                pathLength: 1,
+                transition: { duration: 1.5, ease: "easeInOut" },
+              }}
             />
           </svg>
 
-          {/* Step items */}
+          {/* Steps */}
           <div className="grid gap-40 relative z-10">
             {steps.map((step, idx) => (
               <motion.div
                 key={step.number}
                 ref={(el) => {
-                  stepRefs.current[idx] = el!;
+                  if (el) stepRefs.current[idx] = el;
                 }}
                 className={`flex items-start gap-6 ${
                   idx % 2 === 0 ? "lg:ml-0" : "lg:ml-[50%]"
