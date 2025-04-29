@@ -55,3 +55,74 @@
 .glass {
   @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl dark:bg-black/40;
 }
+
+/* Added custom animations */
+@keyframes pulse-soft {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* 3D perspective utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Sonar effect animation */
+@keyframes sonar {
+  0% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.animate-sonar {
+  animation: sonar 2s linear infinite;
+}
+
+/* Glassmorphism card */
+.glassmorphism {
+  @apply backdrop-blur-xl bg-white/30 border border-white/40 shadow-lg;
+}
+
+/* Text typing animation */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.animate-typing {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3s steps(30, end);
+}
