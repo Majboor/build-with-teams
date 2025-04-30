@@ -8,11 +8,14 @@ interface Particle {
   speedX: number;
   speedY: number;
   opacity: number;
+  color: string;
 }
 
 export const ParticlesBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
+  const mousePosition = useRef({ x: 0, y: 0 });
+  const isHovering = useRef(false);
   
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -29,36 +32,79 @@ export const ParticlesBackground: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     
-    // Create particles
+    // Mouse tracking
+    canvas.addEventListener('mousemove', (e) => {
+      mousePosition.current = {
+        x: e.clientX,
+        y: e.clientY
+      };
+      isHovering.current = true;
+    });
+    
+    canvas.addEventListener('mouseleave', () => {
+      isHovering.current = false;
+    });
+    
+    // Create particles with varied colors
     const createParticles = () => {
-      const particleCount = Math.floor(window.innerWidth / 10);
+      const particleCount = Math.floor(window.innerWidth / 8);
+      const colors = ['#D6BCFA', '#E5DEFF', '#D3E4FD', '#F1F0FB'];
+      
       for (let i = 0; i < particleCount; i++) {
         particles.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 2 + 0.5,
+          size: Math.random() * 3 + 0.5,
           speedX: (Math.random() - 0.5) * 0.3,
           speedY: (Math.random() - 0.5) * 0.3,
-          opacity: Math.random() * 0.5 + 0.2
+          opacity: Math.random() * 0.5 + 0.1,
+          color: colors[Math.floor(Math.random() * colors.length)]
         });
       }
     };
     
     createParticles();
     
-    // Animation loop
+    // Animation loop with interactive effects
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      particles.current.forEach((particle) => {
-        ctx.fillStyle = `rgba(180, 200, 255, ${particle.opacity})`;
+      particles.current.forEach((particle, index) => {
+        // Draw particle
+        ctx.globalAlpha = particle.opacity;
+        ctx.fillStyle = particle.color;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
         
-        // Update position
+        // Interactive effect - particles near mouse move slightly toward it
+        if (isHovering.current) {
+          const dx = mousePosition.current.x - particle.x;
+          const dy = mousePosition.current.y - particle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 120) {
+            const force = 0.2 * (1 - distance / 120);
+            particle.speedX += (dx / distance) * force;
+            particle.speedY += (dy / distance) * force;
+            
+            // Limit speed
+            const maxSpeed = 1;
+            const currentSpeed = Math.sqrt(particle.speedX * particle.speedX + particle.speedY * particle.speedY);
+            if (currentSpeed > maxSpeed) {
+              particle.speedX = (particle.speedX / currentSpeed) * maxSpeed;
+              particle.speedY = (particle.speedY / currentSpeed) * maxSpeed;
+            }
+          }
+        }
+        
+        // Update position with slight drift toward original speed
         particle.x += particle.speedX;
         particle.y += particle.speedY;
+        
+        // Slow down to natural speed
+        particle.speedX *= 0.98;
+        particle.speedY *= 0.98;
         
         // Wrap around edges
         if (particle.x < 0) particle.x = canvas.width;
