@@ -77,7 +77,7 @@ export const AnimatedHeadline: React.FC<AnimatedHeadlineProps> = ({
                   ease: [0.22, 1, 0.36, 1]
                 }}
               >
-                <span className="bg-gradient-to-r from-black via-black to-gray-800 dark:from-purple-100 dark:via-white dark:to-blue-100 bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] dark:drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">
+                <span className="text-black dark:text-white font-extrabold">
                   {title}
                 </span>
               </motion.h1>
@@ -91,7 +91,7 @@ export const AnimatedHeadline: React.FC<AnimatedHeadlineProps> = ({
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <motion.p
-                className="text-2xl sm:text-3xl lg:text-[40px] font-semibold leading-tight text-black dark:text-purple-100 drop-shadow-sm dark:drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]"
+                className="text-2xl sm:text-3xl lg:text-[40px] font-bold leading-tight text-gray-800 dark:text-white"
               >
                 <span className="inline-block overflow-hidden">
                   {subtitle.slice(0, Math.floor(subtitle.length * typingProgress))}
@@ -104,7 +104,7 @@ export const AnimatedHeadline: React.FC<AnimatedHeadlineProps> = ({
             <AnimatePresence>
               {descriptionVisible && (
                 <motion.p
-                  className="text-lg sm:text-xl font-bold max-w-md text-gray-800 dark:text-blue-100 drop-shadow-sm dark:drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]"
+                  className="text-lg sm:text-xl font-semibold max-w-md text-gray-700 dark:text-gray-200 drop-shadow-sm"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
