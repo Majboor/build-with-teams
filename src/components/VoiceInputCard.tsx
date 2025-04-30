@@ -100,12 +100,14 @@ export const VoiceInputCard: React.FC<VoiceInputCardProps> = ({
               type="button"
               size="icon"
               variant={isRecording ? "destructive" : "secondary"}
-              className={`rounded-full h-10 w-10 transition-all ${
-                isRecording ? 'animate-pulse bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
+              className={`rounded-full h-12 w-12 transition-all shadow-md ${
+                isRecording 
+                  ? 'animate-pulse bg-red-500 text-white hover:bg-red-600' 
+                  : 'bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200'
               }`}
               onClick={handleMicClick}
             >
-              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+              {isRecording ? <MicOff className="h-6 w-6" /> : <Mic className="h-6 w-6" />}
             </Button>
             
             {/* Ripple effect */}
