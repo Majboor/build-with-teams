@@ -26,7 +26,6 @@ import { ParticlesBackground } from "@/components/ParticlesBackground";
 import { VoiceInputCard } from "@/components/VoiceInputCard";
 import { FloatingPanels } from "@/components/FloatingPanels";
 import { AnimatedHeadline } from "@/components/AnimatedHeadline";
-import { HeroIllustration } from "@/components/HeroIllustration";
 import { motion } from 'framer-motion';
 
 type CrmFeature = {
@@ -370,7 +369,7 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Animated UI panels on the right */}
+          {/* Animated floating panels */}
           <motion.div 
             className="flex-1 hidden lg:block"
             initial={{ opacity: 0, x: 50 }}
@@ -378,7 +377,7 @@ export default function Index() {
             transition={{ duration: 0.8, delay: 0.5 }}
           >
             <div className="w-full h-[500px] relative">
-              <HeroIllustration />
+              <FloatingPanels />
             </div>
           </motion.div>
         </div>
