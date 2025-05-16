@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { Menu, LayoutGrid, User, CheckSquare, Calendar, LayoutDashboard, DollarSign, Info, Lock } from "lucide-react"
+import { Menu, LayoutGrid, User, CheckSquare, Calendar, LayoutDashboard, DollarSign, Info, Lock, ListCheck } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { BetaSignupDialog } from "./BetaSignupDialog"
@@ -60,6 +60,18 @@ export function SidePanel() {
               </div>
             </div>
           ))}
+          
+          {/* Personality Test Link - Direct access without beta signup */}
+          <Button
+            asChild
+            variant="ghost"
+            className="justify-start gap-2 w-full"
+          >
+            <Link to="/ptest">
+              <ListCheck className="h-5 w-5" />
+              Personality Test
+            </Link>
+          </Button>
         </div>
 
         <BetaSignupDialog 
