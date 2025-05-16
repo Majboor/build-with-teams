@@ -1,9 +1,11 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CircleStop, Pause, Play, Upload, Circle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function CareersTestPage() {
   const { toast } = useToast();
@@ -15,6 +17,8 @@ export default function CareersTestPage() {
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [timerInterval, setTimerInterval] = useState<number | null>(null);
+  const [showPreviewDialog, setShowPreviewDialog] = useState<boolean>(false);
+  const [videoLoadError, setVideoLoadError] = useState<string | null>(null);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const previewVideoRef = useRef<HTMLVideoElement>(null);
@@ -24,34 +28,67 @@ export default function CareersTestPage() {
   
   const MAX_RECORDING_TIME = 60; // 1 minute in seconds
 
-  // Fix for video preview playback
+  // Enhanced video preview setup with improved error handling
   useEffect(() => {
     if (previewUrl && previewVideoRef.current) {
+      console.log("Setting up preview with URL:", previewUrl);
+      
+      // Reset previous errors
+      setVideoLoadError(null);
+      
+      // Setup video element
       previewVideoRef.current.src = previewUrl;
+      previewVideoRef.current.muted = true; // Set muted to satisfy autoplay policy
       previewVideoRef.current.load();
       
-      // Add event listener for when metadata is loaded
+      // Event handlers with proper cleanup
       const handleMetadataLoaded = () => {
+        console.log("Video metadata loaded");
         if (previewVideoRef.current) {
-          // Play the video and handle any errors
           previewVideoRef.current.play()
+            .then(() => {
+              console.log("Video playing successfully");
+              // Once playing successfully, we can unmute
+              setTimeout(() => {
+                if (previewVideoRef.current) {
+                  previewVideoRef.current.muted = false;
+                }
+              }, 1000);
+            })
             .catch(err => {
               console.error("Error playing video:", err);
+              setVideoLoadError("Video couldn't autoplay. Please use the play button.");
+              toast({
+                title: "Playback Notice",
+                description: "Please use the play button to watch your recording",
+              });
             });
         }
       };
       
-      // Set up the event listener
-      previewVideoRef.current.addEventListener('loadedmetadata', handleMetadataLoaded);
+      const handleError = (e: Event) => {
+        console.error("Video error:", e);
+        setVideoLoadError("Failed to load video. Please try recording again.");
+        toast({
+          title: "Video Error",
+          description: "There was a problem with the video. Please try recording again.",
+          variant: "destructive"
+        });
+      };
       
-      // Clean up function to remove event listener
+      // Set up event listeners
+      previewVideoRef.current.addEventListener('loadedmetadata', handleMetadataLoaded);
+      previewVideoRef.current.addEventListener('error', handleError);
+      
+      // Clean up function
       return () => {
         if (previewVideoRef.current) {
           previewVideoRef.current.removeEventListener('loadedmetadata', handleMetadataLoaded);
+          previewVideoRef.current.removeEventListener('error', handleError);
         }
       };
     }
-  }, [previewUrl]);
+  }, [previewUrl, toast]);
 
   const startRecording = async () => {
     try {
@@ -83,6 +120,7 @@ export default function CareersTestPage() {
         
         // Create a URL for the recorded video blob
         const url = URL.createObjectURL(blob);
+        console.log("Created blob URL:", url, "with MIME type:", blob.type);
         setPreviewUrl(url);
         
         // Stop the timer
@@ -170,6 +208,12 @@ export default function CareersTestPage() {
       setTimerInterval(interval);
     }
   };
+
+  const handlePreviewClick = () => {
+    if (previewUrl) {
+      setShowPreviewDialog(true);
+    }
+  };
   
   const uploadVideo = async () => {
     if (!videoData) return;
@@ -247,13 +291,19 @@ export default function CareersTestPage() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <video 
-                ref={previewVideoRef}
-                controls
-                playsInline
-                className="w-full h-full object-cover"
-                autoPlay
-              />
+              <div className="relative w-full h-full cursor-pointer" onClick={handlePreviewClick}>
+                <video 
+                  ref={previewVideoRef}
+                  playsInline
+                  className="w-full h-full object-cover"
+                  controls
+                />
+                {videoLoadError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white p-4 text-center">
+                    <p>{videoLoadError}</p>
+                  </div>
+                )}
+              </div>
             )}
             
             {!recording && !previewUrl && (
@@ -277,20 +327,11 @@ export default function CareersTestPage() {
           {recording && !paused && (
             <>
               <Button onClick={pauseRecording} variant="outline">
-                <span className="w-4 h-4 mr-2 inline-block">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="6" y="4" width="4" height="16" />
-                    <rect x="14" y="4" width="4" height="16" />
-                  </svg>
-                </span>
+                <Pause className="w-4 h-4 mr-2" />
                 Pause
               </Button>
               <Button onClick={stopRecording} variant="secondary">
-                <span className="w-4 h-4 mr-2 inline-block">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="4" y="4" width="16" height="16" rx="2" />
-                  </svg>
-                </span>
+                <CircleStop className="w-4 h-4 mr-2" />
                 Stop
               </Button>
             </>
@@ -299,19 +340,11 @@ export default function CareersTestPage() {
           {recording && paused && (
             <>
               <Button onClick={resumeRecording} variant="outline">
-                <span className="w-4 h-4 mr-2 inline-block">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polygon points="5,3 19,12 5,21" />
-                  </svg>
-                </span>
+                <Play className="w-4 h-4 mr-2" />
                 Resume
               </Button>
               <Button onClick={stopRecording} variant="secondary">
-                <span className="w-4 h-4 mr-2 inline-block">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="4" y="4" width="16" height="16" rx="2" />
-                  </svg>
-                </span>
+                <CircleStop className="w-4 h-4 mr-2" />
                 Stop
               </Button>
             </>
@@ -322,6 +355,7 @@ export default function CareersTestPage() {
               <Button onClick={() => {
                 setPreviewUrl(null);
                 setVideoData(null);
+                setVideoLoadError(null);
               }} variant="outline">
                 Record Again
               </Button>
@@ -329,13 +363,7 @@ export default function CareersTestPage() {
                 onClick={uploadVideo} 
                 disabled={uploading}
               >
-                <span className="w-4 h-4 mr-2 inline-block">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" y1="3" x2="12" y2="15" />
-                  </svg>
-                </span>
+                <Upload className="w-4 h-4 mr-2" />
                 {uploading ? "Uploading..." : "Submit Video"}
               </Button>
             </>
@@ -375,12 +403,32 @@ export default function CareersTestPage() {
               setPreviewUrl(null);
               setVideoData(null);
               setUploadedUrl(null);
+              setVideoLoadError(null);
             }} variant="outline">
               Record Another Video
             </Button>
           </CardFooter>
         </Card>
       )}
+
+      {/* Full-screen preview dialog */}
+      <Dialog open={showPreviewDialog} onOpenChange={setShowPreviewDialog}>
+        <DialogContent className="max-w-3xl w-full">
+          <DialogHeader>
+            <DialogTitle>Video Preview</DialogTitle>
+          </DialogHeader>
+          <div className="relative aspect-video w-full">
+            {previewUrl && (
+              <video 
+                src={previewUrl}
+                controls
+                autoPlay
+                className="w-full h-full rounded-md"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
