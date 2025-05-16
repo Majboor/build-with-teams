@@ -120,8 +120,7 @@ const CareerApplyPage = () => {
             .catch(err => {
               console.error("Error playing video:", err);
               setVideoLoadError("Video couldn't autoplay. Please use the play button.");
-              toast({
-                title: "Playback Notice",
+              toast("Playback Notice", {
                 description: "Please use the play button to watch your recording",
               });
             });
@@ -131,10 +130,8 @@ const CareerApplyPage = () => {
       const handleError = (e: Event) => {
         console.error("Video error:", e);
         setVideoLoadError("Failed to load video. Please try recording again.");
-        toast({
-          title: "Video Error",
+        toast("Video Error", {
           description: "There was a problem with the video. Please try recording again.",
-          variant: "destructive"
         });
       };
       
@@ -465,10 +462,8 @@ const CareerApplyPage = () => {
       
     } catch (err) {
       console.error("Error accessing media devices:", err);
-      toast({
-        title: "Permission Error",
+      toast("Permission Error", {
         description: "Please allow access to camera and microphone",
-        variant: "destructive"
       });
     }
   };
@@ -557,17 +552,12 @@ const CareerApplyPage = () => {
       setVideoUrl(publicUrlData.publicUrl);
       setUploading(false);
       
-      toast({
-        title: "Success!",
-        description: "Video uploaded successfully",
-      });
+      toast.success("Video uploaded successfully");
       
     } catch (err) {
       console.error("Error uploading video:", err);
-      toast({
-        title: "Upload Failed",
-        description: "There was a problem uploading your video",
-        variant: "destructive"
+      toast.error("Upload Failed", {
+        description: "There was a problem uploading your video"
       });
       setUploading(false);
     }
