@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,8 +28,12 @@ export default function CareersTestPage() {
   useEffect(() => {
     if (previewUrl && previewVideoRef.current) {
       previewVideoRef.current.src = previewUrl;
-      // Force a reload and ensure the metadata is loaded before trying to play
       previewVideoRef.current.load();
+      previewVideoRef.current.onloadedmetadata = () => {
+        previewVideoRef.current?.play().catch(err => {
+          console.error("Error playing video:", err);
+        });
+      };
     }
   }, [previewUrl]);
 
@@ -248,8 +251,8 @@ export default function CareersTestPage() {
         
         <CardFooter className="flex justify-center space-x-2">
           {!recording && !previewUrl && (
-            <Button onClick={startRecording}>
-              <Circle className="mr-2 h-4 w-4" />
+            <Button onClick={startRecording} className="bg-red-500 hover:bg-red-600">
+              <span className="w-4 h-4 mr-2 inline-block rounded-full bg-white"></span>
               Record
             </Button>
           )}
@@ -257,11 +260,20 @@ export default function CareersTestPage() {
           {recording && !paused && (
             <>
               <Button onClick={pauseRecording} variant="outline">
-                <Pause className="mr-2 h-4 w-4" />
+                <span className="w-4 h-4 mr-2 inline-block">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="6" y="4" width="4" height="16" />
+                    <rect x="14" y="4" width="4" height="16" />
+                  </svg>
+                </span>
                 Pause
               </Button>
               <Button onClick={stopRecording} variant="secondary">
-                <CircleStop className="mr-2 h-4 w-4" />
+                <span className="w-4 h-4 mr-2 inline-block">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                  </svg>
+                </span>
                 Stop
               </Button>
             </>
@@ -270,11 +282,19 @@ export default function CareersTestPage() {
           {recording && paused && (
             <>
               <Button onClick={resumeRecording} variant="outline">
-                <Play className="mr-2 h-4 w-4" />
+                <span className="w-4 h-4 mr-2 inline-block">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polygon points="5,3 19,12 5,21" />
+                  </svg>
+                </span>
                 Resume
               </Button>
               <Button onClick={stopRecording} variant="secondary">
-                <CircleStop className="mr-2 h-4 w-4" />
+                <span className="w-4 h-4 mr-2 inline-block">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                  </svg>
+                </span>
                 Stop
               </Button>
             </>
@@ -292,7 +312,13 @@ export default function CareersTestPage() {
                 onClick={uploadVideo} 
                 disabled={uploading}
               >
-                <Upload className="mr-2 h-4 w-4" />
+                <span className="w-4 h-4 mr-2 inline-block">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </span>
                 {uploading ? "Uploading..." : "Submit Video"}
               </Button>
             </>
