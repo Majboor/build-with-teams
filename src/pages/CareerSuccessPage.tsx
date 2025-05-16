@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,13 +11,23 @@ interface LocationState {
   candidateName?: string;
   email?: string;
   uniqueId?: string;
+  jobPostId?: string;
 }
 
 const CareerSuccessPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { candidateName, email, uniqueId } = (location.state as LocationState) || {};
+  const [searchParams] = useSearchParams();
+  
+  // Get data from location state or URL parameters
+  const stateData = (location.state as LocationState) || {};
+  const candidateName = stateData.candidateName || searchParams.get("name") || "";
+  const email = stateData.email || searchParams.get("email") || "";
+  const uniqueId = stateData.uniqueId || searchParams.get("uniqueId") || "";
+  const jobPostId = stateData.jobPostId || searchParams.get("jobPost") || "default-position";
+  
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Load Calendly script
@@ -29,34 +39,71 @@ const CareerSuccessPage = () => {
     script.onload = () => {
       console.log("Calendly script loaded");
       // Add a small delay to ensure the widget initializes
-      setTimeout(() => setCalendlyLoaded(true), 1000);
+      setTimeout(() => {
+        setCalendlyLoaded(true);
+        setIsLoading(false);
+      }, 1500);
     };
     
     document.body.appendChild(script);
 
+    // Set a timeout for loading state in case script takes too long
+    const loadingTimeout = setTimeout(() => {
+      if (!calendlyLoaded) {
+        setIsLoading(false);
+      }
+    }, 5000);
+
     return () => {
       // Clean up script on unmount
       document.body.removeChild(script);
+      clearTimeout(loadingTimeout);
     };
   }, []);
 
   // If the user navigated directly to this page without going through the application
   useEffect(() => {
-    if (!candidateName && !uniqueId) {
+    if (!candidateName && !uniqueId && !searchParams.has("jobPost")) {
       // Give the location state time to load (in case of direct link with state)
       const timer = setTimeout(() => {
-        if (!location.state) {
+        if (!location.state && !searchParams.has("jobPost")) {
           navigate("/career/apply");
         }
       }, 500);
       
       return () => clearTimeout(timer);
     }
-  }, [candidateName, uniqueId, navigate, location.state]);
+  }, [candidateName, uniqueId, navigate, location.state, searchParams]);
+
+  // Get the appropriate Calendly URL based on job post
+  const getCalendlyUrl = () => {
+    // Default Calendly URL
+    let baseUrl = "https://calendly.com/acctechrealm/30min";
+    
+    // Customize Calendly URL based on job post ID if needed
+    if (jobPostId) {
+      if (jobPostId.toLowerCase().includes("design")) {
+        baseUrl = "https://calendly.com/acctechrealm/design-interview";
+      } else if (jobPostId.toLowerCase().includes("dev") || jobPostId.toLowerCase().includes("developer")) {
+        baseUrl = "https://calendly.com/acctechrealm/developer-interview";
+      }
+    }
+    
+    return baseUrl;
+  };
 
   return (
     <div className="min-h-screen pb-16">
       <Navigation />
+
+      {isLoading && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            <p className="text-lg font-medium">Loading your success page...</p>
+          </div>
+        </div>
+      )}
 
       <div className="container mx-auto px-4 pt-20 max-w-4xl">
         <div className="flex justify-between items-center mb-8">
@@ -77,6 +124,7 @@ const CareerSuccessPage = () => {
             <CardTitle className="text-2xl md:text-3xl">Application Submitted Successfully!</CardTitle>
             <CardDescription className="text-lg">
               Thank you for applying to TaaS
+              {jobPostId !== "default-position" ? ` for the ${jobPostId} position` : ""}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -114,7 +162,7 @@ const CareerSuccessPage = () => {
               )}
               <div 
                 className="calendly-inline-widget" 
-                data-url="https://calendly.com/acctechrealm/30min" 
+                data-url={getCalendlyUrl()}
                 style={{ 
                   minWidth: '320px', 
                   height: '700px',
