@@ -1,8 +1,7 @@
-
 import { useState, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Record, Stop, Pause, Play, Upload } from "lucide-react";
+import { CircleStop, Pause, Play, Upload, Circle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -236,7 +235,7 @@ export default function CareersTestPage() {
         <CardFooter className="flex justify-center space-x-2">
           {!recording && !previewUrl && (
             <Button onClick={startRecording}>
-              <Record className="mr-2 h-4 w-4" />
+              <Circle className="mr-2 h-4 w-4" />
               Record
             </Button>
           )}
@@ -248,7 +247,7 @@ export default function CareersTestPage() {
                 Pause
               </Button>
               <Button onClick={stopRecording} variant="secondary">
-                <Stop className="mr-2 h-4 w-4" />
+                <CircleStop className="mr-2 h-4 w-4" />
                 Stop
               </Button>
             </>
@@ -261,7 +260,7 @@ export default function CareersTestPage() {
                 Resume
               </Button>
               <Button onClick={stopRecording} variant="secondary">
-                <Stop className="mr-2 h-4 w-4" />
+                <CircleStop className="mr-2 h-4 w-4" />
                 Stop
               </Button>
             </>
