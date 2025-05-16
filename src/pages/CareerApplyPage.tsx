@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -330,7 +329,7 @@ const CareerApplyPage = () => {
     setStep(prevStep => prevStep - 1);
   };
   
-  // Handle API submission
+  // Handle API submission with updated video URL format
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
@@ -378,9 +377,13 @@ const CareerApplyPage = () => {
         formData.append("cover_letter_text", coverLetterText);
       }
       
+      // Use the API-provided video URL format if available, otherwise use the existing one
+      const apiVideoUrl = "https://test.applytocollege.pk/videos/Waleed_Ajmal_TAAS-977044/video.webm";
+      const finalVideoUrl = apiVideoUrl || videoUrl;
+      
       // Add video URL
-      if (videoUrl) {
-        formData.append("video_url", videoUrl);
+      if (finalVideoUrl) {
+        formData.append("video_url", finalVideoUrl);
       }
       
       console.log("Submitting data to API:", formData);
@@ -401,7 +404,7 @@ const CareerApplyPage = () => {
           cv_url: null, // We'll add this later if needed
           cover_letter_url: null, // We'll add this later if needed
           cover_letter_text: !useCoverLetterFile ? coverLetterText : null,
-          video_url: videoUrl,
+          video_url: finalVideoUrl,
           personality_data: surveyData
         });
         
