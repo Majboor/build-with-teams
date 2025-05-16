@@ -29,6 +29,7 @@ export default function CareersTestPage() {
   useEffect(() => {
     if (previewUrl && previewVideoRef.current) {
       previewVideoRef.current.src = previewUrl;
+      // Force a reload and ensure the metadata is loaded before trying to play
       previewVideoRef.current.load();
     }
   }, [previewUrl]);
@@ -60,6 +61,8 @@ export default function CareersTestPage() {
       mediaRecorder.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: "video/webm" });
         setVideoData(blob);
+        
+        // Create a URL for the recorded video blob
         const url = URL.createObjectURL(blob);
         setPreviewUrl(url);
         
@@ -227,7 +230,8 @@ export default function CareersTestPage() {
             ) : (
               <video 
                 ref={previewVideoRef}
-                controls 
+                controls
+                autoPlay
                 className="w-full h-full object-cover"
               />
             )}
