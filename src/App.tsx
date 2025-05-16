@@ -20,6 +20,20 @@ import PTestPage from "./pages/PTestPage";
 import ApiTestPage from "./pages/ApiTestPage";
 import CareerApplyPage from "./pages/CareerApplyPage";
 import CareerSuccessPage from "./pages/CareerSuccessPage";
+import JobsListingPage from "./pages/JobsListingPage";
+// Career pages
+import AiMlEngineerPage from "./pages/career/AiMlEngineerPage";
+import CybersecurityExpertPage from "./pages/career/CybersecurityExpertPage";
+import CloudDevOpsPage from "./pages/career/CloudDevOpsPage";
+import ProductManagerAiPage from "./pages/career/ProductManagerAiPage";
+import ProductManagerSaasPage from "./pages/career/ProductManagerSaasPage";
+import FullStackDeveloperPage from "./pages/career/FullStackDeveloperPage";
+import FrontEndDeveloperPage from "./pages/career/FrontEndDeveloperPage";
+import BackendDeveloperPage from "./pages/career/BackendDeveloperPage";
+import SolutionsArchitectPage from "./pages/career/SolutionsArchitectPage";
+import UiUxDesignerPage from "./pages/career/UiUxDesignerPage";
+import GraphicDesignerPage from "./pages/career/GraphicDesignerPage";
+import VideoEditorPage from "./pages/career/VideoEditorPage";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +57,22 @@ const App = () => (
             <Route path="/api-test" element={<ApiTestPage />} />
             <Route path="/career/apply" element={<CareerApplyPage />} />
             <Route path="/career/success" element={<CareerSuccessPage />} />
+            <Route path="/careers" element={<JobsListingPage />} />
+            
+            {/* Career Position Pages */}
+            <Route path="/career/ai-ml-engineer" element={<AiMlEngineerPage />} />
+            <Route path="/career/cybersecurity-expert" element={<CybersecurityExpertPage />} />
+            <Route path="/career/cloud-devops-architect" element={<CloudDevOpsPage />} />
+            <Route path="/career/product-manager-ai" element={<ProductManagerAiPage />} />
+            <Route path="/career/product-manager-saas" element={<ProductManagerSaasPage />} />
+            <Route path="/career/full-stack-developer" element={<FullStackDeveloperPage />} />
+            <Route path="/career/front-end-developer" element={<FrontEndDeveloperPage />} />
+            <Route path="/career/backend-developer" element={<BackendDeveloperPage />} />
+            <Route path="/career/solutions-architect" element={<SolutionsArchitectPage />} />
+            <Route path="/career/ui-ux-designer" element={<UiUxDesignerPage />} />
+            <Route path="/career/graphic-designer" element={<GraphicDesignerPage />} />
+            <Route path="/career/video-editor" element={<VideoEditorPage />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
