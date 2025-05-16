@@ -18,6 +18,7 @@ export type Database = {
           cv_url: string | null
           email: string
           id: string
+          job_post_id: string | null
           personality_data: Json | null
           phone: string
           unique_id: string
@@ -32,6 +33,7 @@ export type Database = {
           cv_url?: string | null
           email: string
           id?: string
+          job_post_id?: string | null
           personality_data?: Json | null
           phone: string
           unique_id: string
@@ -46,6 +48,7 @@ export type Database = {
           cv_url?: string | null
           email?: string
           id?: string
+          job_post_id?: string | null
           personality_data?: Json | null
           phone?: string
           unique_id?: string
