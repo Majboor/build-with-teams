@@ -1,105 +1,123 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.8";
 
-// Configure CORS headers
+// CORS headers for browser requests
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Digital Software Market SendMail API endpoint
-const SEND_MAIL_API_URL = "https://mailing.techrealm.online/sendmail?smtp_server=true&track_open=false";
-
-interface EmailRequest {
+interface ConfirmationEmailRequest {
   candidateName: string;
   email: string;
   uniqueId: string;
 }
 
-const handler = async (req: Request): Promise<Response> => {
+const brevoApiKey = Deno.env.get("BREVO_API_KEY");
+const brevoApiUrl = "https://api.brevo.com/v3/smtp/email";
+const senderEmail = "taas@techrealm.online";
+const senderName = "TaaS Careers";
+
+serve(async (req: Request) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { candidateName, email, uniqueId }: EmailRequest = await req.json();
-    
-    console.log(`Sending confirmation email to ${candidateName} (${email}) with ID: ${uniqueId}`);
-    
-    if (!candidateName || !email) {
-      throw new Error("Missing required fields: candidateName or email");
+    const requestData: ConfirmationEmailRequest = await req.json();
+    const { candidateName, email, uniqueId } = requestData;
+
+    if (!email || !candidateName || !uniqueId) {
+      return new Response(
+        JSON.stringify({ error: "Email, candidate name, and uniqueId are required" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
-    // Get the HTML content from the public file
-    // For edge functions, we need to fetch the file content from the deployed app URL
-    const projectUrl = Deno.env.get("PROJECT_URL") || "https://taas.techrealm.pk";
-    const htmlResponse = await fetch(`${projectUrl}/public.html`);
-    
-    if (!htmlResponse.ok) {
-      throw new Error(`Failed to fetch email template: ${htmlResponse.status}`);
+    // Use the hiring template from Supabase Storage
+    const templateUrl = "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos//hiring.html";
+    const templateResponse = await fetch(templateUrl);
+
+    if (!templateResponse.ok) {
+      console.error("Failed to fetch confirmation template. Status:", templateResponse.status);
+      throw new Error("Failed to fetch confirmation template");
     }
+
+    let htmlTemplate = await templateResponse.text();
+
+    // Parse the candidate's first name
+    const firstName = candidateName.split(' ')[0];
+
+    // Replace all occurrences of placeholders with actual values
+    htmlTemplate = htmlTemplate.replace(/\{\{firstName\}\}/g, firstName);
+    htmlTemplate = htmlTemplate.replace(/\{\{candidateName\}\}/g, candidateName);
+    htmlTemplate = htmlTemplate.replace(/\{\{email\}\}/g, email);
+    htmlTemplate = htmlTemplate.replace(/\{\{uniqueId\}\}/g, uniqueId);
     
-    let htmlContent = await htmlResponse.text();
-    
-    // Simple personalization of the HTML content if needed
-    htmlContent = htmlContent.replace(/{{candidateName}}/g, candidateName);
-    htmlContent = htmlContent.replace(/{{email}}/g, email);
-    htmlContent = htmlContent.replace(/{{uniqueId}}/g, uniqueId);
-    
-    // Send email using Digital Software Market SendMail API
-    const emailResponse = await fetch(SEND_MAIL_API_URL, {
+    // Current date for the email
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    htmlTemplate = htmlTemplate.replace(/\{\{submissionDate\}\}/g, formattedDate);
+
+    // Prepare the email payload for Brevo API
+    const emailPayload = {
+      sender: {
+        name: senderName,
+        email: senderEmail,
+      },
+      to: [
+        {
+          email: email,
+          name: candidateName,
+        },
+      ],
+      subject: "Your TaaS Application Confirmation",
+      htmlContent: htmlTemplate,
+    };
+
+    // Send the email using Brevo API
+    const response = await fetch(brevoApiUrl, {
       method: "POST",
       headers: {
+        "Accept": "application/json",
         "Content-Type": "application/json",
+        "api-key": brevoApiKey || "",
       },
-      body: JSON.stringify({
-        html: htmlContent,
-        subject: "You've Been Fast-Tracked - TechRealm TAAS Application",
-        sender_email: "applications@techrealm.pk",
-        sender_name: "TechRealm TAAS Recruiting",
-        recipient: email
-      }),
+      body: JSON.stringify(emailPayload),
     });
-    
-    if (!emailResponse.ok) {
-      const errorText = await emailResponse.text();
-      throw new Error(`Email API error: ${emailResponse.status} - ${errorText}`);
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      console.error("Brevo API error:", responseData);
+      throw new Error(`Failed to send confirmation email: ${JSON.stringify(responseData)}`);
     }
-    
-    const emailResult = await emailResponse.json();
-    
-    // Log the success result
-    console.log("Email sent successfully:", emailResult);
-    
-    // Return success response
+
+    console.log("Confirmation email sent successfully:", responseData);
+
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: "Confirmation email sent successfully",
-        data: emailResult 
-      }),
-      { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 200 
+      JSON.stringify({ success: true, messageId: responseData.messageId }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );
   } catch (error) {
-    console.error("Error sending confirmation email:", error.message);
-    
-    // Return error response
+    console.error("Error sending confirmation email:", error);
     return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: error.message 
-      }),
-      { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500 
+      JSON.stringify({ error: error.message }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );
   }
-};
-
-serve(handler);
+});
