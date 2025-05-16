@@ -19,6 +19,7 @@ import CareersTestPage from "./pages/CareersTestPage";
 import PTestPage from "./pages/PTestPage";
 import ApiTestPage from "./pages/ApiTestPage";
 import CareerApplyPage from "./pages/CareerApplyPage";
+import CareerSuccessPage from "./pages/CareerSuccessPage";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/ptest" element={<PTestPage />} />
             <Route path="/api-test" element={<ApiTestPage />} />
             <Route path="/career/apply" element={<CareerApplyPage />} />
+            <Route path="/career/success" element={<CareerSuccessPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />

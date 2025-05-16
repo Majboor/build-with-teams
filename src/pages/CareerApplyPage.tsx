@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -33,6 +34,8 @@ const CareerApplyPage = () => {
   
   // Application state
   const [candidateName, setCandidateName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [consentShowcase, setConsentShowcase] = useState(false);
   const [consentSaveProgress, setConsentSaveProgress] = useState(true);
   const [cvFile, setCvFile] = useState<File | null>(null);
@@ -42,6 +45,7 @@ const CareerApplyPage = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uniqueId, setUniqueId] = useState(`TAAS-${Date.now().toString().slice(-6)}`);
+  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
   
   // Personality assessment state (hidden from UI)
   const [personalityAnswers, setPersonalityAnswers] = useState<{
@@ -159,6 +163,8 @@ const CareerApplyPage = () => {
         // Restore all saved state
         if (parsedProgress.step !== undefined) setStep(parsedProgress.step);
         if (parsedProgress.candidateName !== undefined) setCandidateName(parsedProgress.candidateName);
+        if (parsedProgress.email !== undefined) setEmail(parsedProgress.email);
+        if (parsedProgress.phone !== undefined) setPhone(parsedProgress.phone);
         if (parsedProgress.consentShowcase !== undefined) setConsentShowcase(parsedProgress.consentShowcase);
         if (parsedProgress.uniqueId !== undefined) setUniqueId(parsedProgress.uniqueId);
         if (parsedProgress.coverLetterText !== undefined) setCoverLetterText(parsedProgress.coverLetterText);
@@ -186,6 +192,8 @@ const CareerApplyPage = () => {
       const progressData = {
         step,
         candidateName,
+        email,
+        phone,
         consentShowcase,
         uniqueId,
         coverLetterText,
@@ -198,7 +206,9 @@ const CareerApplyPage = () => {
     }
   }, [
     step, 
-    candidateName, 
+    candidateName,
+    email,
+    phone,
     consentShowcase, 
     consentSaveProgress, 
     uniqueId,
@@ -242,9 +252,21 @@ const CareerApplyPage = () => {
   // Next and previous step navigation
   const handleNextStep = () => {
     // Validate current step
-    if (step === STEPS.NAME && !candidateName) {
-      toast.error("Please enter your full name");
-      return;
+    if (step === STEPS.NAME) {
+      if (!candidateName) {
+        toast.error("Please enter your full name");
+        return;
+      }
+      
+      if (!email) {
+        toast.error("Please enter your email address");
+        return;
+      }
+      
+      if (!phone) {
+        toast.error("Please enter your phone number");
+        return;
+      }
     }
     
     if (step === STEPS.DOCUMENTS && !cvFile) {
@@ -316,6 +338,8 @@ const CareerApplyPage = () => {
       // Create form data
       const formData = new FormData();
       formData.append("candidate_name", candidateName);
+      formData.append("email", email);
+      formData.append("phone", phone);
       formData.append("unique_id", uniqueId);
       
       // Add CV if available
@@ -366,7 +390,27 @@ const CareerApplyPage = () => {
         console.log(`${pair[0]}: ${pair[1]}`);
       }
       
-      // Send the request
+      // Save to Supabase
+      const { error: supabaseError } = await supabase
+        .from('job_applications')
+        .insert({
+          candidate_name: candidateName,
+          email: email,
+          phone: phone,
+          unique_id: uniqueId,
+          cv_url: null, // We'll add this later if needed
+          cover_letter_url: null, // We'll add this later if needed
+          cover_letter_text: !useCoverLetterFile ? coverLetterText : null,
+          video_url: videoUrl,
+          personality_data: surveyData
+        });
+        
+      if (supabaseError) {
+        console.error("Supabase error:", supabaseError);
+        throw new Error("Failed to save application data to database");
+      }
+      
+      // Send the request to external API
       const response = await fetch("https://test.applytocollege.pk/submit", {
         method: "POST",
         body: formData,
@@ -390,11 +434,15 @@ const CareerApplyPage = () => {
         description: "Thank you for applying. We'll review your application and get back to you."
       });
       
-      // Show success message with link to video
-      if (data.video_url) {
-        setVideoUrl(data.video_url);
-        // Maybe navigate to success page or show success modal
-      }
+      // Set application as submitted and redirect to success page
+      setApplicationSubmitted(true);
+      navigate("/career/success", { 
+        state: { 
+          candidateName, 
+          email, 
+          uniqueId
+        } 
+      });
     } catch (error) {
       console.error("Error submitting application:", error);
       toast.error(`Failed to submit application: ${error instanceof Error ? error.message : "Please try again later."}`);
@@ -584,6 +632,26 @@ const CareerApplyPage = () => {
                 placeholder="Enter your full name"
                 value={candidateName}
                 onChange={(e) => setCandidateName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email Address</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
             <div className="space-y-2">
@@ -821,6 +889,14 @@ const CareerApplyPage = () => {
                 <div className="flex justify-between">
                   <dt className="font-medium">Name:</dt>
                   <dd>{candidateName}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="font-medium">Email:</dt>
+                  <dd>{email}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="font-medium">Phone:</dt>
+                  <dd>{phone}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Application ID:</dt>
