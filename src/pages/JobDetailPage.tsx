@@ -135,7 +135,7 @@ export default function JobDetailPage() {
           
           <div className="flex justify-center">
             <Button 
-              onClick={() => navigate("/career/apply", { state: { jobTitle: job.title } })} 
+              onClick={() => navigate(`/career/apply?jobId=${jobId}&title=${encodeURIComponent(job.title)}`)}
               size="lg"
               className="px-8"
             >

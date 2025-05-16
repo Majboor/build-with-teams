@@ -42,13 +42,19 @@ export default function CareersPage() {
                     {job.note}
                   </p>
                 </CardContent>
-                <div className="px-6 pb-6 mt-auto">
+                <div className="px-6 pb-6 mt-auto flex justify-between">
                   <Link 
                     to={`/careers/${job.id}`}
-                    className="flex items-center justify-center w-full gap-2 text-blue-600 hover:text-blue-800 font-medium"
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
                   >
                     View Details
                     <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link 
+                    to={`/career/apply?jobId=${job.id}&title=${encodeURIComponent(job.title)}`}
+                    className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                  >
+                    Apply Now
                   </Link>
                 </div>
               </Card>
