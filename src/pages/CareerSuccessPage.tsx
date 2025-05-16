@@ -4,8 +4,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowLeft, Calendar } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Calendar, Mail } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface LocationState {
   candidateName?: string;
@@ -17,6 +19,7 @@ const CareerSuccessPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   
   // Get data from location state or URL parameters
   const stateData = (location.state as LocationState) || {};
@@ -26,6 +29,8 @@ const CareerSuccessPage = () => {
   
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [emailSent, setEmailSent] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   useEffect(() => {
     // Load Calendly script
@@ -70,6 +75,49 @@ const CareerSuccessPage = () => {
       return () => clearTimeout(timer);
     }
   }, [navigate, location.state, searchParams]);
+
+  // Send confirmation email
+  useEffect(() => {
+    const sendConfirmationEmail = async () => {
+      // Only send if we have required data and haven't sent already
+      if (candidateName && email && uniqueId && !emailSent) {
+        try {
+          setSendingEmail(true);
+          
+          const { data, error } = await supabase.functions.invoke('send-confirmation-email', {
+            body: {
+              candidateName,
+              email,
+              uniqueId
+            }
+          });
+          
+          if (error) throw error;
+          
+          console.log("Email confirmation response:", data);
+          setEmailSent(true);
+          
+          toast({
+            title: "Confirmation Email Sent",
+            description: "We've sent you an email with your application details.",
+            duration: 5000,
+          });
+        } catch (error) {
+          console.error("Failed to send confirmation email:", error);
+          toast({
+            variant: "destructive",
+            title: "Email Confirmation Failed",
+            description: "We couldn't send your confirmation email. Please check your application details.",
+            duration: 5000,
+          });
+        } finally {
+          setSendingEmail(false);
+        }
+      }
+    };
+    
+    sendConfirmationEmail();
+  }, [candidateName, email, uniqueId, emailSent, toast]);
 
   // Get the appropriate Calendly URL
   const getCalendlyUrl = () => {
@@ -120,6 +168,18 @@ const CareerSuccessPage = () => {
               <p className="text-sm text-green-700 dark:text-green-500 mt-2">
                 Application ID: <span className="font-mono font-medium">{uniqueId || "N/A"}</span>
               </p>
+            </div>
+
+            {/* Email confirmation status */}
+            <div className="flex items-center justify-center space-x-2 text-sm">
+              <Mail className="h-4 w-4" />
+              <span>
+                {sendingEmail 
+                  ? "Sending confirmation email..." 
+                  : emailSent 
+                    ? `Confirmation email sent to ${email}` 
+                    : "Preparing your confirmation email..."}
+              </span>
             </div>
 
             {/* Display fields - Improved dark mode visibility */}
