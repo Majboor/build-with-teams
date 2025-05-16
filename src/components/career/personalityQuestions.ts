@@ -212,3 +212,51 @@ export const questions: Question[] = [
     ]
   }
 ];
+
+// Helper functions for personality assessment
+export const calculateTotalScore = (answers: { questionIndex: number; selectedOption: number; score: number }[]) => {
+  return answers.reduce((total, answer) => total + answer.score, 0);
+};
+
+export const getMaxPossibleScore = () => {
+  return questions.length * 5;
+};
+
+export const calculateScorePercentage = (totalScore: number) => {
+  return (totalScore / getMaxPossibleScore()) * 100;
+};
+
+export const getPersonalityType = (scorePercentage: number) => {
+  if (scorePercentage >= 90) return { type: "Emotionally intelligent human", emoji: "✅" };
+  if (scorePercentage >= 75) return { type: "Likely human, some robotic traits", emoji: "🟡" };
+  if (scorePercentage >= 50) return { type: "Possible AI-assisted or red flag", emoji: "⚠️" };
+  return { type: "Likely AI-generated or toxic human", emoji: "🚫" };
+};
+
+export const generatePersonalityReport = (answers: { questionIndex: number; selectedOption: number; score: number }[]) => {
+  const totalScore = calculateTotalScore(answers);
+  const maxScore = getMaxPossibleScore();
+  const scorePercentage = calculateScorePercentage(totalScore);
+  const personalityType = getPersonalityType(scorePercentage);
+  
+  // Create a detailed report with all answers
+  const detailedAnswers = answers.map(answer => {
+    const question = questions[answer.questionIndex];
+    const selectedOption = question.options[answer.selectedOption];
+    
+    return {
+      question: question.question,
+      answer: selectedOption.text,
+      score: selectedOption.score
+    };
+  });
+  
+  return {
+    totalScore,
+    maxScore,
+    scorePercentage: Math.round(scorePercentage),
+    personalityType: personalityType.type,
+    personalityEmoji: personalityType.emoji,
+    detailedAnswers
+  };
+};
