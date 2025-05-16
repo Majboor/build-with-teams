@@ -42,7 +42,7 @@ const CareerSuccessPage = () => {
       setTimeout(() => {
         setCalendlyLoaded(true);
         setIsLoading(false);
-      }, 1000); // Reduced delay for faster display
+      }, 500); // Further reduced delay for faster display
     };
     
     document.body.appendChild(script);
@@ -52,7 +52,7 @@ const CareerSuccessPage = () => {
       if (!calendlyLoaded) {
         setIsLoading(false);
       }
-    }, 3000); // Reduced timeout for faster fallback
+    }, 2000); // Further reduced timeout for faster fallback
 
     return () => {
       // Clean up script on unmount
@@ -61,20 +61,19 @@ const CareerSuccessPage = () => {
     };
   }, []);
 
-  // If the user navigated directly to this page without going through the application
-  // Modified to allow direct access with jobPost parameter
+  // Allow direct access with jobPost parameter without redirection
+  // We no longer need to redirect if jobPost is present
   useEffect(() => {
-    if (!candidateName && !uniqueId && !searchParams.has("jobPost")) {
-      // Only redirect if we don't have a job post parameter
+    // This effect is only for handling cases without job post parameter
+    // If jobPost parameter exists, we don't need to redirect
+    if (!searchParams.has("jobPost") && !location.state) {
       const timer = setTimeout(() => {
-        if (!location.state && !searchParams.has("jobPost")) {
-          navigate("/career/apply");
-        }
+        navigate("/career/apply");
       }, 500);
       
       return () => clearTimeout(timer);
     }
-  }, [candidateName, uniqueId, navigate, location.state, searchParams]);
+  }, [navigate, location.state, searchParams]);
 
   // Get the appropriate Calendly URL based on job post
   const getCalendlyUrl = () => {
@@ -92,6 +91,21 @@ const CareerSuccessPage = () => {
     
     return baseUrl;
   };
+
+  // Format job post name for display
+  const getFormattedJobPost = () => {
+    if (!jobPostId || jobPostId === "default-position") {
+      return ""; 
+    }
+    
+    // Convert to title case and clean up formatting
+    return jobPostId
+      .split(/[-_\s]+/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  const formattedJobPost = getFormattedJobPost();
 
   return (
     <div className="min-h-screen pb-16">
@@ -124,8 +138,9 @@ const CareerSuccessPage = () => {
             </div>
             <CardTitle className="text-2xl md:text-3xl">Application Submitted Successfully!</CardTitle>
             <CardDescription className="text-lg">
-              Thank you for applying to TaaS
-              {jobPostId !== "default-position" ? ` for the ${jobPostId} position` : ""}
+              {formattedJobPost 
+                ? `Thank you for applying to TaaS for the ${formattedJobPost} position`
+                : "Thank you for applying to TaaS"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
