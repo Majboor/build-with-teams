@@ -153,6 +153,25 @@ const CareerSuccessPage = () => {
               </p>
             </div>
 
+            {/* Display fields - Newly added section for showing position and application ID with proper dark mode support */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-muted-foreground">Applying For</h3>
+                <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-secondary">
+                  {formattedJobPost || "Position not specified"}
+                </div>
+                <p className="text-xs text-muted-foreground">Position you're applying for.</p>
+              </div>
+              
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-muted-foreground">Application ID</h3>
+                <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-secondary font-mono">
+                  {uniqueId || "N/A"}
+                </div>
+                <p className="text-xs text-muted-foreground">This is your unique application ID for reference.</p>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <h3 className="text-lg font-medium flex items-center">
                 <Calendar className="mr-2 h-5 w-5" /> 
