@@ -13,26 +13,47 @@ interface BetaSignupDialogProps {
 
 export function BetaSignupDialog({ open, onOpenChange }: BetaSignupDialogProps) {
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all fields to continue.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://beta_list.techrealm.online/send-email", {
+      // Get the prompt from local storage if it exists (set in the main page)
+      const prompt = localStorage.getItem("userPrompt") || "";
+      
+      // Send to our Supabase Edge Function
+      const response = await fetch("https://jpaxhfoyaytpmcqlwrfv.functions.supabase.co/send-waitlist-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ recipient: email }),
+        body: JSON.stringify({ 
+          email, 
+          firstName, 
+          lastName,
+          prompt
+        }),
       });
 
       if (response.ok) {
         toast({
-          title: "Beta Access Requested",
-          description: "Thank you for joining our beta list. We'll be in touch soon!",
+          title: "Waitlist Sign-up Successful!",
+          description: `Thanks ${firstName}! We've added you to our beta waitlist. Check your inbox for confirmation.`,
           variant: "default",
         });
         onOpenChange(false);
@@ -59,21 +80,51 @@ export function BetaSignupDialog({ open, onOpenChange }: BetaSignupDialogProps) 
             <div className="flex items-center text-yellow-600 bg-yellow-50 p-3 rounded-md mb-4">
               <AlertTriangle className="mr-2 h-5 w-5" />
               <span>
-                This is an open submission form. Your email might end up in the SPAM folder. 
-                We recommend using a primary email address you check regularly.
+                Get early access to our team as a service platform. Be the first to build amazing applications with our AI-powered team.
               </span>
             </div>
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="firstName" className="text-sm font-medium mb-1 block">
+                First Name
+              </label>
+              <Input
+                id="firstName"
+                type="text"
+                placeholder="Enter first name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="text-sm font-medium mb-1 block">
+                Last Name
+              </label>
+              <Input
+                id="lastName"
+                type="text"
+                placeholder="Enter last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="email" className="text-sm font-medium mb-1 block">
+              Email Address
+            </label>
             <Input
+              id="email"
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="col-span-3"
             />
           </div>
           <div className="flex justify-end gap-3">

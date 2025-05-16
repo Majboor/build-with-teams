@@ -1,4 +1,26 @@
 
+# This is a sample config file for Supabase project
 project_id = "jpaxhfoyaytpmcqlwrfv"
-[functions.send-confirmation-email]
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+
+[db]
+port = 54322
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+
+[functions]
+[functions.send-waitlist-email]
 verify_jwt = false
