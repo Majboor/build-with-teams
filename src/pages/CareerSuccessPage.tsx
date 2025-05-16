@@ -42,7 +42,7 @@ const CareerSuccessPage = () => {
       setTimeout(() => {
         setCalendlyLoaded(true);
         setIsLoading(false);
-      }, 1500);
+      }, 1000); // Reduced delay for faster display
     };
     
     document.body.appendChild(script);
@@ -52,7 +52,7 @@ const CareerSuccessPage = () => {
       if (!calendlyLoaded) {
         setIsLoading(false);
       }
-    }, 5000);
+    }, 3000); // Reduced timeout for faster fallback
 
     return () => {
       // Clean up script on unmount
@@ -62,9 +62,10 @@ const CareerSuccessPage = () => {
   }, []);
 
   // If the user navigated directly to this page without going through the application
+  // Modified to allow direct access with jobPost parameter
   useEffect(() => {
     if (!candidateName && !uniqueId && !searchParams.has("jobPost")) {
-      // Give the location state time to load (in case of direct link with state)
+      // Only redirect if we don't have a job post parameter
       const timer = setTimeout(() => {
         if (!location.state && !searchParams.has("jobPost")) {
           navigate("/career/apply");
