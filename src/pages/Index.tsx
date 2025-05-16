@@ -1,6 +1,8 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
+// Remove the duplicate useState import
 import { Card, CardContent } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
@@ -22,11 +24,6 @@ import {
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { WorkflowSection } from "@/components/WorkflowSection";
-import { ParticlesBackground } from "@/components/ParticlesBackground";
-import { VoiceInputCard } from "@/components/VoiceInputCard";
-import { FloatingPanels } from "@/components/FloatingPanels";
-import { AnimatedHeadline } from "@/components/AnimatedHeadline";
-import { motion } from 'framer-motion';
 
 type CrmFeature = {
   title: string;
@@ -234,7 +231,6 @@ export default function Index() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [prompt, setPrompt] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -269,26 +265,6 @@ export default function Index() {
     loadAllImages();
   }, []);
 
-  const toggleRecording = () => {
-    setIsRecording(!isRecording);
-    if (!isRecording) {
-      // Simulate voice recognition after a delay
-      setTimeout(() => {
-        const samplePrompts = [
-          "Build me an AI assistant for my e-commerce site",
-          "Create a dashboard for my fitness app",
-          "Design a product landing page for my SaaS",
-          "Develop an AI-based recommendation system"
-        ];
-        const randomPrompt = samplePrompts[Math.floor(Math.random() * samplePrompts.length)];
-        setPrompt(randomPrompt);
-        setIsRecording(false);
-      }, 3000);
-    } else {
-      // Stop recording
-    }
-  };
-
   const handleStartBuild = () => {
     if (prompt.trim()) {
       setShowBetaDialog(true);
@@ -307,79 +283,78 @@ export default function Index() {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen">
       <Navigation />
       
-      {/* Premium Hero Section */}
-      <section className="min-h-screen relative flex flex-col px-6 pt-20 overflow-hidden">
-        <ParticlesBackground />
-        
-        <div className="container relative z-10 flex-1 flex flex-col lg:flex-row items-center justify-center gap-12 py-8">
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col px-6 pt-20">
+        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-12 py-8">
           <div className="flex-1 text-center lg:text-left space-y-8">
-            <AnimatedHeadline 
-              title="TaaS"
-              subtitle="Team as a Service"
-              description="On-demand team solutions to scale your business."
-            />
+            <div className="space-y-2">
+              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-normal leading-none">
+                TaaS
+              </h1>
+              <div className="space-y-2">
+                <p className="text-2xl sm:text-3xl lg:text-[40px] font-normal leading-tight">
+                  Team as a Service
+                </p>
+              </div>
+            </div>
             
-            {/* Voice Input Card */}
-            <div className="max-w-md mx-auto lg:mx-0 mt-12">
-              <VoiceInputCard 
+            <p className="text-lg sm:text-xl font-normal max-w-md mx-auto lg:mx-0">
+              On-demand team solutions to scale your business.
+            </p>
+
+            {/* Prompt Bar */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Input
+                type="text"
+                placeholder="Enter your idea or prompt..."
                 value={prompt}
-                onChange={setPrompt}
-                onRecord={toggleRecording}
-                isRecording={isRecording}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="h-12 sm:h-14 text-lg"
+              />
+              <Button 
+                onClick={() => {
+                  if (prompt.trim()) {
+                    setShowBetaDialog(true);
+                  }
+                }}
+                className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
+                size="lg"
+              >
+                Try for free
+              </Button>
+            </div>
+
+            {/* Show image on mobile between title and buttons */}
+            <div className="lg:hidden w-full max-w-md mx-auto">
+              <img 
+                src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
+                alt="TaaS product interface"
+                className="w-full rounded-lg shadow-xl"
               />
             </div>
 
-            {/* Buttons with animation */}
-            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
+            <div className="flex justify-center lg:justify-start">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowBetaDialog(true)}
+                className="h-12 sm:h-14 text-lg rounded-full border-2 flex items-center justify-center"
+                size="lg"
               >
-                <Button 
-                  onClick={() => {
-                    if (prompt.trim()) {
-                      setShowBetaDialog(true);
-                    }
-                  }}
-                  className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center px-8"
-                  size="lg"
-                >
-                  Try for free
-                </Button>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
-              >
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowBetaDialog(true)}
-                  className="h-12 sm:h-14 text-lg rounded-full border-2 flex items-center justify-center px-8"
-                  size="lg"
-                >
-                  Get a demo
-                </Button>
-              </motion.div>
+                Get a demo
+              </Button>
             </div>
           </div>
 
-          {/* Animated floating panels */}
-          <motion.div 
-            className="flex-1 hidden lg:block"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <div className="w-full h-[500px] relative">
-              <FloatingPanels />
-            </div>
-          </motion.div>
+          <div className="flex-1 hidden lg:block">
+            <img 
+              src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
+              alt="TaaS product interface"
+              className="w-full max-w-xl mx-auto rounded-lg shadow-xl"
+            />
+          </div>
         </div>
       </section>
 
