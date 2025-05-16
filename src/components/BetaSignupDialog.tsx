@@ -76,12 +76,15 @@ export function BetaSignupDialog({ open, onOpenChange }: BetaSignupDialogProps) 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Join TaaS Beta</DialogTitle>
-          <DialogDescription>
-            <div className="flex items-center text-yellow-600 bg-yellow-50 p-3 rounded-md mb-4">
-              <AlertTriangle className="mr-2 h-5 w-5" />
-              <span>
-                Get early access to our team as a service platform. Be the first to build amazing applications with our AI-powered team.
-              </span>
+          <DialogDescription asChild>
+            {/* Using asChild to prevent p > div nesting issue */}
+            <div>
+              <div className="flex items-center text-yellow-600 bg-yellow-50 p-3 rounded-md mb-4">
+                <AlertTriangle className="mr-2 h-5 w-5" />
+                <span>
+                  Get early access to our team as a service platform. Be the first to build amazing applications with our AI-powered team.
+                </span>
+              </div>
             </div>
           </DialogDescription>
         </DialogHeader>
