@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -9,7 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowRight, ArrowLeft, Upload, Save, User, FileText, Video, CheckSquare, Send } from "lucide-react";
 
 // Application steps
@@ -27,6 +26,7 @@ import { questions } from "../components/career/personalityQuestions";
 
 const CareerApplyPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showIntroModal, setShowIntroModal] = useState(true);
   const [step, setStep] = useState(STEPS.INTRO);
   const [progress, setProgress] = useState(0);
@@ -49,6 +49,26 @@ const CareerApplyPage = () => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uniqueId, setUniqueId] = useState(`TAAS-${Date.now().toString().slice(-6)}`);
+
+  // Check for videoUrl in location.state when returning from the video recording page
+  useEffect(() => {
+    if (location.state?.videoUrl) {
+      setVideoUrl(location.state.videoUrl);
+      
+      // If we're already at the video step or beyond, just update the URL
+      // If we're at an earlier step, advance to the video step
+      if (step < STEPS.VIDEO) {
+        setStep(STEPS.VIDEO);
+      }
+      
+      toast.success("Video added successfully", {
+        description: "Your video has been attached to your application."
+      });
+      
+      // Clear location state to prevent reapplying the URL if the page refreshes
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state, step]);
 
   // Load saved progress from session storage on mount
   useEffect(() => {

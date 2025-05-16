@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,9 +5,16 @@ import { CircleStop, Pause, Play, Upload, Circle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function CareersTestPage() {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get returnUrl from location state if available
+  const returnUrl = location.state?.returnUrl || "/";
+  
   const [recording, setRecording] = useState<boolean>(false);
   const [paused, setPaused] = useState<boolean>(false);
   const [videoData, setVideoData] = useState<Blob | null>(null);
@@ -245,6 +251,15 @@ export default function CareersTestPage() {
         title: "Success!",
         description: "Video uploaded successfully",
       });
+      
+      // Navigate back to the return URL after successful upload if it's the career/apply page
+      if (returnUrl === "/career/apply") {
+        // Small delay to ensure the toast is visible before navigating
+        setTimeout(() => {
+          // Pass the uploaded video URL back to the career application page
+          navigate(returnUrl, { state: { videoUrl: publicUrlData.publicUrl } });
+        }, 1500);
+      }
     } catch (err) {
       console.error("Error uploading video:", err);
       toast({
@@ -364,7 +379,7 @@ export default function CareersTestPage() {
                 disabled={uploading}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                {uploading ? "Uploading..." : "Submit Video"}
+                {uploading ? "Uploading..." : returnUrl === "/career/apply" ? "Finalize Video" : "Submit Video"}
               </Button>
             </>
           )}
@@ -407,6 +422,14 @@ export default function CareersTestPage() {
             }} variant="outline">
               Record Another Video
             </Button>
+            
+            {returnUrl === "/career/apply" && (
+              <Button 
+                onClick={() => navigate(returnUrl, { state: { videoUrl: uploadedUrl } })}
+              >
+                Return to Application
+              </Button>
+            )}
           </CardFooter>
         </Card>
       )}
