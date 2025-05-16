@@ -1,22 +1,3 @@
-// Simple personality questions for career application form
-export const personalityQuestions = [
-  {
-    id: "teamwork",
-    question: "Describe your approach to teamwork and collaboration."
-  },
-  {
-    id: "motivation",
-    question: "What motivates you most in your professional work?"
-  },
-  {
-    id: "challenges",
-    question: "How do you typically handle challenges or difficult situations at work?"
-  },
-  {
-    id: "growth",
-    question: "What are your goals for professional growth in the next 2-3 years?"
-  }
-];
 
 // Define types for our personality test
 type Answer = {
