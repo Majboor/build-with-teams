@@ -153,11 +153,11 @@ const CareerSuccessPage = () => {
               </p>
             </div>
 
-            {/* Display fields - Newly added section for showing position and application ID with proper dark mode support */}
+            {/* Display fields - Updated with better dark mode contrast */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Applying For</h3>
-                <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-secondary">
+                <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-secondary/80 dark:text-white">
                   {formattedJobPost || "Position not specified"}
                 </div>
                 <p className="text-xs text-muted-foreground">Position you're applying for.</p>
@@ -165,7 +165,7 @@ const CareerSuccessPage = () => {
               
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Application ID</h3>
-                <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-secondary font-mono">
+                <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-secondary/80 dark:text-white font-mono">
                   {uniqueId || "N/A"}
                 </div>
                 <p className="text-xs text-muted-foreground">This is your unique application ID for reference.</p>
