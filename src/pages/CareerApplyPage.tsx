@@ -669,7 +669,7 @@ const CareerApplyPage = () => {
                 id="job-post"
                 value={jobPostId}
                 readOnly
-                className="bg-muted"
+                className="bg-muted dark:bg-gray-700 dark:text-white"
               />
               <p className="text-xs text-muted-foreground">Position you're applying for.</p>
             </div>
@@ -679,7 +679,7 @@ const CareerApplyPage = () => {
                 id="unique-id"
                 value={uniqueId}
                 readOnly
-                className="bg-muted"
+                className="bg-muted dark:bg-gray-700 dark:text-white"
               />
               <p className="text-xs text-muted-foreground">This is your unique application ID for reference.</p>
             </div>
