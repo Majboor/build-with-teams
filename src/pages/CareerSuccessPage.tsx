@@ -1,10 +1,11 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowLeft, Calendar } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface LocationState {
   candidateName?: string;
@@ -16,12 +17,21 @@ const CareerSuccessPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { candidateName, email, uniqueId } = (location.state as LocationState) || {};
+  const [calendlyLoaded, setCalendlyLoaded] = useState(false);
 
   useEffect(() => {
     // Load Calendly script
     const script = document.createElement('script');
     script.src = "https://assets.calendly.com/assets/external/widget.js";
     script.async = true;
+    
+    // Set up onload handler before appending to document
+    script.onload = () => {
+      console.log("Calendly script loaded");
+      // Add a small delay to ensure the widget initializes
+      setTimeout(() => setCalendlyLoaded(true), 1000);
+    };
+    
     document.body.appendChild(script);
 
     return () => {
@@ -90,10 +100,26 @@ const CareerSuccessPage = () => {
             </div>
 
             <div className="border rounded-lg overflow-hidden">
+              {!calendlyLoaded && (
+                <div className="p-6 space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-[200px]" />
+                      <Skeleton className="h-4 w-[160px]" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-[600px] w-full" />
+                </div>
+              )}
               <div 
                 className="calendly-inline-widget" 
                 data-url="https://calendly.com/acctechrealm/30min" 
-                style={{ minWidth: '320px', height: '700px' }}
+                style={{ 
+                  minWidth: '320px', 
+                  height: '700px',
+                  display: calendlyLoaded ? 'block' : 'none'
+                }}
               ></div>
             </div>
           </CardContent>

@@ -31,6 +31,10 @@ const CareerApplyPage = () => {
   const [step, setStep] = useState(STEPS.INTRO);
   const [progress, setProgress] = useState(0);
   
+  // Get job post param from URL
+  const searchParams = new URLSearchParams(location.search);
+  const jobPostId = searchParams.get('jobPost') || 'default-position';
+  
   // Application state
   const [candidateName, setCandidateName] = useState("");
   const [email, setEmail] = useState("");
@@ -340,6 +344,7 @@ const CareerApplyPage = () => {
       formData.append("email", email);
       formData.append("phone", phone);
       formData.append("unique_id", uniqueId);
+      formData.append("job_post_id", jobPostId);
       
       // Add CV if available
       if (cvFile) {
@@ -405,7 +410,8 @@ const CareerApplyPage = () => {
           cover_letter_url: null, // We'll add this later if needed
           cover_letter_text: !useCoverLetterFile ? coverLetterText : null,
           video_url: finalVideoUrl,
-          personality_data: surveyData
+          personality_data: surveyData,
+          job_post_id: jobPostId
         });
         
       if (supabaseError) {
@@ -658,6 +664,16 @@ const CareerApplyPage = () => {
               />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="job-post">Applying For</Label>
+              <Input
+                id="job-post"
+                value={jobPostId}
+                readOnly
+                className="bg-muted"
+              />
+              <p className="text-xs text-muted-foreground">Position you're applying for.</p>
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="unique-id">Application ID</Label>
               <Input
                 id="unique-id"
@@ -900,6 +916,10 @@ const CareerApplyPage = () => {
                 <div className="flex justify-between">
                   <dt className="font-medium">Phone:</dt>
                   <dd>{phone}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="font-medium">Position:</dt>
+                  <dd>{jobPostId}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Application ID:</dt>
