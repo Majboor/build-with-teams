@@ -323,12 +323,29 @@ const CareerApplyPage = () => {
         formData.append("cv", cvFile);
       }
       
-      // Generate personality report
+      // Generate detailed personality report with answers
       const personalityResults = generatePersonalityReport(personalityAnswers);
       
-      // Add survey data (personality test results)
-      const surveyText = JSON.stringify(personalityResults);
-      formData.append("survey", surveyText);
+      // Convert detailedAnswers to array of objects with question and answer
+      const detailedAnswersForApi = personalityResults.detailedAnswers.map(a => ({
+        question: a.question,
+        answer: a.answer,
+        score: a.score
+      }));
+      
+      // Create a complete survey object with all personality data
+      const surveyData = {
+        answers: personalityAnswers,
+        totalScore: personalityResults.totalScore,
+        maxScore: personalityResults.maxScore,
+        scorePercentage: personalityResults.scorePercentage,
+        personalityType: personalityResults.personalityType,
+        personalityEmoji: personalityResults.personalityEmoji,
+        detailedAnswers: detailedAnswersForApi
+      };
+      
+      // Convert to JSON and add as survey parameter
+      formData.append("survey", JSON.stringify(surveyData));
       
       // Add cover letter as additional data
       if (useCoverLetterFile && coverLetterFile) {
@@ -338,7 +355,16 @@ const CareerApplyPage = () => {
       }
       
       // Add video URL
-      formData.append("video_url", videoUrl);
+      if (videoUrl) {
+        formData.append("video_url", videoUrl);
+      }
+      
+      console.log("Submitting data to API:", formData);
+      
+      // Log FormData contents for debugging
+      for (const pair of formData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
       
       // Send the request
       const response = await fetch("https://test.applytocollege.pk/submit", {
@@ -346,12 +372,16 @@ const CareerApplyPage = () => {
         body: formData,
       });
       
+      console.log("API Response status:", response.status);
+      
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to submit application");
+        console.error("API Error response:", errorData);
+        throw new Error(errorData.message || errorData.error || "Failed to submit application");
       }
       
       const data = await response.json();
+      console.log("API Success response:", data);
       
       // Clear session storage
       sessionStorage.removeItem("careerApplicationProgress");
@@ -367,9 +397,7 @@ const CareerApplyPage = () => {
       }
     } catch (error) {
       console.error("Error submitting application:", error);
-      toast.error("Failed to submit application", {
-        description: error instanceof Error ? error.message : "Please try again later."
-      });
+      toast.error(`Failed to submit application: ${error instanceof Error ? error.message : "Please try again later."}`);
     } finally {
       setIsSubmitting(false);
     }
