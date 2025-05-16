@@ -33,7 +33,8 @@ const CareerApplyPage = () => {
   
   // Get job post param from URL
   const searchParams = new URLSearchParams(location.search);
-  const jobPostId = searchParams.get('jobPost') || 'default-position';
+  const jobId = searchParams.get('jobId') || 'default-position';
+  const jobTitle = searchParams.get('title') || 'Default Position';
   
   // Application state
   const [candidateName, setCandidateName] = useState("");
@@ -344,7 +345,7 @@ const CareerApplyPage = () => {
       formData.append("email", email);
       formData.append("phone", phone);
       formData.append("unique_id", uniqueId);
-      formData.append("job_post_id", jobPostId);
+      formData.append("job_post_id", jobId);
       
       // Add CV if available
       if (cvFile) {
@@ -411,7 +412,7 @@ const CareerApplyPage = () => {
           cover_letter_text: !useCoverLetterFile ? coverLetterText : null,
           video_url: finalVideoUrl,
           personality_data: surveyData,
-          job_post_id: jobPostId
+          job_post_id: jobId
         });
         
       if (supabaseError) {
@@ -667,7 +668,7 @@ const CareerApplyPage = () => {
               <Label htmlFor="job-post">Applying For</Label>
               <Input
                 id="job-post"
-                value={jobPostId}
+                value={jobTitle}
                 readOnly
                 className="bg-muted dark:bg-gray-700 dark:text-white"
               />
@@ -919,7 +920,7 @@ const CareerApplyPage = () => {
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Position:</dt>
-                  <dd>{jobPostId}</dd>
+                  <dd>{jobTitle}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Application ID:</dt>
