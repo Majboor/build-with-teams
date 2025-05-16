@@ -11,7 +11,6 @@ interface LocationState {
   candidateName?: string;
   email?: string;
   uniqueId?: string;
-  jobPostId?: string;
 }
 
 const CareerSuccessPage = () => {
@@ -24,7 +23,6 @@ const CareerSuccessPage = () => {
   const candidateName = stateData.candidateName || searchParams.get("name") || "";
   const email = stateData.email || searchParams.get("email") || "";
   const uniqueId = stateData.uniqueId || searchParams.get("uniqueId") || "";
-  const jobPostId = stateData.jobPostId || searchParams.get("jobPost") || "default-position";
   
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,12 +59,10 @@ const CareerSuccessPage = () => {
     };
   }, []);
 
-  // Allow direct access with jobPost parameter without redirection
-  // We no longer need to redirect if jobPost is present
+  // Allow direct access without redirection
   useEffect(() => {
-    // This effect is only for handling cases without job post parameter
-    // If jobPost parameter exists, we don't need to redirect
-    if (!searchParams.has("jobPost") && !location.state) {
+    // Only redirect if there's no state or query params
+    if (!location.state && !searchParams.has("uniqueId")) {
       const timer = setTimeout(() => {
         navigate("/career/apply");
       }, 500);
@@ -75,37 +71,12 @@ const CareerSuccessPage = () => {
     }
   }, [navigate, location.state, searchParams]);
 
-  // Get the appropriate Calendly URL based on job post
+  // Get the appropriate Calendly URL
   const getCalendlyUrl = () => {
     // Default Calendly URL
     let baseUrl = "https://calendly.com/acctechrealm/30min";
-    
-    // Customize Calendly URL based on job post ID if needed
-    if (jobPostId) {
-      if (jobPostId.toLowerCase().includes("design")) {
-        baseUrl = "https://calendly.com/acctechrealm/design-interview";
-      } else if (jobPostId.toLowerCase().includes("dev") || jobPostId.toLowerCase().includes("developer")) {
-        baseUrl = "https://calendly.com/acctechrealm/developer-interview";
-      }
-    }
-    
     return baseUrl;
   };
-
-  // Format job post name for display
-  const getFormattedJobPost = () => {
-    if (!jobPostId || jobPostId === "default-position") {
-      return ""; 
-    }
-    
-    // Convert to title case and clean up formatting
-    return jobPostId
-      .split(/[-_\s]+/)
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-  };
-
-  const formattedJobPost = getFormattedJobPost();
 
   return (
     <div className="min-h-screen pb-16">
@@ -138,9 +109,7 @@ const CareerSuccessPage = () => {
             </div>
             <CardTitle className="text-2xl md:text-3xl">Application Submitted Successfully!</CardTitle>
             <CardDescription className="text-lg">
-              {formattedJobPost 
-                ? `Thank you for applying to TaaS for the ${formattedJobPost} position`
-                : "Thank you for applying to TaaS"}
+              Thank you for applying to TaaS
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -154,15 +123,7 @@ const CareerSuccessPage = () => {
             </div>
 
             {/* Display fields - Improved dark mode visibility */}
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground dark:text-gray-300">Applying For</h3>
-                <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-gray-800 dark:text-white dark:border-gray-700">
-                  {formattedJobPost || "Position not specified"}
-                </div>
-                <p className="text-xs text-muted-foreground dark:text-gray-400">Position you're applying for.</p>
-              </div>
-              
+            <div className="space-y-4">              
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground dark:text-gray-300">Application ID</h3>
                 <div className="p-3 rounded-md border border-input bg-background text-foreground dark:bg-gray-800 dark:text-white dark:border-gray-700 font-mono">
