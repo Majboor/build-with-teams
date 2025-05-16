@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { 
@@ -273,11 +272,6 @@ const PTestPage = () => {
   };
 
   const handleNextQuestion = () => {
-    if (selectedOption === null && !userAnswers.some(a => a.questionIndex === currentQuestionIndex)) {
-      // If no option is selected and this question hasn't been answered before, don't proceed
-      return;
-    }
-
     // If there's a new selection, save it
     if (selectedOption !== null) {
       // Save the answer
@@ -346,9 +340,6 @@ const PTestPage = () => {
     setSelectedOption(existingAnswer ? existingAnswer.selectedOption : null);
   }, [currentQuestionIndex, userAnswers]);
 
-  // Check if we already have an answer for the current question
-  const hasExistingAnswer = userAnswers.some(a => a.questionIndex === currentQuestionIndex);
-
   const currentQuestion = questions[currentQuestionIndex];
   const progressPercentage = testCompleted ? 100 : ((currentQuestionIndex + 1) / questions.length) * 100;
 
@@ -372,7 +363,6 @@ const PTestPage = () => {
               <>
                 <div className="mb-6">
                   <h3 className="text-xl font-bold mb-2">{currentQuestion.question}</h3>
-                  <p className="text-sm text-muted-foreground">Signal: {currentQuestion.signal}</p>
                 </div>
 
                 <RadioGroup 
@@ -404,7 +394,7 @@ const PTestPage = () => {
                   <div className="space-y-2">
                     {userAnswers.map((answer, index) => (
                       <div key={index} className="flex justify-between text-sm">
-                        <span>Q{answer.questionIndex + 1}: {questions[answer.questionIndex].signal}</span>
+                        <span>Q{answer.questionIndex + 1}: {questions[answer.questionIndex].question.slice(0, 30)}...</span>
                         <span className="font-semibold">{answer.score}/5 points</span>
                       </div>
                     ))}
@@ -443,8 +433,7 @@ const PTestPage = () => {
                   Previous
                 </Button>
                 <Button 
-                  onClick={handleNextQuestion} 
-                  disabled={selectedOption === null && !hasExistingAnswer}
+                  onClick={handleNextQuestion}
                 >
                   {currentQuestionIndex === questions.length - 1 ? "Complete Test" : "Next"}
                 </Button>
