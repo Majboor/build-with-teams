@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+
+import { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CircleStop, Pause, Play, Upload, Circle } from "lucide-react";
@@ -17,11 +18,20 @@ export default function CareersTestPage() {
   const [timerInterval, setTimerInterval] = useState<number | null>(null);
   
   const videoRef = useRef<HTMLVideoElement>(null);
+  const previewVideoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<BlobPart[]>([]);
   
   const MAX_RECORDING_TIME = 60; // 1 minute in seconds
+
+  // Load and play the video when preview URL is set
+  useEffect(() => {
+    if (previewUrl && previewVideoRef.current) {
+      previewVideoRef.current.src = previewUrl;
+      previewVideoRef.current.load();
+    }
+  }, [previewUrl]);
 
   const startRecording = async () => {
     try {
@@ -216,7 +226,7 @@ export default function CareersTestPage() {
               />
             ) : (
               <video 
-                src={previewUrl} 
+                ref={previewVideoRef}
                 controls 
                 className="w-full h-full object-cover"
               />
