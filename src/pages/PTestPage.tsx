@@ -273,25 +273,41 @@ const PTestPage = () => {
   };
 
   const handleNextQuestion = () => {
-    if (selectedOption === null) return;
+    if (selectedOption === null && !userAnswers.some(a => a.questionIndex === currentQuestionIndex)) {
+      // If no option is selected and this question hasn't been answered before, don't proceed
+      return;
+    }
 
-    // Save the answer
-    const newAnswer: UserAnswer = {
-      questionIndex: currentQuestionIndex,
-      selectedOption: selectedOption,
-      score: questions[currentQuestionIndex].options[selectedOption].score
-    };
+    // If there's a new selection, save it
+    if (selectedOption !== null) {
+      // Save the answer
+      const newAnswer: UserAnswer = {
+        questionIndex: currentQuestionIndex,
+        selectedOption: selectedOption,
+        score: questions[currentQuestionIndex].options[selectedOption].score
+      };
 
-    // Update answers
-    const updatedAnswers = [...userAnswers];
-    updatedAnswers[currentQuestionIndex] = newAnswer;
-    setUserAnswers(updatedAnswers);
+      // Update answers
+      const updatedAnswers = [...userAnswers];
+      // Find if we already have an answer for this question
+      const existingAnswerIndex = updatedAnswers.findIndex(a => a.questionIndex === currentQuestionIndex);
+      
+      if (existingAnswerIndex !== -1) {
+        // Replace existing answer
+        updatedAnswers[existingAnswerIndex] = newAnswer;
+      } else {
+        // Add new answer
+        updatedAnswers.push(newAnswer);
+      }
+      
+      setUserAnswers(updatedAnswers);
+    }
 
     // Move to next question or complete test
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       // Check if the next question has already been answered
-      const nextAnswer = updatedAnswers.find(a => a.questionIndex === currentQuestionIndex + 1);
+      const nextAnswer = userAnswers.find(a => a.questionIndex === currentQuestionIndex + 1);
       setSelectedOption(nextAnswer ? nextAnswer.selectedOption : null);
     } else {
       setTestCompleted(true);
@@ -329,6 +345,9 @@ const PTestPage = () => {
     const existingAnswer = userAnswers.find(a => a.questionIndex === currentQuestionIndex);
     setSelectedOption(existingAnswer ? existingAnswer.selectedOption : null);
   }, [currentQuestionIndex, userAnswers]);
+
+  // Check if we already have an answer for the current question
+  const hasExistingAnswer = userAnswers.some(a => a.questionIndex === currentQuestionIndex);
 
   const currentQuestion = questions[currentQuestionIndex];
   const progressPercentage = testCompleted ? 100 : ((currentQuestionIndex + 1) / questions.length) * 100;
@@ -425,7 +444,7 @@ const PTestPage = () => {
                 </Button>
                 <Button 
                   onClick={handleNextQuestion} 
-                  disabled={selectedOption === null}
+                  disabled={selectedOption === null && !hasExistingAnswer}
                 >
                   {currentQuestionIndex === questions.length - 1 ? "Complete Test" : "Next"}
                 </Button>
