@@ -39,12 +39,12 @@ serve(async (req: Request) => {
       );
     }
 
-    // Read the HTML template directly from the public URL
-    // This URL should be accessible from your deployed app
-    const waitlistTemplateUrl = "https://jpaxhfoyaytpmcqlwrfv.lovableproject.com/waitlist.html";
+    // Use the template from Supabase Storage as specified by the user
+    const waitlistTemplateUrl = "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos//test.html";
     const waitlistTemplateResponse = await fetch(waitlistTemplateUrl);
 
     if (!waitlistTemplateResponse.ok) {
+      console.error("Failed to fetch waitlist template. Status:", waitlistTemplateResponse.status);
       throw new Error("Failed to fetch waitlist template");
     }
 
