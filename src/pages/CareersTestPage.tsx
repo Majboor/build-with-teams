@@ -24,15 +24,31 @@ export default function CareersTestPage() {
   
   const MAX_RECORDING_TIME = 60; // 1 minute in seconds
 
-  // Load and play the video when preview URL is set
+  // Fix for video preview playback
   useEffect(() => {
     if (previewUrl && previewVideoRef.current) {
       previewVideoRef.current.src = previewUrl;
       previewVideoRef.current.load();
-      previewVideoRef.current.onloadedmetadata = () => {
-        previewVideoRef.current?.play().catch(err => {
-          console.error("Error playing video:", err);
-        });
+      
+      // Add event listener for when metadata is loaded
+      const handleMetadataLoaded = () => {
+        if (previewVideoRef.current) {
+          // Play the video and handle any errors
+          previewVideoRef.current.play()
+            .catch(err => {
+              console.error("Error playing video:", err);
+            });
+        }
+      };
+      
+      // Set up the event listener
+      previewVideoRef.current.addEventListener('loadedmetadata', handleMetadataLoaded);
+      
+      // Clean up function to remove event listener
+      return () => {
+        if (previewVideoRef.current) {
+          previewVideoRef.current.removeEventListener('loadedmetadata', handleMetadataLoaded);
+        }
       };
     }
   }, [previewUrl]);
@@ -234,8 +250,9 @@ export default function CareersTestPage() {
               <video 
                 ref={previewVideoRef}
                 controls
-                autoPlay
+                playsInline
                 className="w-full h-full object-cover"
+                autoPlay
               />
             )}
             
