@@ -15,6 +15,13 @@ import CalendarPage from "./pages/CalendarPage";
 import DashboardPage from "./pages/DashboardPage";
 import PricingPage from "./pages/PricingPage";
 import AboutPage from "./pages/AboutPage";
+import CareersTestPage from "./pages/CareersTestPage";
+import PTestPage from "./pages/PTestPage";
+import ApiTestPage from "./pages/ApiTestPage";
+import CareerApplyPage from "./pages/CareerApplyPage";
+import CareerSuccessPage from "./pages/CareerSuccessPage";
+import CareersPage from "./pages/CareersPage";
+import JobDetailPage from "./pages/JobDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +40,13 @@ const App = () => (
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/careers/test" element={<CareersTestPage />} />
+            <Route path="/ptest" element={<PTestPage />} />
+            <Route path="/api-test" element={<ApiTestPage />} />
+            <Route path="/career/apply" element={<CareerApplyPage />} />
+            <Route path="/career/success" element={<CareerSuccessPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/careers/:jobId" element={<JobDetailPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />

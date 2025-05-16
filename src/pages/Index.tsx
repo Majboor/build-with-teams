@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -266,6 +265,13 @@ export default function Index() {
     loadAllImages();
   }, []);
 
+  // Store the user's prompt in localStorage when it changes
+  React.useEffect(() => {
+    if (prompt) {
+      localStorage.setItem("userPrompt", prompt);
+    }
+  }, [prompt]);
+
   const handleStartBuild = () => {
     if (prompt.trim()) {
       setShowBetaDialog(true);
@@ -316,11 +322,7 @@ export default function Index() {
                 className="h-12 sm:h-14 text-lg"
               />
               <Button 
-                onClick={() => {
-                  if (prompt.trim()) {
-                    setShowBetaDialog(true);
-                  }
-                }}
+                onClick={handleStartBuild}
                 className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
                 size="lg"
               >
