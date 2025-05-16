@@ -17,6 +17,7 @@ import PricingPage from "./pages/PricingPage";
 import AboutPage from "./pages/AboutPage";
 import CareersTestPage from "./pages/CareersTestPage";
 import PTestPage from "./pages/PTestPage";
+import ApiTestPage from "./pages/ApiTestPage";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/about" element={<AboutPage />} />
             <Route path="/careers/test" element={<CareersTestPage />} />
             <Route path="/ptest" element={<PTestPage />} />
+            <Route path="/api-test" element={<ApiTestPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
