@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { Menu, LayoutGrid, User, CheckSquare, Calendar, LayoutDashboard, DollarSign, Info, Lock, ListCheck, Send } from "lucide-react"
+import { Menu, LayoutGrid, User, CheckSquare, Calendar, LayoutDashboard, DollarSign, Info, Lock, ListCheck, Send, FileText } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { BetaSignupDialog } from "./BetaSignupDialog"
@@ -81,6 +81,17 @@ export function SidePanel() {
             <Link to="/api-test">
               <Send className="h-5 w-5" />
               API Test Page
+            </Link>
+          </Button>
+          
+          <Button
+            asChild
+            variant="ghost"
+            className="justify-start gap-2 w-full"
+          >
+            <Link to="/career/apply">
+              <FileText className="h-5 w-5" />
+              Career Application
             </Link>
           </Button>
         </div>
