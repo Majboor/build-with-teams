@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { WorkflowSection } from "@/components/WorkflowSection";
+import { Link } from "react-router-dom";
 
 type CrmFeature = {
   title: string;
@@ -175,6 +176,11 @@ const steps = [
   {
     title: "Build Your App",
     description: "Watch your idea come to life",
+  },
+  {
+    title: "Market Your App",
+    description: "Use our AI-Marketing services",
+    link: "/ai-marketing"
   },
 ];
 
@@ -452,11 +458,16 @@ export default function Index() {
       {/* How It Works */}
       <section className="container py-20 border-t" id="features">
         <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, i) => (
             <div key={i} className="glass p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
               <h3 className="text-xl font-semibold">{step.title}</h3>
-              <p className="text-muted-foreground">{step.description}</p>
+              <p className="text-muted-foreground mb-2">{step.description}</p>
+              {step.link && (
+                <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                  Learn more →
+                </Link>
+              )}
             </div>
           ))}
         </div>
@@ -505,8 +516,9 @@ export default function Index() {
               © 2024 TaaS - Team as a Service. All rights reserved.
             </div>
             <div className="flex gap-6 text-sm">
-              <a href="#" className="hover:text-primary">Privacy Policy</a>
-              <a href="#" className="hover:text-primary">Terms of Service</a>
+              <Link to="/ai-marketing" className="hover:text-primary">AI Marketing</Link>
+              <Link to="/careers" className="hover:text-primary">Careers</Link>
+              <Link to="/about" className="hover:text-primary">About</Link>
               <a href="#" className="hover:text-primary">Contact</a>
             </div>
           </div>
