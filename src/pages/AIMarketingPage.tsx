@@ -181,11 +181,11 @@ export default function AIMarketingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">How It Works</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Our multi-day outreach system combines AI intelligence with human touchpoints for maximum conversion
             </p>
           </div>
@@ -194,20 +194,20 @@ export default function AIMarketingPage() {
             {timelineSteps.map((step, index) => (
               <motion.div
                 key={step.day}
-                className="bg-white p-6 rounded-lg shadow-md"
+                className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="flex items-center mb-4">
-                  <div className="bg-blue-100 p-3 rounded-full mr-4">{step.icon}</div>
+                  <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4">{step.icon}</div>
                   <div>
-                    <h3 className="font-bold text-xl">{step.day}</h3>
-                    <p className="text-blue-600">{step.title}</p>
+                    <h3 className="font-bold text-xl dark:text-white">{step.day}</h3>
+                    <p className="text-blue-600 dark:text-blue-400">{step.title}</p>
                   </div>
                 </div>
-                <p className="text-gray-600">{step.description}</p>
+                <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
               </motion.div>
             ))}
           </div>
@@ -215,11 +215,11 @@ export default function AIMarketingPage() {
       </section>
 
       {/* AI + Manual = Results Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">AI + Manual = Results</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">AI + Manual = Results</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Our unique approach combines AI intelligence with human touchpoints exactly when they're needed
             </p>
           </div>
@@ -235,46 +235,46 @@ export default function AIMarketingPage() {
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="bg-gray-100 p-3 rounded-full">
+                  <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-full">
                     {step.icon}
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-1">{step.userAction}</h3>
-                    <p className="text-gray-600">User behavior</p>
+                    <h3 className="font-bold text-lg mb-1 dark:text-white">{step.userAction}</h3>
+                    <p className="text-gray-600 dark:text-gray-400">User behavior</p>
                   </div>
-                  <ArrowRight className="mt-2" />
+                  <ArrowRight className="mt-2 dark:text-gray-400" />
                   <div>
-                    <h3 className="font-bold text-lg mb-1">{step.aiAction}</h3>
-                    <p className="text-blue-600">AI response</p>
+                    <h3 className="font-bold text-lg mb-1 dark:text-white">{step.aiAction}</h3>
+                    <p className="text-blue-600 dark:text-blue-400">AI response</p>
                   </div>
                 </motion.div>
               ))}
             </div>
             
             <motion.div
-              className="bg-blue-50 p-8 rounded-xl"
+              className="bg-blue-50 dark:bg-blue-900/50 p-8 rounded-xl"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.7 }}
             >
-              <h3 className="text-2xl font-bold mb-4">Why This Works</h3>
+              <h3 className="text-2xl font-bold mb-4 dark:text-white">Why This Works</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>AI analyzes behavior patterns to identify the perfect time to reach out</span>
+                  <span className="dark:text-gray-300">AI analyzes behavior patterns to identify the perfect time to reach out</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>Multi-channel approach ensures your message reaches the prospect</span>
+                  <span className="dark:text-gray-300">Multi-channel approach ensures your message reaches the prospect</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>Human touchpoints add authenticity when it matters most</span>
+                  <span className="dark:text-gray-300">Human touchpoints add authenticity when it matters most</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>Continuous optimization based on performance data</span>
+                  <span className="dark:text-gray-300">Continuous optimization based on performance data</span>
                 </li>
               </ul>
             </motion.div>
@@ -356,76 +356,76 @@ export default function AIMarketingPage() {
       </section>
 
       {/* Comparative Impact Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Comparative Impact</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">Comparative Impact</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               See how our approach compares to traditional marketing methods
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-10">
             <motion.div 
-              className="bg-gray-100 p-8 rounded-xl"
+              className="bg-gray-100 dark:bg-gray-700 p-8 rounded-xl"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="text-2xl font-bold mb-6 text-gray-800">Traditional Marketing</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Traditional Marketing</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span>Generic messages with low personalization</span>
+                  <span className="dark:text-gray-300">Generic messages with low personalization</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span>Low conversion rates (1-2%)</span>
+                  <span className="dark:text-gray-300">Low conversion rates (1-2%)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span>Cold outreach with no behavior tracking</span>
+                  <span className="dark:text-gray-300">Cold outreach with no behavior tracking</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span>Limited to one or two channels</span>
+                  <span className="dark:text-gray-300">Limited to one or two channels</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span>No optimization based on real-time data</span>
+                  <span className="dark:text-gray-300">No optimization based on real-time data</span>
                 </li>
               </ul>
             </motion.div>
             
             <motion.div 
-              className="bg-blue-50 p-8 rounded-xl"
+              className="bg-blue-50 dark:bg-blue-900/40 p-8 rounded-xl"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="text-2xl font-bold mb-6 text-blue-800">Our TaaS Marketing</h3>
+              <h3 className="text-2xl font-bold mb-6 text-blue-800 dark:text-blue-100">Our TaaS Marketing</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>AI + CRM integration for deep personalization</span>
+                  <span className="dark:text-gray-300">AI + CRM integration for deep personalization</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>High conversion rates (3-5%)</span>
+                  <span className="dark:text-gray-300">High conversion rates (3-5%)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>Warm lead scoring and behavior-based targeting</span>
+                  <span className="dark:text-gray-300">Warm lead scoring and behavior-based targeting</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>Multi-channel approach (email, SMS, calls, WhatsApp)</span>
+                  <span className="dark:text-gray-300">Multi-channel approach (email, SMS, calls, WhatsApp)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span>Continuous optimization with machine learning</span>
+                  <span className="dark:text-gray-300">Continuous optimization with machine learning</span>
                 </li>
               </ul>
             </motion.div>
@@ -434,11 +434,11 @@ export default function AIMarketingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">What Our Clients Say</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Real results from companies just like yours
             </p>
           </div>
@@ -447,16 +447,16 @@ export default function AIMarketingPage() {
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-md"
+                className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 {/* <img src={testimonial.logo} alt={testimonial.company} className="h-12 mb-4" /> */}
-                <h3 className="font-bold text-lg mb-2">{testimonial.company}</h3>
-                <p className="text-gray-600 italic mb-4">"{testimonial.quote}"</p>
-                <p className="text-sm text-gray-500">- {testimonial.author}</p>
+                <h3 className="font-bold text-lg mb-2 dark:text-white">{testimonial.company}</h3>
+                <p className="text-gray-600 dark:text-gray-300 italic mb-4">"{testimonial.quote}"</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">- {testimonial.author}</p>
               </motion.div>
             ))}
           </div>
