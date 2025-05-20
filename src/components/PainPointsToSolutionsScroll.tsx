@@ -72,7 +72,7 @@ export const PainPointsToSolutionsScroll = () => {
   return (
     <section className="relative w-full bg-white dark:bg-gray-900">
       <div className="max-w-screen-2xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center py-12 dark:text-white">
+        <h2 className="text-3xl md:text-4xl font-bold text-center py-12 text-gray-900 dark:text-white">
           Common Marketing Challenges & Our Solutions
         </h2>
         
@@ -95,7 +95,7 @@ export const PainPointsToSolutionsScroll = () => {
                   className="w-full max-w-xl mx-auto bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg p-8 md:p-12"
                 >
                   <h3 className="text-xl font-medium text-gray-500 dark:text-gray-400 mb-2">Problem</h3>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-8 dark:text-white">{item.problem}</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 dark:text-white">{item.problem}</h2>
                   <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full py-6 px-8">
                     Book Free Consultation
                   </Button>
@@ -142,7 +142,7 @@ export const PainPointsToSolutionsScroll = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, amount: 0.3 }}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-blue-700 rounded-2xl shadow-xl p-12 md:p-16 my-16 mx-auto max-w-6xl"
+          className="w-full bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-blue-700 rounded-2xl shadow-xl p-12 md:p-16 my-16 mx-auto max-w-6xl text-white"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-white">
             Ready to solve all your marketing challenges?
