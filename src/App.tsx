@@ -22,6 +22,7 @@ import CareerApplyPage from "./pages/CareerApplyPage";
 import CareerSuccessPage from "./pages/CareerSuccessPage";
 import CareersPage from "./pages/CareersPage";
 import JobDetailPage from "./pages/JobDetailPage";
+import AIMarketingPage from "./pages/AIMarketingPage";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/career/success" element={<CareerSuccessPage />} />
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/careers/:jobId" element={<JobDetailPage />} />
+            <Route path="/ai-marketing" element={<AIMarketingPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />

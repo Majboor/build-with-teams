@@ -13,8 +13,16 @@ export default function CareersPage() {
       
       <div className="container py-12 flex-1">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-12 text-center">
-            <h1 className="text-4xl font-bold mb-4">Join Our Team</h1>
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-4xl font-bold">Join Our Team</h1>
+              <Link 
+                to="/ai-marketing"
+                className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
+              >
+                Check our AI-Marketing Services <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
             <p className="text-xl text-muted-foreground">
               Help us build the future of team collaboration and software development
             </p>
