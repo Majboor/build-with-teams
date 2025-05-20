@@ -134,32 +134,32 @@ const builtProjects = [
 const features = [
   {
     title: "Workspace Overview",
-    description: "A comprehensive workspace that brings all your project management needs into one place. Streamline your workflow and boost productivity with our intuitive interface.",
+    description: "TaaS's unified workspace combines AI-driven planning, real-time team collaboration, and end-to-end project tracking. From your initial prompt through deployment, every step—mockups, timelines, cost estimates, and live updates—is managed in one intuitive interface.",
     image: "https://i.ibb.co/tMdpVPWK/FB199-AD2-7-E30-4-A94-83-D7-911-C2-ACC2106-export.png"
   },
   {
     title: "Task Management",
-    description: "Efficiently organize and track tasks with our intuitive task management system. Keep your team aligned and projects on schedule.",
+    description: "Leverage AI to automatically assign, prioritize, and balance tasks across your team. Drag-and-drop cards or let the system reallocate work based on skills and availability—ensuring nothing falls through the cracks.",
     image: "https://i.ibb.co/FkqRv7Tj/5501317-E-FAF0-4663-9067-931-FB861-C83-C-export.png"
   },
   {
     title: "Calendar Integration",
-    description: "Stay on schedule with our powerful calendar integration feature. Never miss a deadline or important meeting again.",
+    description: "Our smart calendar syncs milestones, deadlines, and on-demand meetings with your team and AI PM Assistant. Automated reminders and scheduling suggestions keep everyone aligned and on schedule.",
     image: "https://i.ibb.co/m5K3DDYJ/2400-C394-8946-4-E73-9-BF5-0-A2-E449-C336-D-export.png"
   },
   {
     title: "Quick Actions & Notifications",
-    description: "Stay informed and take quick actions with our smart notification system. Keep your finger on the pulse of your projects.",
+    description: "Stay in control with contextual quick-action buttons—approve mockups, request changes, or launch sprints in a single click. Real-time alerts notify you of completed tasks, meeting invites, and critical updates.",
     image: "https://i.ibb.co/6cnKgRyr/B619-A99-C-3005-47-E7-B71-E-5-C36-ECFE1-F4-D-export.png"
   },
   {
-    title: "Developer Dashboard",
-    description: "A personalized space for developers to manage their tasks and track progress. Everything you need at your fingertips.",
+    title: "Hire a Developer",
+    description: "Spot top talent within your project's workspace and bring them on board instantly. Click to view a developer's profile, see their rate for your project, hire them for this build—or engage them for future work—all in one place.",
     image: "https://i.ibb.co/VrWt8Bt/86-F5-D48-D-AD4-D-4-F38-BB84-DE178-F2755-D2-export.png"
   },
   {
     title: "Task Details",
-    description: "Dive deep into task details with our comprehensive task view. Get all the information you need in one place.",
+    description: "Click any task to reveal AI-generated specs, design notes, code snippets, and a full activity log. Edit requirements on the fly, leave feedback, and watch the AI update assignments and timelines accordingly.",
     image: "https://i.ibb.co/DHZZVMQ7/C6-B53-D20-E004-4-DF7-9230-DC2-D4-DA3-E76-B-export.png"
   }
 ];
@@ -206,7 +206,7 @@ export function CrmFeatures() {
   return (
     <section className="container py-20">
       <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-16">
-        Finally, a CRM that works <span className="text-primary">for you</span>
+        Finally, an AI that works <span className="text-primary">for you</span>
       </h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
         {crmFeatures.map((feature, index) => (
@@ -231,6 +231,7 @@ export function CrmFeatures() {
 
 export default function Index() {
   const [showBetaDialog, setShowBetaDialog] = useState(false);
+  const [showAllIndustries, setShowAllIndustries] = useState(false);
   const [appIdea, setAppIdea] = useState("");
   const [selectedApp, setSelectedApp] = useState<typeof builtProjects[0] | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -428,6 +429,8 @@ export default function Index() {
         )}
       </section>
 
+      
+
       {/* Features Section */}
       <section className="py-16">
         <div className="container">
@@ -455,34 +458,85 @@ export default function Index() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="container py-20 border-t" id="features">
-        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {steps.map((step, i) => (
-            <div key={i} className="glass p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-              <h3 className="text-xl font-semibold">{step.title}</h3>
-              <p className="text-muted-foreground mb-2">{step.description}</p>
-              {step.link && (
-                <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                  Learn more →
-                </Link>
-              )}
-            </div>
-          ))}
-        </div>
+{/* Industries We Serve */}
+<section className="container py-20 border-t" id="industries">
+  <h2 className="text-3xl font-bold text-center mb-12">Industries We Serve</h2>
+  <div className="grid sm:grid-cols-2 gap-6">
+    {(showAllIndustries ? industries : industries.slice(0, 4)).map((industry, i) => (
+      <div 
+        key={i} 
+        className="glass p-6 space-y-4 animate-slide-up rounded-lg hover:shadow-lg transition-all"
+        style={{ animationDelay: `${i * 50}ms` }}
+      >
+        <div className="text-4xl">{industry.icon}</div>
+        <h3 className="text-xl font-semibold">{industry.title}</h3>
+        <p className="text-muted-foreground text-sm">{industry.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+{/* How It Works */}
+<section className="container py-20 border-t" id="features">
+  <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+    {steps.map((step, i) => (
+      <div key={i} className="glass p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+        <h3 className="text-xl font-semibold">{step.title}</h3>
+        <p className="text-muted-foreground mb-2">{step.description}</p>
+        {step.link && (
+          <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+            Learn more →
+          </Link>
+        )}
+      </div>
+    ))}
+  </div>
+</section>
+
+        
+        {industries.length > 4 && (
+          <div className="flex justify-center mt-8">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setShowAllIndustries(!showAllIndustries)}
+              className="rounded-full"
+            >
+              {showAllIndustries ? 'Show Less' : 'View More Industries'}
+            </Button>
+          </div>
+        )}
       </section>
 
-      {/* Features */}
+      {/* Features - Changed to What Others Can't Do */}
       <section className="container py-20 border-t">
-        <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">What Others Can't Do</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-          {features.map((feature, i) => (
-            <div key={i} className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-              <Check className="h-5 w-5 text-primary" />
-              <span>{feature.title}</span>
-            </div>
-          ))}
+          <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "0ms" }}>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Instant AI + Human Team</span>
+          </div>
+          <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "100ms" }}>
+            <Check className="h-5 w-5 text-primary" />
+            <span>End-to-End in One Workspace</span>
+          </div>
+          <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "200ms" }}>
+            <Check className="h-5 w-5 text-primary" />
+            <span>On-Demand Expert Meetings</span>
+          </div>
+          <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "300ms" }}>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Hire Developers Permanently</span>
+          </div>
+          <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "400ms" }}>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Seamless Hosting & Bundling</span>
+          </div>
+          <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "500ms" }}>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Continuous AI-Driven Optimization</span>
+          </div>
         </div>
       </section>
 
@@ -538,3 +592,91 @@ export default function Index() {
     </div>
   );
 }
+
+const industries = [
+  {
+    title: "Retail Software Solutions",
+    description: "Aalpha India, we deliver cutting edge technology solutions for online commerce industry. Our ecommerce solutions are built on latest technology",
+    icon: "🛒"
+  },
+  {
+    title: "ISVs and Product Development Solutions",
+    description: "Aalpha India, we create winning business models through innovative product development practices. Committed to delivering the right value",
+    icon: "💻"
+  },
+  {
+    title: "Sports Software Development Company",
+    description: "In the present era of digitalization, technology drives almost all the domains. The area of sports & entertainment is getting great attention",
+    icon: "⚽"
+  },
+  {
+    title: "Agri Tech",
+    description: "We are a one-stop solution for Agritech Software Services. We develop custom Agritech Web and Mobile apps for clients worldwide.",
+    icon: "🚜"
+  },
+  {
+    title: "Education",
+    description: "Boundless connectivity with the help of internet penetration, development of ICT devices, better access, convenience and flexibility to learners is shaping the future of this industry.",
+    icon: "📚"
+  },
+  {
+    title: "Fintech App Development Company",
+    description: "Making quick yet careful decisions and managing large scale of operations with help of limited resources is the area of focus at the moment.",
+    icon: "💰"
+  },
+  {
+    title: "Food and Beverage",
+    description: "The food and beverage industry needs advanced software and tools for its efficient management, delivery, manufacturing process, safe use",
+    icon: "🍽️"
+  },
+  {
+    title: "Healthcare",
+    description: "We provide expert healthcare Healthcare Software Development services/solutions based on in-depth research and deep industry knowledge",
+    icon: "❤️"
+  },
+  {
+    title: "Hospitality & Travel",
+    description: "The hospitality and travel software development industry is largely customer driven. Increasing customer demand for convenience and luxury is shaping the future dynamics of this industry.",
+    icon: "✈️"
+  },
+  {
+    title: "Government",
+    description: "Empowering governments with AI-driven data solutions to enhance public services, streamline processes, and improve decision-making.",
+    icon: "🏛️"
+  },
+  {
+    title: "Pharma",
+    description: "Enabling pharmaceutical innovation with AI and data platforms, accelerating drug discovery, compliance, and personalized medicine.",
+    icon: "💊"
+  },
+  {
+    title: "Logistics",
+    description: "Optimizing supply chains with AI and data, improving efficiency, reducing costs, and ensuring timely delivery in logistics.",
+    icon: "📦"
+  },
+  {
+    title: "Telco",
+    description: "Transforming telco operations with AI solutions, enhancing customer service, optimizing networks, and driving new service innovation.",
+    icon: "📱"
+  },
+  {
+    title: "Banking",
+    description: "Revolutionizing banking with secure AI-driven solutions, enhancing customer interactions, risk management, and operational efficiency.",
+    icon: "🏦"
+  },
+  {
+    title: "FMCG",
+    description: "Boosting FMCG success with AI, optimizing supply chains, analyzing consumer behaviour, and accelerating product development.",
+    icon: "🛍️"
+  },
+  {
+    title: "Industrial",
+    description: "Enhancing industrial operations with AI, optimizing processes, reducing downtime, and improving product quality and compliance.",
+    icon: "🏭"
+  },
+  {
+    title: "Utilities",
+    description: "Powering utilities with AI solutions, optimizing grid management, improving customer service, and ensuring regulatory compliance.",
+    icon: "⚡"
+  }
+];
