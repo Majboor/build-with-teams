@@ -6,11 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from "@/components/ui/drawer";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowRight, ArrowLeft, Upload, Save, User, FileText, Video, CheckSquare, Send, Play, Pause, CircleStop } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Application steps - remove PERSONALITY step
 const STEPS = {
@@ -27,6 +29,7 @@ import { questions, generatePersonalityReport } from "../components/career/perso
 const CareerApplyPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const [showIntroModal, setShowIntroModal] = useState(true);
   const [step, setStep] = useState(STEPS.INTRO);
   const [progress, setProgress] = useState(0);
@@ -980,94 +983,42 @@ const CareerApplyPage = () => {
     <div className="min-h-screen pb-16">
       <Navigation />
       
-      {/* Company intro modal */}
-      <Dialog open={showIntroModal} onOpenChange={setShowIntroModal}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle className="text-2xl">📝 Application Process – TaaS</DialogTitle>
-            <DialogDescription>
-              Please review the following information before proceeding.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-bold mb-2">Who is TaaS?</h3>
-              <p className="text-sm">
-                TaaS (Team-as-a-Service) is an AI-powered platform that lets anyone build a real app 
-                with a real team — for under $100. We instantly assign a pre-vetted team of 300+ 
-                developers, designers, and PMs based on your project needs. Plan your product with AI, 
-                finalize it with experts, and manage everything in a VS Code–style workspace.
-                It's the first platform where AI + humans collaborate to deliver end-to-end software.
-              </p>
-              <p className="text-sm italic mt-2">You dream it. We build it.</p>
+      {/* Use Drawer for mobile and Dialog for desktop */}
+      {isMobile ? (
+        <Drawer open={showIntroModal} onOpenChange={setShowIntroModal}>
+          <DrawerContent>
+            <DrawerHeader className="text-center">
+              <DrawerTitle className="text-xl">📝 Application Process – TaaS</DrawerTitle>
+              <DrawerDescription>
+                Please review the following information before proceeding.
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="p-4 overflow-y-auto max-h-[70vh]">
+              {renderIntroContent()}
             </div>
+            <DrawerFooter>
+              {renderFooterContent()}
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={showIntroModal} onOpenChange={setShowIntroModal}>
+          <DialogContent className="sm:max-w-[600px] max-h-[85vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">📝 Application Process – TaaS</DialogTitle>
+              <DialogDescription>
+                Please review the following information before proceeding.
+              </DialogDescription>
+            </DialogHeader>
             
-            <div>
-              <h3 className="font-bold mb-2">What will this application involve?</h3>
-              <ul className="text-sm space-y-3 list-disc pl-5">
-                <li>
-                  A <strong>video recording</strong> to introduce yourself and showcase your 
-                  communication skills.
-                  <p className="text-red-500 mt-1">
-                    ❗ Your video is <strong>required</strong>. Please <strong>speak in English only</strong>.
-                  </p>
-                </li>
-                <li>
-                  An optional <strong>CV</strong> and <strong>cover letter</strong> to share your credentials.
-                </li>
-              </ul>
-            </div>
+            {renderIntroContent()}
             
-            <div className="bg-orange-50 dark:bg-orange-950 p-4 rounded-md text-orange-800 dark:text-orange-300">
-              <h3 className="font-bold mb-2">⚠️ Important Disclaimer</h3>
-              <ul className="text-sm space-y-2">
-                <li>This is <strong>not an immediate hiring opportunity</strong>.</li>
-                <li>TaaS is a startup actively seeking revenue streams and growth partners.</li>
-                <li>
-                  Your video resume or skill profile <strong>may be promoted on social media</strong> 
-                  to attract clients.
-                </li>
-                <li>
-                  You <strong>will not be compensated immediately</strong> — this is a pre-hiring 
-                  and scouting process.
-                </li>
-              </ul>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="consent"
-                  checked={consentShowcase}
-                  onCheckedChange={setConsentShowcase}
-                />
-                <Label htmlFor="consent" className="text-sm">
-                  I give complete consent to use my application for public showcasing.
-                </Label>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="save-progress"
-                  checked={consentSaveProgress}
-                  onCheckedChange={setConsentSaveProgress}
-                />
-                <Label htmlFor="save-progress" className="text-sm">
-                  I want to save my progress and continue later.
-                </Label>
-              </div>
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button onClick={handleStartApplication}>
-              Start Application
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            <DialogFooter>
+              {renderFooterContent()}
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
       
       {/* Main application container */}
       <div className="container mx-auto px-4 pt-20 max-w-3xl">
