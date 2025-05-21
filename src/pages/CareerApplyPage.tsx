@@ -632,6 +632,80 @@ const CareerApplyPage = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
   
+  // Render intro content - extracted to a separate function
+  const renderIntroContent = () => {
+    return (
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <p className="text-sm">
+            Thank you for your interest in joining our team. This application process 
+            consists of the following steps:
+          </p>
+          
+          <ol className="list-decimal list-inside space-y-2 ml-2 text-sm">
+            <li className="font-medium">Personal Information <span className="text-muted-foreground font-normal">(Name, Email, Contact)</span></li>
+            <li className="font-medium">Document Upload <span className="text-muted-foreground font-normal">(CV, Cover Letter)</span></li>
+            <li className="font-medium">Video Introduction <span className="text-muted-foreground font-normal">(60 seconds)</span></li>
+            <li className="font-medium">Review & Submit</li>
+          </ol>
+        </div>
+        
+        <div className="space-y-2">
+          <p className="text-sm font-medium">Time Required:</p>
+          <p className="text-sm">Approximately 10-15 minutes to complete all sections.</p>
+        </div>
+        
+        <div className="space-y-2">
+          <p className="text-sm font-medium">Important Notes:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2 text-sm text-muted-foreground">
+            <li>Have your resume/CV ready in PDF or DOCX format</li>
+            <li>You'll need a working webcam and microphone for the video introduction</li>
+            <li>Your application progress can be saved if you need to return later</li>
+            <li>Once submitted, applications cannot be edited</li>
+          </ul>
+        </div>
+        
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="consent"
+              checked={consentShowcase}
+              onCheckedChange={setConsentShowcase}
+            />
+            <Label htmlFor="consent" className="text-sm">
+              I agree that my application materials may be kept for consideration for future positions.
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="save-progress"
+              checked={consentSaveProgress}
+              onCheckedChange={setConsentSaveProgress}
+            />
+            <Label htmlFor="save-progress" className="text-sm">
+              Save my progress so I can continue later.
+            </Label>
+          </div>
+        </div>
+      </div>
+    )
+  };
+
+  // Render footer content - extracted to a separate function
+  const renderFooterContent = () => {
+    return (
+      <>
+        <Button 
+          onClick={handleStartApplication}
+          className="w-full"
+        >
+          Start Application
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </>
+    )
+  };
+  
   // Render the specific content for the current step
   const renderStepContent = () => {
     switch (step) {
