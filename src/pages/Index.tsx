@@ -429,8 +429,6 @@ export default function Index() {
         )}
       </section>
 
-      
-
       {/* Features Section */}
       <section className="py-16">
         <div className="container">
@@ -458,42 +456,22 @@ export default function Index() {
         </div>
       </section>
 
-{/* Industries We Serve */}
-<section className="container py-20 border-t" id="industries">
-  <h2 className="text-3xl font-bold text-center mb-12">Industries We Serve</h2>
-  <div className="grid sm:grid-cols-2 gap-6">
-    {(showAllIndustries ? industries : industries.slice(0, 4)).map((industry, i) => (
-      <div 
-        key={i} 
-        className="glass p-6 space-y-4 animate-slide-up rounded-lg hover:shadow-lg transition-all"
-        style={{ animationDelay: `${i * 50}ms` }}
-      >
-        <div className="text-4xl">{industry.icon}</div>
-        <h3 className="text-xl font-semibold">{industry.title}</h3>
-        <p className="text-muted-foreground text-sm">{industry.description}</p>
-      </div>
-    ))}
-  </div>
-</section>
-
-{/* How It Works */}
-<section className="container py-20 border-t" id="features">
-  <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-    {steps.map((step, i) => (
-      <div key={i} className="glass p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-        <h3 className="text-xl font-semibold">{step.title}</h3>
-        <p className="text-muted-foreground mb-2">{step.description}</p>
-        {step.link && (
-          <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-            Learn more →
-          </Link>
-        )}
-      </div>
-    ))}
-  </div>
-</section>
-
+      {/* Industries We Serve */}
+      <section className="container py-20 border-t" id="industries">
+        <h2 className="text-3xl font-bold text-center mb-12">Industries We Serve</h2>
+        <div className="grid sm:grid-cols-2 gap-6">
+          {(showAllIndustries ? industries : industries.slice(0, 4)).map((industry, i) => (
+            <div 
+              key={i} 
+              className="glass p-6 space-y-4 animate-slide-up rounded-lg hover:shadow-lg transition-all"
+              style={{ animationDelay: `${i * 50}ms` }}
+            >
+              <div className="text-4xl">{industry.icon}</div>
+              <h3 className="text-xl font-semibold">{industry.title}</h3>
+              <p className="text-muted-foreground text-sm">{industry.description}</p>
+            </div>
+          ))}
+        </div>
         
         {industries.length > 4 && (
           <div className="flex justify-center mt-8">
@@ -507,6 +485,24 @@ export default function Index() {
             </Button>
           </div>
         )}
+      </section>
+
+      {/* How It Works */}
+      <section className="container py-20 border-t" id="features">
+        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.map((step, i) => (
+            <div key={i} className="glass p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+              <h3 className="text-xl font-semibold">{step.title}</h3>
+              <p className="text-muted-foreground mb-2">{step.description}</p>
+              {step.link && (
+                <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                  Learn more →
+                </Link>
+              )}
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Features - Changed to What Others Can't Do */}
