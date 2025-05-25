@@ -14,13 +14,14 @@ import { ArrowRight, ArrowLeft, Upload, Save, User, FileText, Video, CheckSquare
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// Application steps - remove PERSONALITY step
+// Application steps - restore PERSONALITY step
 const STEPS = {
   INTRO: 0,
   NAME: 1,
   DOCUMENTS: 2,
-  VIDEO: 3,
-  SUBMIT: 4,
+  PERSONALITY: 3,
+  VIDEO: 4,
+  SUBMIT: 5,
 };
 
 // Import personality assessment helpers
@@ -282,6 +283,13 @@ const CareerApplyPage = () => {
       });
     }
     
+    if (step === STEPS.PERSONALITY && !personalityCompleted) {
+      toast.error("Please complete the personality assessment", {
+        description: "All questions must be answered before proceeding."
+      });
+      return;
+    }
+    
     if (step === STEPS.VIDEO && !videoUrl) {
       toast.error("Video recording is required", {
         description: "Please record a video introduction before proceeding."
@@ -289,12 +297,29 @@ const CareerApplyPage = () => {
       return;
     }
     
-    // If moving to submit step and personality test not completed, generate it automatically
-    if (step === STEPS.VIDEO && !personalityCompleted) {
-      generateRandomPersonalityAnswers();
-    }
-    
     setStep(prevStep => prevStep + 1);
+  };
+  
+  // Handle personality question answers
+  const handlePersonalityAnswer = (questionIndex: number, selectedOption: number) => {
+    const question = questions[questionIndex];
+    const score = question.options[selectedOption].score;
+    
+    setPersonalityAnswers(prevAnswers => {
+      const updatedAnswers = prevAnswers.filter(a => a.questionIndex !== questionIndex);
+      updatedAnswers.push({
+        questionIndex,
+        selectedOption,
+        score
+      });
+      return updatedAnswers;
+    });
+    
+    // Check if all questions are answered
+    const totalAnswered = personalityAnswers.filter(a => a.questionIndex !== questionIndex).length + 1;
+    if (totalAnswered === questions.length) {
+      setPersonalityCompleted(true);
+    }
   };
   
   // Function to automatically generate personality answers (hidden from user)
@@ -645,6 +670,7 @@ const CareerApplyPage = () => {
           <ol className="list-decimal list-inside space-y-2 ml-2 text-sm">
             <li className="font-medium">Personal Information <span className="text-muted-foreground font-normal">(Name, Email, Contact)</span></li>
             <li className="font-medium">Document Upload <span className="text-muted-foreground font-normal">(CV, Cover Letter)</span></li>
+            <li className="font-medium">Assessment <span className="text-muted-foreground font-normal">(Personality Test)</span></li>
             <li className="font-medium">Video Introduction <span className="text-muted-foreground font-normal">(60 seconds)</span></li>
             <li className="font-medium">Review & Submit</li>
           </ol>
@@ -828,6 +854,61 @@ const CareerApplyPage = () => {
           </div>
         );
       
+      case STEPS.PERSONALITY:
+        return (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <p className="text-sm">
+                Please answer the following questions honestly. This helps us understand your work style and personality.
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Progress: {personalityAnswers.length} of {questions.length} questions answered
+              </p>
+            </div>
+            
+            <div className="space-y-6 max-h-96 overflow-y-auto">
+              {questions.map((question, questionIndex) => {
+                const existingAnswer = personalityAnswers.find(a => a.questionIndex === questionIndex);
+                
+                return (
+                  <div key={questionIndex} className="space-y-3 p-4 border rounded-lg">
+                    <h4 className="font-medium text-sm">
+                      {questionIndex + 1}. {question.question}
+                    </h4>
+                    
+                    <div className="space-y-2">
+                      {question.options.map((option, optionIndex) => (
+                        <label 
+                          key={optionIndex}
+                          className="flex items-start space-x-3 cursor-pointer p-2 rounded hover:bg-muted"
+                        >
+                          <input
+                            type="radio"
+                            name={`question-${questionIndex}`}
+                            value={optionIndex}
+                            checked={existingAnswer?.selectedOption === optionIndex}
+                            onChange={() => handlePersonalityAnswer(questionIndex, optionIndex)}
+                            className="mt-1"
+                          />
+                          <span className="text-sm">{option.text}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            {personalityCompleted && (
+              <div className="bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300 p-3 rounded-md">
+                <p className="text-sm">
+                  ✓ Personality assessment completed! You can proceed to the next step.
+                </p>
+              </div>
+            )}
+          </div>
+        );
+      
       case STEPS.VIDEO:
         return (
           <div className="space-y-6">
@@ -977,7 +1058,9 @@ const CareerApplyPage = () => {
         );
         
       case STEPS.SUBMIT:
-        // Generate a summary without showing personality test details
+        // Generate a summary with personality test results
+        const personalityResults = personalityCompleted ? generatePersonalityReport(personalityAnswers) : null;
+        
         return (
           <div className="space-y-6">
             <div className="rounded-md border p-4">
@@ -1017,11 +1100,29 @@ const CareerApplyPage = () => {
                   </dd>
                 </div>
                 <div className="flex justify-between">
+                  <dt className="font-medium">Personality Assessment:</dt>
+                  <dd>{personalityCompleted ? "Completed" : "Not completed"}</dd>
+                </div>
+                <div className="flex justify-between">
                   <dt className="font-medium">Video:</dt>
                   <dd>{videoUrl ? "Provided" : "Not provided"}</dd>
                 </div>
               </dl>
             </div>
+            
+            {personalityResults && (
+              <div className="rounded-md border p-4">
+                <h3 className="font-medium mb-2">Personality Assessment Results</h3>
+                <div className="space-y-2">
+                  <p className="text-sm">
+                    <span className="font-medium">Score:</span> {personalityResults.totalScore}/{personalityResults.maxScore} ({personalityResults.scorePercentage}%)
+                  </p>
+                  <p className="text-sm">
+                    <span className="font-medium">Profile:</span> {personalityResults.personalityEmoji} {personalityResults.personalityType}
+                  </p>
+                </div>
+              </div>
+            )}
             
             <div className="bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 p-4 rounded-md">
               <p className="text-sm">
@@ -1037,18 +1138,20 @@ const CareerApplyPage = () => {
     }
   };
   
-  // Step icons for the progress indicator - remove PERSONALITY
+  // Step icons for the progress indicator - restore PERSONALITY
   const stepIcons = {
     [STEPS.NAME]: <User />,
     [STEPS.DOCUMENTS]: <FileText />,
+    [STEPS.PERSONALITY]: <CheckSquare />,
     [STEPS.VIDEO]: <Video />,
     [STEPS.SUBMIT]: <Send />,
   };
   
-  // Step titles for the progress indicator - remove PERSONALITY
+  // Step titles for the progress indicator - restore PERSONALITY
   const stepTitles = {
     [STEPS.NAME]: "Personal Info",
     [STEPS.DOCUMENTS]: "Documents",
+    [STEPS.PERSONALITY]: "Assessment",
     [STEPS.VIDEO]: "Video",
     [STEPS.SUBMIT]: "Submit",
   };
@@ -1139,6 +1242,7 @@ const CareerApplyPage = () => {
                 <CardDescription>
                   {step === STEPS.NAME && "Enter your personal information"}
                   {step === STEPS.DOCUMENTS && "Upload your CV and cover letter (optional)"}
+                  {step === STEPS.PERSONALITY && "Assess your personality"}
                   {step === STEPS.VIDEO && "Record a video introduction"}
                   {step === STEPS.SUBMIT && "Review and submit your application"}
                 </CardDescription>
