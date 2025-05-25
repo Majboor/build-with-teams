@@ -10,7 +10,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, Dr
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowRight, ArrowLeft, Upload, Save, User, FileText, Video, CheckSquare, Send, Play, Pause, CircleStop } from "lucide-react";
+import { ArrowRight, ArrowLeft, Upload, Save, User, FileText, Video, CheckSquare, Send, Play, Pause, CircleStop, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -27,13 +27,28 @@ const STEPS = {
 // Import personality assessment helpers
 import { questions, generatePersonalityReport } from "../components/career/personalityQuestions";
 
+// Browser detection function
+const isSafari = (): boolean => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.includes('safari') && !userAgent.includes('chrome') && !userAgent.includes('chromium');
+};
+
 const CareerApplyPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useIsMobile();
   const [showIntroModal, setShowIntroModal] = useState(true);
+  const [showSafariWarning, setShowSafariWarning] = useState(false);
   const [step, setStep] = useState(STEPS.INTRO);
   const [progress, setProgress] = useState(0);
+  
+  // Check for Safari browser on mount
+  useEffect(() => {
+    if (isSafari()) {
+      setShowSafariWarning(true);
+      setShowIntroModal(false);
+    }
+  }, []);
   
   // Get job post param from URL
   const searchParams = new URLSearchParams(location.search);
@@ -1305,6 +1320,72 @@ const CareerApplyPage = () => {
     [STEPS.VIDEO]: "Video",
     [STEPS.SUBMIT]: "Submit",
   };
+
+  // If Safari is detected, show warning modal
+  if (showSafariWarning) {
+    return (
+      <div className="min-h-screen pb-16">
+        <Navigation />
+        
+        <Dialog open={showSafariWarning} onOpenChange={() => {}}>
+          <DialogContent className="sm:max-w-[500px]" hideCloseButton>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-xl text-amber-600">
+                <AlertTriangle className="h-6 w-6" />
+                Browser Not Supported
+              </DialogTitle>
+              <DialogDescription className="text-base">
+                Our career application system requires advanced video recording features that work best with Chrome-based browsers.
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              <div className="bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 p-4 rounded-md">
+                <p className="text-sm font-medium mb-2">
+                  ⚠️ Safari Detected
+                </p>
+                <p className="text-sm">
+                  To ensure the best experience and avoid technical issues during video recording, 
+                  please use a Chrome-based browser such as:
+                </p>
+              </div>
+              
+              <ul className="list-disc list-inside space-y-1 text-sm ml-4">
+                <li>Google Chrome</li>
+                <li>Microsoft Edge</li>
+                <li>Brave Browser</li>
+                <li>Opera</li>
+              </ul>
+              
+              <div className="bg-blue-50 dark:bg-blue-950/30 text-blue-800 dark:text-blue-300 p-4 rounded-md">
+                <p className="text-sm">
+                  <strong>Why this is needed:</strong> Video recording and upload functionality 
+                  requires specific web APIs that work more reliably in Chrome-based browsers.
+                </p>
+              </div>
+            </div>
+            
+            <DialogFooter className="flex-col gap-2">
+              <Button 
+                onClick={() => navigate('/careers')}
+                className="w-full"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Careers Page
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setShowSafariWarning(false)}
+                className="w-full text-sm"
+              >
+                Continue Anyway (Not Recommended)
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-16">
