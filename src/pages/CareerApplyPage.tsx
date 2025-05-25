@@ -736,8 +736,8 @@ const CareerApplyPage = () => {
         throw error;
       }
       
-      // Get the public URL - construct it manually to ensure it's correct
-      const bucketUrl = `${supabase.supabaseUrl}/storage/v1/object/public/videos/${fileName}`;
+      // Get the public URL - construct it manually using the known Supabase URL
+      const bucketUrl = `https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/${fileName}`;
       
       console.log("Video uploaded successfully. Testing public URL:", bucketUrl);
       
