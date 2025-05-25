@@ -55,12 +55,13 @@ const CareerApplyPage = () => {
   const [uniqueId, setUniqueId] = useState(`TAAS-${Date.now().toString().slice(-6)}`);
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
   
-  // Personality assessment state (hidden from UI)
+  // Personality assessment state
   const [personalityAnswers, setPersonalityAnswers] = useState<{
     questionIndex: number;
     selectedOption: number;
     score: number;
   }[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [personalityCompleted, setPersonalityCompleted] = useState(false);
   
   // Video recording state
@@ -179,6 +180,7 @@ const CareerApplyPage = () => {
         if (parsedProgress.useCoverLetterFile !== undefined) setUseCoverLetterFile(parsedProgress.useCoverLetterFile);
         if (parsedProgress.videoUrl !== undefined) setVideoUrl(parsedProgress.videoUrl);
         if (parsedProgress.personalityAnswers !== undefined) setPersonalityAnswers(parsedProgress.personalityAnswers);
+        if (parsedProgress.currentQuestionIndex !== undefined) setCurrentQuestionIndex(parsedProgress.currentQuestionIndex);
         
         // Don't show intro modal if we're resuming
         if (parsedProgress.step > STEPS.INTRO) {
@@ -208,6 +210,7 @@ const CareerApplyPage = () => {
         useCoverLetterFile,
         videoUrl,
         personalityAnswers,
+        currentQuestionIndex,
       };
       
       sessionStorage.setItem("careerApplicationProgress", JSON.stringify(progressData));
@@ -224,6 +227,7 @@ const CareerApplyPage = () => {
     useCoverLetterFile,
     videoUrl,
     personalityAnswers,
+    currentQuestionIndex,
   ]);
   
   // Update progress bar when step changes
@@ -301,61 +305,41 @@ const CareerApplyPage = () => {
   };
   
   // Handle personality question answers
-  const handlePersonalityAnswer = (questionIndex: number, selectedOption: number) => {
-    const question = questions[questionIndex];
+  const handlePersonalityAnswer = (selectedOption: number) => {
+    const question = questions[currentQuestionIndex];
     const score = question.options[selectedOption].score;
     
     setPersonalityAnswers(prevAnswers => {
-      const updatedAnswers = prevAnswers.filter(a => a.questionIndex !== questionIndex);
+      const updatedAnswers = prevAnswers.filter(a => a.questionIndex !== currentQuestionIndex);
       updatedAnswers.push({
-        questionIndex,
+        questionIndex: currentQuestionIndex,
         selectedOption,
         score
       });
       return updatedAnswers;
     });
-    
-    // Check if all questions are answered
-    const totalAnswered = personalityAnswers.filter(a => a.questionIndex !== questionIndex).length + 1;
-    if (totalAnswered === questions.length) {
+  };
+
+  const handlePersonalityNext = () => {
+    const currentAnswer = personalityAnswers.find(a => a.questionIndex === currentQuestionIndex);
+    if (!currentAnswer) {
+      toast.error("Please select an answer before continuing");
+      return;
+    }
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      // All questions completed
       setPersonalityCompleted(true);
+      toast.success("Personality assessment completed!");
     }
   };
-  
-  // Function to automatically generate personality answers (hidden from user)
-  const generateRandomPersonalityAnswers = () => {
-    // Generate simulated answers for personality test based on a high quality profile
-    // This function will create answers that tend toward the higher scores (4-5) to create a good profile
-    const simulatedAnswers = questions.map((question, questionIndex) => {
-      // Generate a weighted random selection that favors higher scores
-      // 60% chance for score 5, 30% chance for score 4, 10% chance for score 3
-      const rand = Math.random();
-      let selectedOption = 0;
-      
-      // Find the option with the desired score
-      if (rand < 0.6) {
-        // Find an option with score 5 (or highest available)
-        const index = question.options.findIndex(opt => opt.score === 5);
-        selectedOption = index >= 0 ? index : 0;
-      } else if (rand < 0.9) {
-        // Find an option with score 4
-        const index = question.options.findIndex(opt => opt.score === 4);
-        selectedOption = index >= 0 ? index : 0;
-      } else {
-        // Find an option with score 3
-        const index = question.options.findIndex(opt => opt.score === 3);
-        selectedOption = index >= 0 ? index : 0;
-      }
-      
-      return {
-        questionIndex,
-        selectedOption,
-        score: question.options[selectedOption].score
-      };
-    });
-    
-    setPersonalityAnswers(simulatedAnswers);
-    setPersonalityCompleted(true);
+
+  const handlePersonalityBack = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
   };
   
   const handlePreviousStep = () => {
@@ -390,9 +374,14 @@ const CareerApplyPage = () => {
         score: a.score
       }));
       
-      // Create a complete survey object with all personality data
+      // Create a complete survey object with all personality data including questions
       const surveyData = {
         answers: personalityAnswers,
+        questions: questions.map((q, index) => ({
+          questionIndex: index,
+          question: q.question,
+          options: q.options
+        })),
         totalScore: personalityResults.totalScore,
         maxScore: personalityResults.maxScore,
         scorePercentage: personalityResults.scorePercentage,
@@ -855,54 +844,80 @@ const CareerApplyPage = () => {
         );
       
       case STEPS.PERSONALITY:
+        const currentQuestion = questions[currentQuestionIndex];
+        const currentAnswer = personalityAnswers.find(a => a.questionIndex === currentQuestionIndex);
+        
         return (
           <div className="space-y-6">
             <div className="space-y-2">
-              <p className="text-sm">
-                Please answer the following questions honestly. This helps us understand your work style and personality.
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Progress: {personalityAnswers.length} of {questions.length} questions answered
-              </p>
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Personality Assessment</h3>
+                <span className="text-sm text-muted-foreground">
+                  {currentQuestionIndex + 1} of {questions.length}
+                </span>
+              </div>
+              <Progress value={((currentQuestionIndex + 1) / questions.length) * 100} className="h-2" />
             </div>
             
-            <div className="space-y-6 max-h-96 overflow-y-auto">
-              {questions.map((question, questionIndex) => {
-                const existingAnswer = personalityAnswers.find(a => a.questionIndex === questionIndex);
-                
-                return (
-                  <div key={questionIndex} className="space-y-3 p-4 border rounded-lg">
-                    <h4 className="font-medium text-sm">
-                      {questionIndex + 1}. {question.question}
-                    </h4>
-                    
-                    <div className="space-y-2">
-                      {question.options.map((option, optionIndex) => (
-                        <label 
-                          key={optionIndex}
-                          className="flex items-start space-x-3 cursor-pointer p-2 rounded hover:bg-muted"
-                        >
-                          <input
-                            type="radio"
-                            name={`question-${questionIndex}`}
-                            value={optionIndex}
-                            checked={existingAnswer?.selectedOption === optionIndex}
-                            onChange={() => handlePersonalityAnswer(questionIndex, optionIndex)}
-                            className="mt-1"
-                          />
-                          <span className="text-sm">{option.text}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="space-y-4 p-6 border rounded-lg">
+              <h4 className="font-medium text-lg mb-4">
+                {currentQuestion.question}
+              </h4>
+              
+              <div className="space-y-3">
+                {currentQuestion.options.map((option, optionIndex) => (
+                  <label 
+                    key={optionIndex}
+                    className="flex items-start space-x-3 cursor-pointer p-3 rounded-lg border hover:bg-muted transition-colors"
+                  >
+                    <input
+                      type="radio"
+                      name={`question-${currentQuestionIndex}`}
+                      value={optionIndex}
+                      checked={currentAnswer?.selectedOption === optionIndex}
+                      onChange={() => handlePersonalityAnswer(optionIndex)}
+                      className="mt-1"
+                    />
+                    <span className="text-sm leading-relaxed">{option.text}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex justify-between">
+              <Button 
+                variant="outline" 
+                onClick={handlePersonalityBack}
+                disabled={currentQuestionIndex === 0}
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Previous
+              </Button>
+              
+              {currentQuestionIndex < questions.length - 1 ? (
+                <Button 
+                  onClick={handlePersonalityNext}
+                  disabled={!currentAnswer}
+                >
+                  Next
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              ) : (
+                <Button 
+                  onClick={handlePersonalityNext}
+                  disabled={!currentAnswer}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Complete Assessment
+                  <CheckSquare className="ml-2 h-4 w-4" />
+                </Button>
+              )}
             </div>
             
             {personalityCompleted && (
-              <div className="bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300 p-3 rounded-md">
-                <p className="text-sm">
-                  ✓ Personality assessment completed! You can proceed to the next step.
+              <div className="bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300 p-4 rounded-md">
+                <p className="text-sm font-medium">
+                  ✓ Assessment completed! You can proceed to the next step.
                 </p>
               </div>
             )}
@@ -1019,7 +1034,6 @@ const CareerApplyPage = () => {
               )}
             </div>
             
-            {/* Show video URL input field if video is uploaded */}
             {videoUrl && (
               <div className="space-y-2">
                 <Label htmlFor="video-url">Video URL</Label>
@@ -1058,9 +1072,7 @@ const CareerApplyPage = () => {
         );
         
       case STEPS.SUBMIT:
-        // Generate a summary with personality test results
-        const personalityResults = personalityCompleted ? generatePersonalityReport(personalityAnswers) : null;
-        
+        // Don't show personality results to user, just show basic completion status
         return (
           <div className="space-y-6">
             <div className="rounded-md border p-4">
@@ -1101,28 +1113,14 @@ const CareerApplyPage = () => {
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Personality Assessment:</dt>
-                  <dd>{personalityCompleted ? "Completed" : "Not completed"}</dd>
+                  <dd>{personalityCompleted ? "✓ Completed" : "Not completed"}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="font-medium">Video:</dt>
-                  <dd>{videoUrl ? "Provided" : "Not provided"}</dd>
+                  <dd>{videoUrl ? "✓ Provided" : "Not provided"}</dd>
                 </div>
               </dl>
             </div>
-            
-            {personalityResults && (
-              <div className="rounded-md border p-4">
-                <h3 className="font-medium mb-2">Personality Assessment Results</h3>
-                <div className="space-y-2">
-                  <p className="text-sm">
-                    <span className="font-medium">Score:</span> {personalityResults.totalScore}/{personalityResults.maxScore} ({personalityResults.scorePercentage}%)
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-medium">Profile:</span> {personalityResults.personalityEmoji} {personalityResults.personalityType}
-                  </p>
-                </div>
-              </div>
-            )}
             
             <div className="bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 p-4 rounded-md">
               <p className="text-sm">
@@ -1242,7 +1240,7 @@ const CareerApplyPage = () => {
                 <CardDescription>
                   {step === STEPS.NAME && "Enter your personal information"}
                   {step === STEPS.DOCUMENTS && "Upload your CV and cover letter (optional)"}
-                  {step === STEPS.PERSONALITY && "Assess your personality"}
+                  {step === STEPS.PERSONALITY && "Complete the personality assessment"}
                   {step === STEPS.VIDEO && "Record a video introduction"}
                   {step === STEPS.SUBMIT && "Review and submit your application"}
                 </CardDescription>
