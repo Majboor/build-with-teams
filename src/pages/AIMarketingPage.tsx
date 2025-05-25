@@ -181,11 +181,11 @@ export default function AIMarketingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-muted">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">How It Works</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Our multi-day outreach system combines AI intelligence with human touchpoints for maximum conversion
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function AIMarketingPage() {
             {timelineSteps.map((step, index) => (
               <motion.div
                 key={step.day}
-                className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md"
+                className="bg-card p-6 rounded-lg shadow-md"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
@@ -203,11 +203,11 @@ export default function AIMarketingPage() {
                 <div className="flex items-center mb-4">
                   <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full mr-4">{step.icon}</div>
                   <div>
-                    <h3 className="font-bold text-xl dark:text-white">{step.day}</h3>
+                    <h3 className="font-bold text-xl">{step.day}</h3>
                     <p className="text-blue-600 dark:text-blue-400">{step.title}</p>
                   </div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
+                <p className="text-muted-foreground">{step.description}</p>
               </motion.div>
             ))}
           </div>
@@ -215,11 +215,11 @@ export default function AIMarketingPage() {
       </section>
 
       {/* AI + Manual = Results Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">AI + Manual = Results</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">AI + Manual = Results</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Our unique approach combines AI intelligence with human touchpoints exactly when they're needed
             </p>
           </div>
@@ -235,16 +235,16 @@ export default function AIMarketingPage() {
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-full">
+                  <div className="bg-muted p-3 rounded-full">
                     {step.icon}
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg mb-1 dark:text-white">{step.userAction}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">User behavior</p>
+                    <h3 className="font-bold text-lg mb-1">{step.userAction}</h3>
+                    <p className="text-muted-foreground">User behavior</p>
                   </div>
-                  <ArrowRight className="mt-2 dark:text-gray-400" />
+                  <ArrowRight className="mt-2 text-muted-foreground" />
                   <div>
-                    <h3 className="font-bold text-lg mb-1 dark:text-white">{step.aiAction}</h3>
+                    <h3 className="font-bold text-lg mb-1">{step.aiAction}</h3>
                     <p className="text-blue-600 dark:text-blue-400">AI response</p>
                   </div>
                 </motion.div>
@@ -258,23 +258,23 @@ export default function AIMarketingPage() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.7 }}
             >
-              <h3 className="text-2xl font-bold mb-4 dark:text-white">Why This Works</h3>
+              <h3 className="text-2xl font-bold mb-4">Why This Works</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">AI analyzes behavior patterns to identify the perfect time to reach out</span>
+                  <span>AI analyzes behavior patterns to identify the perfect time to reach out</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">Multi-channel approach ensures your message reaches the prospect</span>
+                  <span>Multi-channel approach ensures your message reaches the prospect</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">Human touchpoints add authenticity when it matters most</span>
+                  <span>Human touchpoints add authenticity when it matters most</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">Continuous optimization based on performance data</span>
+                  <span>Continuous optimization based on performance data</span>
                 </li>
               </ul>
             </motion.div>
@@ -283,17 +283,17 @@ export default function AIMarketingPage() {
       </section>
 
       {/* Cost Breakdown Section */}
-      <section className="py-20 bg-gray-900 text-white">
+      <section className="py-20 bg-foreground text-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Visual Cost Breakdown</h2>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg text-muted max-w-2xl mx-auto">
               See how our AI-powered marketing system translates into real ROI
             </p>
           </div>
           
           <div className="max-w-3xl mx-auto">
-            <div className="bg-gray-800 p-8 rounded-xl">
+            <div className="bg-card text-card-foreground p-8 rounded-xl">
               <h3 className="text-xl font-semibold mb-6">Calculate Your ROI</h3>
               
               <div className="mb-8">
@@ -309,7 +309,7 @@ export default function AIMarketingPage() {
                   onValueChange={(value) => setLeadCount(value[0])}
                   className="my-4"
                 />
-                <div className="grid grid-cols-3 text-xs text-gray-400">
+                <div className="grid grid-cols-3 text-xs text-muted-foreground">
                   <div>1,000</div>
                   <div className="text-center">50,000</div>
                   <div className="text-right">100,000</div>
@@ -318,18 +318,18 @@ export default function AIMarketingPage() {
               
               <div className="grid md:grid-cols-3 gap-6">
                 <motion.div 
-                  className="bg-gray-700 p-4 rounded-lg text-center"
+                  className="bg-muted p-4 rounded-lg text-center"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <p className="text-gray-300 text-sm mb-1">Total Spend</p>
+                  <p className="text-muted-foreground text-sm mb-1">Total Spend</p>
                   <p className="text-2xl font-bold">${totalSpend.toLocaleString()}</p>
                 </motion.div>
                 
                 <motion.div 
-                  className="bg-blue-900 p-4 rounded-lg text-center"
+                  className="bg-blue-900 text-white p-4 rounded-lg text-center"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -340,7 +340,7 @@ export default function AIMarketingPage() {
                 </motion.div>
                 
                 <motion.div 
-                  className="bg-green-800 p-4 rounded-lg text-center"
+                  className="bg-green-800 text-white p-4 rounded-lg text-center"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -356,44 +356,44 @@ export default function AIMarketingPage() {
       </section>
 
       {/* Comparative Impact Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">Comparative Impact</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Comparative Impact</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               See how our approach compares to traditional marketing methods
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-10">
             <motion.div 
-              className="bg-gray-100 dark:bg-gray-700 p-8 rounded-xl"
+              className="bg-muted p-8 rounded-xl"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Traditional Marketing</h3>
+              <h3 className="text-2xl font-bold mb-6">Traditional Marketing</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span className="dark:text-gray-300">Generic messages with low personalization</span>
+                  <span>Generic messages with low personalization</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span className="dark:text-gray-300">Low conversion rates (1-2%)</span>
+                  <span>Low conversion rates (1-2%)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span className="dark:text-gray-300">Cold outreach with no behavior tracking</span>
+                  <span>Cold outreach with no behavior tracking</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span className="dark:text-gray-300">Limited to one or two channels</span>
+                  <span>Limited to one or two channels</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-red-500 text-xl font-bold">✕</span>
-                  <span className="dark:text-gray-300">No optimization based on real-time data</span>
+                  <span>No optimization based on real-time data</span>
                 </li>
               </ul>
             </motion.div>
@@ -409,23 +409,23 @@ export default function AIMarketingPage() {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">AI + CRM integration for deep personalization</span>
+                  <span>AI + CRM integration for deep personalization</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">High conversion rates (3-5%)</span>
+                  <span>High conversion rates (3-5%)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">Warm lead scoring and behavior-based targeting</span>
+                  <span>Warm lead scoring and behavior-based targeting</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">Multi-channel approach (email, SMS, calls, WhatsApp)</span>
+                  <span>Multi-channel approach (email, SMS, calls, WhatsApp)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="text-green-500 mt-1 flex-shrink-0" />
-                  <span className="dark:text-gray-300">Continuous optimization with machine learning</span>
+                  <span>Continuous optimization with machine learning</span>
                 </li>
               </ul>
             </motion.div>
@@ -434,11 +434,11 @@ export default function AIMarketingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-muted">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">What Our Clients Say</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Real results from companies just like yours
             </p>
           </div>
@@ -447,16 +447,15 @@ export default function AIMarketingPage() {
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
-                className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md"
+                className="bg-card p-6 rounded-lg shadow-md"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                {/* <img src={testimonial.logo} alt={testimonial.company} className="h-12 mb-4" /> */}
-                <h3 className="font-bold text-lg mb-2 dark:text-white">{testimonial.company}</h3>
-                <p className="text-gray-600 dark:text-gray-300 italic mb-4">"{testimonial.quote}"</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">- {testimonial.author}</p>
+                <h3 className="font-bold text-lg mb-2">{testimonial.company}</h3>
+                <p className="text-muted-foreground italic mb-4">"{testimonial.quote}"</p>
+                <p className="text-sm text-muted-foreground">- {testimonial.author}</p>
               </motion.div>
             ))}
           </div>
@@ -511,7 +510,7 @@ export default function AIMarketingPage() {
       </section>
 
       {/* Closing CTA Section */}
-      <section className="py-16 bg-black text-white">
+      <section className="py-16 bg-background border-t">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Ready to convert your leads the modern way?
@@ -519,7 +518,7 @@ export default function AIMarketingPage() {
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full py-6 px-8 text-lg">
             Try AI-Powered Outreach Now
           </Button>
-          <p className="text-gray-400 mt-4">Free consultation | Instant ROI calculator</p>
+          <p className="text-muted-foreground mt-4">Free consultation | Instant ROI calculator</p>
         </div>
       </section>
     </div>
