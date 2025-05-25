@@ -407,10 +407,25 @@ const CareerApplyPage = () => {
         formData.append("cover_letter_text", coverLetterText);
       }
       
-      // Use the actual uploaded video URL - ensure it's a public URL
+      // Test if the video URL is accessible before submitting
       if (videoUrl) {
-        console.log("Adding video URL to submission:", videoUrl);
-        formData.append("video_url", videoUrl);
+        console.log("Testing video URL accessibility:", videoUrl);
+        
+        try {
+          // Test if we can fetch the video URL to ensure it's publicly accessible
+          const testResponse = await fetch(videoUrl, { method: 'HEAD' });
+          console.log("Video URL test response status:", testResponse.status);
+          
+          if (!testResponse.ok) {
+            console.error("Video URL is not publicly accessible:", testResponse.status);
+            throw new Error(`Video URL is not accessible (Status: ${testResponse.status}). Please try uploading the video again.`);
+          }
+          
+          formData.append("video_url", videoUrl);
+        } catch (urlTestError) {
+          console.error("Error testing video URL:", urlTestError);
+          throw new Error("Video URL is not accessible. Please try uploading the video again.");
+        }
       }
       
       // Log FormData contents for debugging
@@ -692,10 +707,9 @@ const CareerApplyPage = () => {
     try {
       setUploading(true);
       
-      // Create a unique filename with proper extension and user folder structure
+      // Create a simple filename without subfolders to ensure proper public access
       const timestamp = Date.now();
-      const userId = crypto.randomUUID(); // Generate a unique identifier for this session
-      let fileName = `${userId}/video_${timestamp}`;
+      let fileName = `video_${timestamp}`;
       
       // Determine file extension based on blob type
       if (videoData.type.includes('mp4')) {
@@ -722,15 +736,33 @@ const CareerApplyPage = () => {
         throw error;
       }
       
-      // Get the public URL - since the bucket is public, this should be accessible
-      const { data: publicUrlData } = supabase.storage
-        .from('videos')
-        .getPublicUrl(fileName);
+      // Get the public URL - construct it manually to ensure it's correct
+      const bucketUrl = `${supabase.supabaseUrl}/storage/v1/object/public/videos/${fileName}`;
       
-      console.log("Video uploaded successfully to public URL:", publicUrlData.publicUrl);
-      setVideoUrl(publicUrlData.publicUrl);
+      console.log("Video uploaded successfully. Testing public URL:", bucketUrl);
+      
+      // Test the public URL to make sure it's accessible
+      try {
+        const testResponse = await fetch(bucketUrl, { method: 'HEAD' });
+        if (testResponse.ok) {
+          console.log("Public URL is accessible");
+          setVideoUrl(bucketUrl);
+        } else {
+          console.error("Public URL test failed:", testResponse.status);
+          throw new Error("Video uploaded but not publicly accessible");
+        }
+      } catch (testError) {
+        console.error("Error testing public URL:", testError);
+        // Fallback to the Supabase generated URL
+        const { data: publicUrlData } = supabase.storage
+          .from('videos')
+          .getPublicUrl(fileName);
+        
+        console.log("Using fallback public URL:", publicUrlData.publicUrl);
+        setVideoUrl(publicUrlData.publicUrl);
+      }
+      
       setUploading(false);
-      
       toast.success("Video uploaded successfully");
       
     } catch (err) {
