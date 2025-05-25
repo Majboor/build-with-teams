@@ -479,19 +479,22 @@ const CareerApplyPage = () => {
     }
   };
   
-  // Video recording functions with improved codec support
+  // Video recording functions with improved codec support and better error handling
   const startRecording = async () => {
     try {
-      // Request camera and microphone permissions
+      console.log("Starting video recording...");
+      
+      // Request camera and microphone permissions with more specific constraints
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          frameRate: { ideal: 30 }
+          width: { ideal: 1280, max: 1920 },
+          height: { ideal: 720, max: 1080 },
+          frameRate: { ideal: 30, max: 60 }
         },
         audio: {
           echoCancellation: true,
-          noiseSuppression: true
+          noiseSuppression: true,
+          autoGainControl: true
         }
       });
       
@@ -501,21 +504,28 @@ const CareerApplyPage = () => {
         videoRef.current.srcObject = stream;
       }
       
-      // Try different codecs for better compatibility
+      // Improved codec selection with audio/video compatibility
       let options: MediaRecorderOptions = {};
       const supportedTypes = [
-        'video/mp4;codecs=h264',
-        'video/webm;codecs=vp9',
-        'video/webm;codecs=vp8',
+        'video/mp4',
+        'video/webm;codecs=vp9,opus',
+        'video/webm;codecs=vp8,opus', 
+        'video/webm;codecs=h264,opus',
         'video/webm'
       ];
       
+      let selectedType = '';
       for (const type of supportedTypes) {
         if (MediaRecorder.isTypeSupported(type)) {
           options.mimeType = type;
+          selectedType = type;
           console.log("Using MIME type:", type);
           break;
         }
+      }
+      
+      if (!selectedType) {
+        console.warn("No supported MIME type found, using default");
       }
       
       const mediaRecorder = new MediaRecorder(stream, options);
@@ -525,17 +535,19 @@ const CareerApplyPage = () => {
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           chunksRef.current.push(event.data);
+          console.log("Data chunk received:", event.data.size, "bytes");
         }
       };
       
       mediaRecorder.onstop = () => {
+        console.log("Recording stopped, processing data...");
         const mimeType = mediaRecorder.mimeType || 'video/webm';
         const blob = new Blob(chunksRef.current, { type: mimeType });
         setVideoData(blob);
         
         // Create a URL for the recorded video blob
         const url = URL.createObjectURL(blob);
-        console.log("Created blob URL:", url, "with MIME type:", blob.type);
+        console.log("Created blob URL:", url, "with MIME type:", blob.type, "Size:", blob.size);
         setPreviewUrl(url);
         
         // Stop the timer
@@ -545,12 +557,21 @@ const CareerApplyPage = () => {
         }
       };
       
-      // Start recording
-      mediaRecorder.start(100);
+      mediaRecorder.onerror = (event) => {
+        console.error("MediaRecorder error:", event);
+        toast.error("Recording Error", {
+          description: "There was an error during recording. Please try again."
+        });
+      };
+      
+      // Start recording with timeslice for better data handling
+      mediaRecorder.start(1000);
       setRecording(true);
       setPaused(false);
       setElapsedTime(0);
       setVideoLoadError(null);
+      
+      console.log("Recording started successfully");
       
       // Start the timer
       const interval = window.setInterval(() => {
@@ -566,19 +587,38 @@ const CareerApplyPage = () => {
       
     } catch (err) {
       console.error("Error accessing media devices:", err);
+      
+      let errorMessage = "Please allow access to camera and microphone to record video";
+      
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError') {
+          errorMessage = "Camera and microphone access denied. Please allow permissions and try again.";
+        } else if (err.name === 'NotFoundError') {
+          errorMessage = "No camera or microphone found. Please check your devices.";
+        } else if (err.name === 'NotSupportedError') {
+          errorMessage = "Video recording not supported in this browser. Please try Chrome or Firefox.";
+        } else if (err.name === 'NotReadableError') {
+          errorMessage = "Camera or microphone is already in use by another application.";
+        }
+      }
+      
       toast.error("Permission Error", {
-        description: "Please allow access to camera and microphone to record video"
+        description: errorMessage
       });
     }
   };
   
   const stopRecording = () => {
     if (mediaRecorderRef.current && recording) {
+      console.log("Stopping recording...");
       mediaRecorderRef.current.stop();
       
       // Stop all tracks in the stream
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current.getTracks().forEach(track => {
+          track.stop();
+          console.log("Stopped track:", track.kind);
+        });
       }
       
       setRecording(false);
