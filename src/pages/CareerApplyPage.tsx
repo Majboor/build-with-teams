@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -1328,7 +1329,7 @@ const CareerApplyPage = () => {
         <Navigation />
         
         <Dialog open={showSafariWarning} onOpenChange={() => {}}>
-          <DialogContent className="sm:max-w-[500px]" hideCloseButton>
+          <DialogContent className="sm:max-w-[500px]">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-xl text-amber-600">
                 <AlertTriangle className="h-6 w-6" />
