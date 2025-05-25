@@ -346,7 +346,7 @@ const CareerApplyPage = () => {
     setStep(prevStep => prevStep - 1);
   };
   
-  // Handle API submission with updated video URL format
+  // Handle API submission with corrected video URL handling
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
@@ -400,13 +400,9 @@ const CareerApplyPage = () => {
         formData.append("cover_letter_text", coverLetterText);
       }
       
-      // Use the API-provided video URL format if available, otherwise use the existing one
-      const apiVideoUrl = "https://test.applytocollege.pk/videos/Waleed_Ajmal_TAAS-977044/video.webm";
-      const finalVideoUrl = apiVideoUrl || videoUrl;
-      
-      // Add video URL
-      if (finalVideoUrl) {
-        formData.append("video_url", finalVideoUrl);
+      // Use the actual uploaded video URL instead of hardcoded one
+      if (videoUrl) {
+        formData.append("video_url", videoUrl);
       }
       
       console.log("Submitting data to API:", formData);
@@ -427,7 +423,7 @@ const CareerApplyPage = () => {
           cv_url: null, // We'll add this later if needed
           cover_letter_url: null, // We'll add this later if needed
           cover_letter_text: !useCoverLetterFile ? coverLetterText : null,
-          video_url: finalVideoUrl,
+          video_url: videoUrl,
           personality_data: surveyData,
           job_post_id: jobId
         });
