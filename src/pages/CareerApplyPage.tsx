@@ -103,7 +103,7 @@ const CareerApplyPage = () => {
     }
   }, [location.state, step]);
 
-  // Video preview setup with improved error handling
+  // Video preview setup with improved error handling and format support
   useEffect(() => {
     if (previewUrl && previewVideoRef.current) {
       console.log("Setting up preview with URL:", previewUrl);
@@ -112,52 +112,57 @@ const CareerApplyPage = () => {
       setVideoLoadError(null);
       
       // Setup video element
-      previewVideoRef.current.src = previewUrl;
-      previewVideoRef.current.muted = true; // Set muted to satisfy autoplay policy
-      previewVideoRef.current.load();
+      const videoElement = previewVideoRef.current;
+      videoElement.src = previewUrl;
+      videoElement.muted = true;
+      videoElement.controls = true;
       
-      // Event handlers with proper cleanup
-      const handleMetadataLoaded = () => {
-        console.log("Video metadata loaded");
-        if (previewVideoRef.current) {
-          previewVideoRef.current.play()
-            .then(() => {
-              console.log("Video playing successfully");
-              // Once playing successfully, we can unmute
-              setTimeout(() => {
-                if (previewVideoRef.current) {
-                  previewVideoRef.current.muted = false;
-                }
-              }, 1000);
-            })
-            .catch(err => {
-              console.error("Error playing video:", err);
-              setVideoLoadError("Video couldn't autoplay. Please use the play button.");
-              toast("Playback Notice", {
-                description: "Please use the play button to watch your recording",
-              });
-            });
-        }
+      // Event handlers
+      const handleCanPlay = () => {
+        console.log("Video can play");
+        setVideoLoadError(null);
       };
       
       const handleError = (e: Event) => {
         console.error("Video error:", e);
-        setVideoLoadError("Failed to load video. Please try recording again.");
-        toast("Video Error", {
-          description: "There was a problem with the video. Please try recording again.",
+        const target = e.target as HTMLVideoElement;
+        const error = target.error;
+        
+        let errorMessage = "Failed to load video.";
+        if (error) {
+          switch (error.code) {
+            case error.MEDIA_ERR_ABORTED:
+              errorMessage = "Video loading was aborted.";
+              break;
+            case error.MEDIA_ERR_NETWORK:
+              errorMessage = "Network error while loading video.";
+              break;
+            case error.MEDIA_ERR_DECODE:
+              errorMessage = "Video format not supported.";
+              break;
+            case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+              errorMessage = "Video format not supported by your browser.";
+              break;
+          }
+        }
+        
+        setVideoLoadError(errorMessage);
+        toast.error("Video Error", {
+          description: errorMessage + " Please try recording again."
         });
       };
       
       // Set up event listeners
-      previewVideoRef.current.addEventListener('loadedmetadata', handleMetadataLoaded);
-      previewVideoRef.current.addEventListener('error', handleError);
+      videoElement.addEventListener('canplay', handleCanPlay);
+      videoElement.addEventListener('error', handleError);
+      
+      // Load the video
+      videoElement.load();
       
       // Clean up function
       return () => {
-        if (previewVideoRef.current) {
-          previewVideoRef.current.removeEventListener('loadedmetadata', handleMetadataLoaded);
-          previewVideoRef.current.removeEventListener('error', handleError);
-        }
+        videoElement.removeEventListener('canplay', handleCanPlay);
+        videoElement.removeEventListener('error', handleError);
       };
     }
   }, [previewUrl]);
@@ -405,7 +410,7 @@ const CareerApplyPage = () => {
         formData.append("video_url", videoUrl);
       }
       
-      console.log("Submitting data to API:", formData);
+      console.log("Submitting data to API with video URL:", videoUrl);
       
       // Log FormData contents for debugging
       for (const pair of formData.entries()) {
@@ -474,13 +479,20 @@ const CareerApplyPage = () => {
     }
   };
   
-  // Video recording functions
+  // Video recording functions with improved codec support
   const startRecording = async () => {
     try {
       // Request camera and microphone permissions
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
+        video: {
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 30 }
+        },
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true
+        }
       });
       
       streamRef.current = stream;
@@ -489,7 +501,24 @@ const CareerApplyPage = () => {
         videoRef.current.srcObject = stream;
       }
       
-      const mediaRecorder = new MediaRecorder(stream);
+      // Try different codecs for better compatibility
+      let options: MediaRecorderOptions = {};
+      const supportedTypes = [
+        'video/mp4;codecs=h264',
+        'video/webm;codecs=vp9',
+        'video/webm;codecs=vp8',
+        'video/webm'
+      ];
+      
+      for (const type of supportedTypes) {
+        if (MediaRecorder.isTypeSupported(type)) {
+          options.mimeType = type;
+          console.log("Using MIME type:", type);
+          break;
+        }
+      }
+      
+      const mediaRecorder = new MediaRecorder(stream, options);
       mediaRecorderRef.current = mediaRecorder;
       
       chunksRef.current = [];
@@ -500,7 +529,8 @@ const CareerApplyPage = () => {
       };
       
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: "video/webm" });
+        const mimeType = mediaRecorder.mimeType || 'video/webm';
+        const blob = new Blob(chunksRef.current, { type: mimeType });
         setVideoData(blob);
         
         // Create a URL for the recorded video blob
@@ -520,6 +550,7 @@ const CareerApplyPage = () => {
       setRecording(true);
       setPaused(false);
       setElapsedTime(0);
+      setVideoLoadError(null);
       
       // Start the timer
       const interval = window.setInterval(() => {
@@ -535,8 +566,8 @@ const CareerApplyPage = () => {
       
     } catch (err) {
       console.error("Error accessing media devices:", err);
-      toast("Permission Error", {
-        description: "Please allow access to camera and microphone",
+      toast.error("Permission Error", {
+        description: "Please allow access to camera and microphone to record video"
       });
     }
   };
@@ -604,24 +635,41 @@ const CareerApplyPage = () => {
     try {
       setUploading(true);
       
-      // Create a unique filename
-      const fileName = `video_${Date.now()}.webm`;
+      // Create a unique filename with proper extension
+      const timestamp = Date.now();
+      let fileName = `video_${timestamp}`;
+      
+      // Determine file extension based on blob type
+      if (videoData.type.includes('mp4')) {
+        fileName += '.mp4';
+      } else if (videoData.type.includes('webm')) {
+        fileName += '.webm';
+      } else {
+        fileName += '.webm'; // Default fallback
+      }
+      
+      console.log("Uploading video:", fileName, "Type:", videoData.type, "Size:", videoData.size);
       
       // Upload the video to Supabase Storage
       const { data, error } = await supabase.storage
         .from('videos')
         .upload(fileName, videoData, {
           cacheControl: '3600',
-          upsert: false
+          upsert: false,
+          contentType: videoData.type
         });
       
-      if (error) throw error;
+      if (error) {
+        console.error("Upload error:", error);
+        throw error;
+      }
       
       // Get the public URL
       const { data: publicUrlData } = supabase.storage
         .from('videos')
         .getPublicUrl(fileName);
       
+      console.log("Video uploaded successfully:", publicUrlData.publicUrl);
       setVideoUrl(publicUrlData.publicUrl);
       setUploading(false);
       
@@ -630,7 +678,7 @@ const CareerApplyPage = () => {
     } catch (err) {
       console.error("Error uploading video:", err);
       toast.error("Upload Failed", {
-        description: "There was a problem uploading your video"
+        description: "There was a problem uploading your video. Please try again."
       });
       setUploading(false);
     }
@@ -945,17 +993,34 @@ const CareerApplyPage = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="relative w-full h-full cursor-pointer" onClick={handlePreviewClick}>
-                  <video 
-                    ref={previewVideoRef}
-                    playsInline
-                    className="w-full h-full object-cover"
-                    controls
-                  />
-                  {videoLoadError && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-white p-4 text-center">
-                      <p>{videoLoadError}</p>
+                <div className="relative w-full h-full">
+                  {videoLoadError ? (
+                    <div className="flex items-center justify-center h-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4">
+                      <div className="text-center">
+                        <p className="font-medium mb-2">Video Error</p>
+                        <p className="text-sm">{videoLoadError}</p>
+                        <Button 
+                          onClick={() => {
+                            setPreviewUrl(null);
+                            setVideoData(null);
+                            setVideoLoadError(null);
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="mt-3"
+                        >
+                          Try Again
+                        </Button>
+                      </div>
                     </div>
+                  ) : (
+                    <video 
+                      ref={previewVideoRef}
+                      playsInline
+                      className="w-full h-full object-cover cursor-pointer"
+                      controls
+                      onClick={handlePreviewClick}
+                    />
                   )}
                 </div>
               )}
@@ -1010,7 +1075,7 @@ const CareerApplyPage = () => {
                 </>
               )}
               
-              {previewUrl && !videoUrl && (
+              {previewUrl && !videoUrl && !videoLoadError && (
                 <>
                   <Button onClick={() => {
                     setPreviewUrl(null);
@@ -1055,6 +1120,7 @@ const CareerApplyPage = () => {
                       setPreviewUrl(null);
                       setVideoData(null);
                       setVideoUrl("");
+                      setVideoLoadError(null);
                     }} 
                     variant="outline"
                     size="sm"
