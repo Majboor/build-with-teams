@@ -356,6 +356,8 @@ const CareerApplyPage = () => {
     setIsSubmitting(true);
     
     try {
+      console.log("Starting submission process...");
+      
       // Create form data
       const formData = new FormData();
       formData.append("candidate_name", candidateName);
@@ -405,19 +407,24 @@ const CareerApplyPage = () => {
         formData.append("cover_letter_text", coverLetterText);
       }
       
-      // Use the actual uploaded video URL instead of hardcoded one
+      // Use the actual uploaded video URL - ensure it's a public URL
       if (videoUrl) {
+        console.log("Adding video URL to submission:", videoUrl);
         formData.append("video_url", videoUrl);
       }
       
-      console.log("Submitting data to API with video URL:", videoUrl);
-      
       // Log FormData contents for debugging
+      console.log("FormData contents:");
       for (const pair of formData.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
+        if (pair[1] instanceof File) {
+          console.log(`${pair[0]}: [File] ${pair[1].name} (${pair[1].size} bytes)`);
+        } else {
+          console.log(`${pair[0]}: ${pair[1]}`);
+        }
       }
       
-      // Save to Supabase
+      // Save to Supabase first
+      console.log("Saving to Supabase...");
       const { error: supabaseError } = await supabase
         .from('job_applications')
         .insert({
@@ -438,6 +445,8 @@ const CareerApplyPage = () => {
         throw new Error("Failed to save application data to database");
       }
       
+      console.log("Successfully saved to Supabase, now sending to external API...");
+      
       // Send the request to external API
       const response = await fetch("https://test.applytocollege.pk/submit", {
         method: "POST",
@@ -447,8 +456,16 @@ const CareerApplyPage = () => {
       console.log("API Response status:", response.status);
       
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error("API Error response:", errorData);
+        const errorText = await response.text();
+        console.error("API Error response:", errorText);
+        
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { message: errorText };
+        }
+        
         throw new Error(errorData.message || errorData.error || "Failed to submit application");
       }
       
@@ -675,9 +692,10 @@ const CareerApplyPage = () => {
     try {
       setUploading(true);
       
-      // Create a unique filename with proper extension
+      // Create a unique filename with proper extension and user folder structure
       const timestamp = Date.now();
-      let fileName = `video_${timestamp}`;
+      const userId = crypto.randomUUID(); // Generate a unique identifier for this session
+      let fileName = `${userId}/video_${timestamp}`;
       
       // Determine file extension based on blob type
       if (videoData.type.includes('mp4')) {
@@ -688,9 +706,9 @@ const CareerApplyPage = () => {
         fileName += '.webm'; // Default fallback
       }
       
-      console.log("Uploading video:", fileName, "Type:", videoData.type, "Size:", videoData.size);
+      console.log("Uploading video to public bucket:", fileName, "Type:", videoData.type, "Size:", videoData.size);
       
-      // Upload the video to Supabase Storage
+      // Upload the video to Supabase Storage in the public videos bucket
       const { data, error } = await supabase.storage
         .from('videos')
         .upload(fileName, videoData, {
@@ -704,12 +722,12 @@ const CareerApplyPage = () => {
         throw error;
       }
       
-      // Get the public URL
+      // Get the public URL - since the bucket is public, this should be accessible
       const { data: publicUrlData } = supabase.storage
         .from('videos')
         .getPublicUrl(fileName);
       
-      console.log("Video uploaded successfully:", publicUrlData.publicUrl);
+      console.log("Video uploaded successfully to public URL:", publicUrlData.publicUrl);
       setVideoUrl(publicUrlData.publicUrl);
       setUploading(false);
       
