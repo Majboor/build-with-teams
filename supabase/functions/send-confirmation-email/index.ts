@@ -38,16 +38,73 @@ serve(async (req: Request) => {
       );
     }
 
-    // Use the new hiring template from Supabase Storage
-    const templateUrl = "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/applications/hiringbk.html";
-    const templateResponse = await fetch(templateUrl);
+    // Try multiple template URLs in order of preference
+    const templateUrls = [
+      "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/applications/hiringbk.html",
+      "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/hiringbk.html"
+    ];
 
-    if (!templateResponse.ok) {
-      console.error("Failed to fetch confirmation template. Status:", templateResponse.status);
-      throw new Error("Failed to fetch confirmation template");
+    let htmlTemplate = "";
+    let templateFetched = false;
+
+    for (const templateUrl of templateUrls) {
+      try {
+        console.log(`Attempting to fetch template from: ${templateUrl}`);
+        const templateResponse = await fetch(templateUrl);
+        
+        if (templateResponse.ok) {
+          htmlTemplate = await templateResponse.text();
+          templateFetched = true;
+          console.log(`Successfully fetched template from: ${templateUrl}`);
+          break;
+        } else {
+          console.log(`Failed to fetch from ${templateUrl}. Status: ${templateResponse.status}`);
+        }
+      } catch (error) {
+        console.log(`Error fetching from ${templateUrl}:`, error);
+        continue;
+      }
     }
 
-    let htmlTemplate = await templateResponse.text();
+    // If no template was fetched, use a fallback template
+    if (!templateFetched) {
+      console.log("Using fallback email template");
+      htmlTemplate = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>TaaS Application Confirmation</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1 style="margin: 0; font-size: 28px;">TaaS Careers</h1>
+            <p style="margin: 10px 0 0 0; opacity: 0.9;">Application Confirmation</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #667eea; margin-top: 0;">Hello {{firstName}}!</h2>
+            
+            <p>Thank you for applying to TaaS. We're excited to review your application!</p>
+            
+            <div style="background: #f8f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="margin-top: 0; color: #667eea;">Application Details</h3>
+              <p><strong>Name:</strong> {{candidateName}}</p>
+              <p><strong>Email:</strong> {{email}}</p>
+              <p><strong>Application ID:</strong> {{uniqueId}}</p>
+              <p><strong>Submitted:</strong> {{submissionDate}}</p>
+            </div>
+            
+            <p>Our team will review your application and get back to you soon. We appreciate your interest in joining TaaS!</p>
+            
+            <div style="text-align: center; margin-top: 30px;">
+              <p style="color: #666; font-size: 14px;">Best regards,<br>The TaaS Team</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+    }
 
     // Parse the candidate's first name
     const firstName = candidateName.split(' ')[0];
