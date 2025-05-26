@@ -38,8 +38,8 @@ serve(async (req: Request) => {
       );
     }
 
-    // Use the hiring template from Supabase Storage
-    const templateUrl = "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos//hiring.html";
+    // Use the new hiring template from Supabase Storage
+    const templateUrl = "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/applications/hiringbk.html";
     const templateResponse = await fetch(templateUrl);
 
     if (!templateResponse.ok) {
