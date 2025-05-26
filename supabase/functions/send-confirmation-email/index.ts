@@ -40,8 +40,8 @@ serve(async (req: Request) => {
 
     // Try multiple template URLs in order of preference
     const templateUrls = [
-      "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/applications/hiringbk.html",
-      "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/hiringbk.html"
+      "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/hiringbk.html?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzQ1Mjg3YmYwLTRmYzgtNDVkMi05ZDkzLWQ3MmQzZjkzZDgyZiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvaGlyaW5nYmsuaHRtbCIsImlhdCI6MTc0ODI0NDI0NCwiZXhwIjoxNzc5NzgwMjQ0fQ.tOK2AzX0gkMFp1xFjohKoL9chmWWJqSZotwF3TroVMU",
+      "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos//hiring.html"
     ];
 
     let htmlTemplate = "";
@@ -93,6 +93,11 @@ serve(async (req: Request) => {
               <p><strong>Email:</strong> {{email}}</p>
               <p><strong>Application ID:</strong> {{uniqueId}}</p>
               <p><strong>Submitted:</strong> {{submissionDate}}</p>
+              <p><strong>Schedule your interview</strong></p>
+<p><a href="https://calendly.com/event_types/user/me" target="_blank" rel="noopener noreferrer">
+  https://calendly.com/event_types/user/me
+</a></p>
+
             </div>
             
             <p>Our team will review your application and get back to you soon. We appreciate your interest in joining TaaS!</p>
