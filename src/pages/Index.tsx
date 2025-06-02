@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 import { WorkflowSection } from "@/components/WorkflowSection";
+import { TeamSection } from "@/components/TeamSection";
 import { Link } from "react-router-dom";
 
 type CrmFeature = {
@@ -371,6 +372,9 @@ export default function Index() {
 
       {/* Workflow Section */}
       <WorkflowSection />
+
+      {/* Team Section */}
+      <TeamSection />
 
       {/* What TaaS Has Built Section */}
       <section className="container py-20 border-t">
