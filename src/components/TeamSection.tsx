@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -399,25 +400,27 @@ export const TeamSection: React.FC = () => {
         </div>
 
         {isMobile ? (
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full max-w-sm mx-auto"
-          >
-            <CarouselContent>
-              {teamMembers.map((member, index) => (
-                <CarouselItem key={member.id}>
-                  <div className="p-1">
-                    <TeamMemberCard member={member} index={index} />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+          <div className="relative">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full max-w-sm mx-auto"
+            >
+              <CarouselContent>
+                {teamMembers.map((member, index) => (
+                  <CarouselItem key={member.id}>
+                    <div className="p-1">
+                      <TeamMemberCard member={member} index={index} />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-2" />
+              <CarouselNext className="right-2" />
+            </Carousel>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
