@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -171,6 +172,7 @@ interface TeamMemberCardProps {
   member: TeamMember;
   index: number;
 }
+
 const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   member,
   index
@@ -181,39 +183,50 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [videoError, setVideoError] = useState(false);
-  const [thumbnailSet, setThumbnailSet] = useState(false);
+  const [thumbnailReady, setThumbnailReady] = useState(false);
 
   const handlePlayPause = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent card click when clicking play button
+    e.stopPropagation();
     if (videoRef && !videoError) {
       if (isPlaying) {
         videoRef.pause();
+        setIsPlaying(false);
       } else {
-        videoRef.currentTime = 0; // Start from beginning when playing
-        videoRef.play().catch(() => setVideoError(true));
+        // Reset to beginning when starting to play
+        videoRef.currentTime = 0;
+        videoRef.play().then(() => {
+          setIsPlaying(true);
+        }).catch((error) => {
+          console.log('Video play error:', error);
+          setVideoError(true);
+        });
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
   const handleVideoEnd = () => {
     setIsPlaying(false);
+    // Set back to thumbnail position when video ends
     if (videoRef) {
-      videoRef.currentTime = 10; // Reset to 10 seconds for thumbnail
+      videoRef.currentTime = 10;
     }
   };
 
+  const handleVideoPause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleVideoPlay = () => {
+    setIsPlaying(true);
+  };
+
   const handleVideoCanPlay = () => {
-    if (videoRef && !thumbnailSet) {
+    if (videoRef && !thumbnailReady) {
+      // Set thumbnail only once when video is ready
       try {
-        // Small delay to ensure video is ready
-        setTimeout(() => {
-          if (videoRef) {
-            videoRef.currentTime = 10; // Set thumbnail to 10 seconds
-            setThumbnailSet(true);
-            setIsVideoLoading(false);
-          }
-        }, 100);
+        videoRef.currentTime = 10;
+        setThumbnailReady(true);
+        setIsVideoLoading(false);
       } catch (error) {
         console.log('Error setting video thumbnail:', error);
         setVideoError(true);
@@ -223,6 +236,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   };
 
   const handleVideoError = () => {
+    console.log('Video loading error for:', member.name);
     setVideoError(true);
     setIsVideoLoading(false);
   };
@@ -275,7 +289,9 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                 preload="metadata"
                 onCanPlay={handleVideoCanPlay}
                 onError={handleVideoError}
-                onEnded={handleVideoEnd} 
+                onEnded={handleVideoEnd}
+                onPause={handleVideoPause}
+                onPlay={handleVideoPlay}
                 playsInline
                 muted
               >
@@ -356,7 +372,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                   preload="metadata"
                   onCanPlay={(e) => {
                     const video = e.target as HTMLVideoElement;
-                    video.currentTime = 10;
+                    video.currentTime = 0; // Start from beginning in dialog
                   }}
                   onError={() => console.log('Dialog video error')}
                 >
