@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,14 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TeamMember {
   id: number;
@@ -365,6 +372,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, index }) => {
 };
 
 export const TeamSection: React.FC = () => {
+  const isMobile = useIsMobile();
+
   return (
     <section className="py-20 bg-muted">
       <div className="container mx-auto px-4">
@@ -389,15 +398,37 @@ export const TeamSection: React.FC = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {teamMembers.map((member, index) => (
-            <TeamMemberCard 
-              key={member.id} 
-              member={member} 
-              index={index}
-            />
-          ))}
-        </div>
+        {isMobile ? (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full max-w-sm mx-auto"
+          >
+            <CarouselContent>
+              {teamMembers.map((member, index) => (
+                <CarouselItem key={member.id}>
+                  <div className="p-1">
+                    <TeamMemberCard member={member} index={index} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <TeamMemberCard 
+                key={member.id} 
+                member={member} 
+                index={index}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
