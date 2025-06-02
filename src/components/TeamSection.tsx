@@ -200,6 +200,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, index }) => {
       if (isPlaying) {
         videoRef.pause();
       } else {
+        videoRef.currentTime = 0; // Start from beginning when playing
         videoRef.play();
       }
       setIsPlaying(!isPlaying);
