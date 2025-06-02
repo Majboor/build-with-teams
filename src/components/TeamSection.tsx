@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, User, Mail, MapPin, Calendar } from "lucide-react";
+import { Play, Pause, User, Mail, MapPin, Calendar, Info, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   Dialog,
@@ -201,6 +201,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, index }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click when clicking play button
@@ -233,9 +234,11 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, index }) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <Card 
-          className="overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+          className="overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer relative"
           onClick={handleCardClick}
         >
           <div className="relative aspect-video bg-gray-900">
@@ -271,6 +274,16 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, index }) => {
               </Button>
             </div>
 
+            {/* Profile View Overlay - appears on hover */}
+            {isHovered && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-16 transition-all duration-300">
+                <div className="text-white text-center">
+                  <Info className="h-5 w-5 mx-auto mb-1" />
+                  <p className="text-sm font-medium">Click to view full profile</p>
+                </div>
+              </div>
+            )}
+
             {/* Name overlay at bottom */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <h3 className="text-white font-semibold text-lg">{member.name}</h3>
@@ -281,8 +294,20 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, index }) => {
             <div className="space-y-2">
               <h4 className="font-bold text-lg text-primary">{member.role}</h4>
               <p className="text-muted-foreground">{member.description}</p>
+              
+              {/* Profile indicator */}
+              <div className="flex items-center justify-between pt-2">
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                  <User className="h-3 w-3" />
+                  View full profile
+                </span>
+                <ArrowRight className="h-4 w-4 text-primary opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
             </div>
           </CardContent>
+
+          {/* Subtle glow effect on hover */}
+          <div className="absolute inset-0 rounded-lg ring-2 ring-primary/0 group-hover:ring-primary/20 transition-all duration-300 pointer-events-none" />
         </Card>
       </motion.div>
 
