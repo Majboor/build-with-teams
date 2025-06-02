@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Play, Pause, User, Mail, MapPin, Calendar, Info, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
+
 interface TeamMember {
   id: number;
   name: string;
@@ -164,6 +166,7 @@ const teamMembers: TeamMember[] = [{
   email: "tom@company.com",
   joinedDate: "January 2021"
 }];
+
 interface TeamMemberCardProps {
   member: TeamMember;
   index: number;
@@ -176,65 +179,135 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
+  const [videoError, setVideoError] = useState(false);
+  const [thumbnailSet, setThumbnailSet] = useState(false);
+
   const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click when clicking play button
-    if (videoRef) {
+    if (videoRef && !videoError) {
       if (isPlaying) {
         videoRef.pause();
       } else {
         videoRef.currentTime = 0; // Start from beginning when playing
-        videoRef.play();
+        videoRef.play().catch(() => setVideoError(true));
       }
       setIsPlaying(!isPlaying);
     }
   };
+
   const handleVideoEnd = () => {
     setIsPlaying(false);
     if (videoRef) {
       videoRef.currentTime = 10; // Reset to 10 seconds for thumbnail
     }
   };
+
+  const handleVideoCanPlay = () => {
+    if (videoRef && !thumbnailSet) {
+      try {
+        // Small delay to ensure video is ready
+        setTimeout(() => {
+          if (videoRef) {
+            videoRef.currentTime = 10; // Set thumbnail to 10 seconds
+            setThumbnailSet(true);
+            setIsVideoLoading(false);
+          }
+        }, 100);
+      } catch (error) {
+        console.log('Error setting video thumbnail:', error);
+        setVideoError(true);
+        setIsVideoLoading(false);
+      }
+    }
+  };
+
+  const handleVideoError = () => {
+    setVideoError(true);
+    setIsVideoLoading(false);
+  };
+
   const handleCardClick = () => {
     setShowDetails(true);
   };
+
   return <>
-      <motion.div initial={{
-      opacity: 0,
-      y: 30
-    }} whileInView={{
-      opacity: 1,
-      y: 0
-    }} viewport={{
-      once: true
-    }} transition={{
-      duration: 0.5,
-      delay: index * 0.1
-    }} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <motion.div 
+        initial={{
+          opacity: 0,
+          y: 30
+        }} 
+        whileInView={{
+          opacity: 1,
+          y: 0
+        }} 
+        viewport={{
+          once: true
+        }} 
+        transition={{
+          duration: 0.5,
+          delay: index * 0.1
+        }} 
+        onMouseEnter={() => setIsHovered(true)} 
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer relative" onClick={handleCardClick}>
           <div className="relative aspect-video bg-gray-900">
-            <video ref={setVideoRef} className="w-full h-full object-cover" preload="auto" onLoadedData={() => {
-            if (videoRef) {
-              videoRef.currentTime = 10; // Set thumbnail to 10 seconds
-            }
-          }} onEnded={handleVideoEnd} playsInline>
-              <source src={member.videoUrl} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {isVideoLoading && !videoError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+                <Skeleton className="w-full h-full" />
+              </div>
+            )}
+            
+            {videoError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
+                <div className="text-center text-white">
+                  <User className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm opacity-70">Video unavailable</p>
+                </div>
+              </div>
+            )}
+
+            {!videoError && (
+              <video 
+                ref={setVideoRef} 
+                className={`w-full h-full object-cover transition-opacity duration-300 ${isVideoLoading ? 'opacity-0' : 'opacity-100'}`}
+                preload="metadata"
+                onCanPlay={handleVideoCanPlay}
+                onError={handleVideoError}
+                onEnded={handleVideoEnd} 
+                playsInline
+                muted
+              >
+                <source src={member.videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            )}
             
             {/* Video Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-100 group-hover:opacity-90 transition-opacity duration-300">
-              <Button onClick={handlePlayPause} variant="secondary" size="lg" className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300">
-                {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-1" />}
-              </Button>
-            </div>
+            {!isVideoLoading && (
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-100 group-hover:opacity-90 transition-opacity duration-300">
+                <Button 
+                  onClick={handlePlayPause} 
+                  variant="secondary" 
+                  size="lg" 
+                  className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+                  disabled={videoError}
+                >
+                  {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-1" />}
+                </Button>
+              </div>
+            )}
 
             {/* Profile View Overlay - appears on hover */}
-            {isHovered && <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-16 transition-all duration-300">
+            {isHovered && !isVideoLoading && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-16 transition-all duration-300">
                 <div className="text-white text-center">
                   <Info className="h-5 w-5 mx-auto mb-1" />
                   <p className="text-sm font-medium">Click to view full profile</p>
                 </div>
-              </div>}
+              </div>
+            )}
 
             {/* Name overlay at bottom */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -277,10 +350,16 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             {/* Video Section */}
             <div className="space-y-4">
               <div className="relative aspect-video bg-gray-900 rounded-lg overflow-hidden">
-                <video className="w-full h-full object-cover" controls preload="auto" onLoadedData={e => {
-                const video = e.target as HTMLVideoElement;
-                video.currentTime = 10;
-              }}>
+                <video 
+                  className="w-full h-full object-cover" 
+                  controls 
+                  preload="metadata"
+                  onCanPlay={(e) => {
+                    const video = e.target as HTMLVideoElement;
+                    video.currentTime = 10;
+                  }}
+                  onError={() => console.log('Dialog video error')}
+                >
                   <source src={member.videoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
@@ -326,9 +405,14 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
               <div>
                 <h3 className="font-semibold text-lg mb-2">Skills & Expertise</h3>
                 <div className="flex flex-wrap gap-2">
-                  {member.skills.map((skill, index) => <span key={index} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                  {member.skills.map((skill, index) => (
+                    <span 
+                      key={index} 
+                      className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                    >
                       {skill}
-                    </span>)}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
@@ -337,6 +421,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       </Dialog>
     </>;
 };
+
 export const TeamSection: React.FC = () => {
   const isMobile = useIsMobile();
   return <section className="py-20 bg-muted">
