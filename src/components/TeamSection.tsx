@@ -1,8 +1,8 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Mail, MapPin, Calendar, ArrowRight } from "lucide-react";
+import { User, Mail, MapPin, Calendar, ArrowRight, Play, Pause } from "lucide-react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -13,7 +13,8 @@ interface TeamMember {
   name: string;
   role: string;
   description: string;
-  imageUrl: string;
+  gifUrl: string;
+  videoUrl: string;
   bio: string;
   skills: string[];
   experience: string;
@@ -28,7 +29,8 @@ const teamMembers: TeamMember[] = [{
   name: "Asad",
   role: "AI & ML Engineer",
   description: "AI team as a service",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Passionate AI engineer with expertise in machine learning, deep learning, and AI automation. Leading innovative AI solutions and building intelligent systems that transform businesses.",
   skills: ["Machine Learning", "Deep Learning", "Python", "TensorFlow", "PyTorch", "Computer Vision", "NLP"],
   experience: "5+ years in AI development",
@@ -41,7 +43,8 @@ const teamMembers: TeamMember[] = [{
   name: "Sarah Johnson",
   role: "Frontend Developer",
   description: "React & UI/UX specialist",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Creative frontend developer specializing in modern React applications and exceptional user experiences. Passionate about clean code and innovative design solutions.",
   skills: ["React", "TypeScript", "Next.js", "Tailwind CSS", "JavaScript", "HTML5", "CSS3"],
   experience: "4+ years in frontend development",
@@ -54,7 +57,8 @@ const teamMembers: TeamMember[] = [{
   name: "Michael Chen",
   role: "Backend Developer",
   description: "API & Database architect",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Expert backend engineer with deep knowledge in scalable architectures, database optimization, and API design. Building robust systems that power modern applications.",
   skills: ["Node.js", "Python", "PostgreSQL", "MongoDB", "AWS", "Docker", "Kubernetes"],
   experience: "6+ years in backend development",
@@ -67,7 +71,8 @@ const teamMembers: TeamMember[] = [{
   name: "Emily Rodriguez",
   role: "UI/UX Designer",
   description: "Design systems & user experience",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Creative designer focused on user-centered design and creating intuitive digital experiences. Expert in design systems and accessibility best practices.",
   skills: ["Figma", "Adobe Creative Suite", "User Research", "Prototyping", "Design Systems", "Accessibility"],
   experience: "5+ years in UI/UX design",
@@ -80,7 +85,8 @@ const teamMembers: TeamMember[] = [{
   name: "David Wilson",
   role: "Project Manager",
   description: "Agile delivery & team coordination",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Experienced project manager with expertise in Agile methodologies and cross-functional team leadership. Ensuring successful project delivery and team efficiency.",
   skills: ["Agile/Scrum", "Project Planning", "Team Leadership", "Risk Management", "Stakeholder Management"],
   experience: "7+ years in project management",
@@ -93,7 +99,8 @@ const teamMembers: TeamMember[] = [{
   name: "Lisa Thompson",
   role: "DevOps Engineer",
   description: "Cloud infrastructure & automation",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "DevOps specialist with expertise in cloud infrastructure, CI/CD pipelines, and automation. Building scalable and reliable deployment systems.",
   skills: ["AWS", "Docker", "Kubernetes", "Terraform", "Jenkins", "CI/CD", "Monitoring"],
   experience: "5+ years in DevOps",
@@ -106,7 +113,8 @@ const teamMembers: TeamMember[] = [{
   name: "Alex Kumar",
   role: "Full Stack Developer",
   description: "End-to-end application development",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Versatile full-stack developer with expertise across the entire technology stack. Building complete web applications from conception to deployment.",
   skills: ["React", "Node.js", "TypeScript", "PostgreSQL", "GraphQL", "REST APIs", "Git"],
   experience: "4+ years in full-stack development",
@@ -119,7 +127,8 @@ const teamMembers: TeamMember[] = [{
   name: "Maria Garcia",
   role: "QA Engineer",
   description: "Testing & quality assurance",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Quality assurance specialist ensuring software excellence through comprehensive testing strategies and automation. Committed to delivering bug-free experiences.",
   skills: ["Test Automation", "Selenium", "Jest", "Cypress", "Manual Testing", "Bug Tracking", "Performance Testing"],
   experience: "4+ years in QA testing",
@@ -132,7 +141,8 @@ const teamMembers: TeamMember[] = [{
   name: "James Park",
   role: "Data Scientist",
   description: "Analytics & machine learning",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Data scientist with expertise in statistical analysis, machine learning models, and data visualization. Turning complex data into actionable business insights.",
   skills: ["Python", "R", "SQL", "Machine Learning", "Data Visualization", "Statistics", "Big Data"],
   experience: "5+ years in data science",
@@ -145,7 +155,8 @@ const teamMembers: TeamMember[] = [{
   name: "Rachel Adams",
   role: "Mobile Developer",
   description: "iOS & Android applications",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Mobile development expert creating high-performance native and cross-platform applications. Focused on delivering exceptional mobile user experiences.",
   skills: ["React Native", "Swift", "Kotlin", "Flutter", "iOS Development", "Android Development", "Mobile UI/UX"],
   experience: "4+ years in mobile development",
@@ -158,7 +169,8 @@ const teamMembers: TeamMember[] = [{
   name: "Tom Mitchell",
   role: "Security Engineer",
   description: "Cybersecurity & compliance",
-  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  gifUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
   bio: "Cybersecurity expert specializing in application security, infrastructure protection, and compliance frameworks. Ensuring robust security across all systems.",
   skills: ["Penetration Testing", "Security Auditing", "Compliance", "Encryption", "Network Security", "OWASP"],
   experience: "6+ years in cybersecurity",
@@ -178,9 +190,31 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   index
 }) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleCardClick = () => {
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setShowDetails(true);
+  };
+
+  const handleMediaClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isPlaying) {
+      setIsPlaying(true);
+      if (videoRef.current) {
+        videoRef.current.play();
+      }
+    } else {
+      setIsPlaying(false);
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    }
+  };
+
+  const handleVideoEnd = () => {
+    setIsPlaying(false);
   };
 
   return (
@@ -193,11 +227,42 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       >
         <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer" onClick={handleCardClick}>
           <div className="relative aspect-video">
-            <img 
-              src={member.imageUrl}
-              alt={`${member.name} - ${member.role}`}
-              className="w-full h-full object-cover"
-            />
+            {!isPlaying ? (
+              <>
+                <img 
+                  src={member.gifUrl}
+                  alt={`${member.name} - ${member.role}`}
+                  className="w-full h-full object-cover"
+                />
+                <div 
+                  className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                  onClick={handleMediaClick}
+                >
+                  <div className="bg-white/90 rounded-full p-3 transform hover:scale-110 transition-transform duration-200">
+                    <Play className="h-6 w-6 text-black" />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="relative w-full h-full">
+                <video 
+                  ref={videoRef}
+                  src={member.videoUrl}
+                  className="w-full h-full object-cover"
+                  onEnded={handleVideoEnd}
+                  onClick={handleMediaClick}
+                  controls={false}
+                />
+                <div 
+                  className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                  onClick={handleMediaClick}
+                >
+                  <div className="bg-white/90 rounded-full p-3 transform hover:scale-110 transition-transform duration-200">
+                    <Pause className="h-6 w-6 text-black" />
+                  </div>
+                </div>
+              </div>
+            )}
             
             {/* Name overlay at bottom */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -241,7 +306,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             <div className="space-y-4">
               <div className="relative aspect-video rounded-lg overflow-hidden">
                 <img 
-                  src={member.imageUrl}
+                  src={member.gifUrl}
                   alt={`${member.name} - ${member.role}`}
                   className="w-full h-full object-cover"
                 />
