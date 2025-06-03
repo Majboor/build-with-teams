@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -190,13 +189,10 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
     if (videoRef && !videoError) {
       if (isPlaying) {
         videoRef.pause();
-        setIsPlaying(false);
       } else {
-        // Reset to beginning when starting to play
+        // Start from beginning when playing
         videoRef.currentTime = 0;
-        videoRef.play().then(() => {
-          setIsPlaying(true);
-        }).catch((error) => {
+        videoRef.play().catch((error) => {
           console.log('Video play error:', error);
           setVideoError(true);
         });
@@ -221,8 +217,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   };
 
   const handleVideoCanPlay = () => {
-    if (videoRef && !thumbnailReady) {
-      // Set thumbnail only once when video is ready
+    if (videoRef && !thumbnailReady && !isPlaying) {
+      // Set thumbnail only once when video is ready and not playing
       try {
         videoRef.currentTime = 10;
         setThumbnailReady(true);
