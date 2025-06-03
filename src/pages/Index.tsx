@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, File, Users, Rocket, HelpCircle, Play } from "lucide-react";
+import { Check, File, Users, Rocket, HelpCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
@@ -279,7 +279,6 @@ export default function Index() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [prompt, setPrompt] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
-  const [showVideo, setShowVideo] = useState(false);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -307,13 +306,14 @@ export default function Index() {
         setImagesLoaded(true);
       } catch (error) {
         console.error('Error loading images:', error);
-        setImagesLoaded(true);
+        setImagesLoaded(true); // Show content even if some images fail to load
       }
     };
 
     loadAllImages();
   }, []);
 
+  // Store the user's prompt in localStorage when it changes
   React.useEffect(() => {
     if (prompt) {
       localStorage.setItem("userPrompt", prompt);
@@ -341,150 +341,133 @@ export default function Index() {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section - Improved Typography & Mobile-First */}
-      <section className="min-h-screen flex flex-col px-4 sm:px-6 pt-12 sm:pt-16">
-        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-8 py-4 sm:py-6">
-          <div className="flex-1 text-center lg:text-left space-y-6 sm:space-y-8">
-            {/* Improved Typography Hierarchy */}
-            <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-3xl sm:text-4xl lg:text-[64px] font-semibold leading-[1.1] tracking-[-0.02em] text-white">
+      {/* Hero Section - Mobile Optimized */}
+      <section className="min-h-screen flex flex-col px-4 sm:px-6 pt-16 sm:pt-20">
+        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-12 py-4 sm:py-8">
+          <div className="flex-1 text-center lg:text-left space-y-4 sm:space-y-8">
+            <div className="space-y-2">
+              <h1 className="text-2xl sm:text-4xl lg:text-[64px] font-normal leading-tight sm:leading-none">
                 Team as a Service
               </h1>
-              <p className="text-lg sm:text-xl lg:text-[24px] font-normal leading-[1.4] text-white/85 max-w-[600px] mx-auto lg:mx-0">
+              <p className="text-base sm:text-2xl lg:text-[24px] font-normal leading-tight text-muted-foreground">
                 On-demand AI + human experts for marketing, development & growth.
               </p>
             </div>
 
-            {/* Compact Input & CTA Section */}
-            <div className="space-y-4 sm:space-y-5">
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Input
-                  type="text"
-                  placeholder="Enter your idea or prompt..."
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="h-12 sm:h-13 text-base sm:text-lg bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/15 transition-colors"
-                />
-                <Button 
-                  onClick={handleStartBuild}
-                  className="h-12 sm:h-13 text-base sm:text-lg rounded-full bg-white text-black hover:bg-white/90 font-medium px-6 sm:px-8 min-w-[140px] transition-all duration-200"
-                  size="lg"
-                >
-                  Try for free
-                </Button>
-              </div>
-
-              <div className="flex justify-center lg:justify-start">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowBetaDialog(true)}
-                  className="h-12 sm:h-13 text-base sm:text-lg rounded-full border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-medium px-6 sm:px-8 min-w-[140px] transition-all duration-200"
-                  size="lg"
-                >
-                  Get a demo
-                </Button>
-              </div>
+            {/* Prompt Bar - Mobile First */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <Input
+                type="text"
+                placeholder="Enter your idea or prompt..."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="h-12 sm:h-14 text-base sm:text-lg w-full"
+              />
+              <Button 
+                onClick={handleStartBuild}
+                className="h-12 sm:h-14 text-base sm:text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center min-h-[44px] w-full sm:w-auto"
+                size="lg"
+              >
+                Try for free
+              </Button>
             </div>
 
-            {/* Improved Three Step Process */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-6 mt-8 lg:hidden">
-              <div className="flex flex-col items-center text-center space-y-2">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/15 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <File className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            <div className="flex justify-center lg:justify-start">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowBetaDialog(true)}
+                className="h-12 sm:h-14 text-base sm:text-lg rounded-full border-2 flex items-center justify-center min-h-[44px] w-full sm:w-auto"
+                size="lg"
+              >
+                Get a demo
+              </Button>
+            </div>
+
+            {/* Three Step Process - Above video on mobile */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-6 sm:mt-8 lg:hidden">
+              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center min-h-[44px] min-w-[44px]">
+                  <File className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
                 </div>
-                <span className="text-sm sm:text-base font-medium text-white/90">You share</span>
+                <span className="text-xs sm:text-sm font-medium">You share</span>
               </div>
-              <div className="flex flex-col items-center text-center space-y-2">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/15 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center min-h-[44px] min-w-[44px]">
+                  <Users className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
                 </div>
-                <span className="text-sm sm:text-base font-medium text-white/90">We match</span>
+                <span className="text-xs sm:text-sm font-medium">We match</span>
               </div>
-              <div className="flex flex-col items-center text-center space-y-2">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/15 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Rocket className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center min-h-[44px] min-w-[44px]">
+                  <Rocket className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
                 </div>
-                <span className="text-sm sm:text-base font-medium text-white/90">Results delivered</span>
+                <span className="text-xs sm:text-sm font-medium">Results delivered</span>
               </div>
             </div>
           </div>
 
           <div className="flex-1">
-            {/* Improved Video Section */}
-            <div className="space-y-4 sm:space-y-6">
-              {/* Watch How It Works Label */}
+            {/* Video Section - Compressed for mobile */}
+            <div className="space-y-3 sm:space-y-6">
+              {/* Watch How It Works Label - Smaller on mobile */}
               <div className="flex justify-center">
-                <div className="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm sm:text-base font-medium border border-white/20">
+                <div className="bg-black text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
                   WATCH HOW IT WORKS
                 </div>
               </div>
 
-              {/* Video Thumbnail with Play Button */}
-              <div className="relative rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border border-white/20">
-                {!showVideo ? (
-                  <div 
-                    className="relative aspect-video cursor-pointer group"
-                    onClick={() => setShowVideo(true)}
-                  >
-                    {/* Video thumbnail placeholder */}
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-black/80 rounded-full flex items-center justify-center group-hover:bg-black/90 transition-colors duration-200">
-                        <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-1" />
-                      </div>
-                    </div>
-                    
-                    {/* Meet Sophie Label */}
-                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium">
-                      Meet Sophie, our Head of Operations
-                    </div>
-                  </div>
-                ) : (
-                  <video 
-                    className="w-full aspect-video object-cover"
-                    controls
-                    autoPlay
-                    preload="metadata"
-                  >
-                    <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                )}
+              {/* Video with Play Button - Compressed aspect ratio on mobile */}
+              <div className="relative rounded-lg overflow-hidden shadow-xl">
+                <video 
+                  className="w-full aspect-[4/3] sm:aspect-video object-cover"
+                  poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
+                  controls
+                  preload="metadata"
+                >
+                  <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Meet Sophie Label - Much smaller on mobile */}
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-black/70 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm">
+                  Meet Sophie, our Head of Operations
+                </div>
               </div>
 
-              {/* Three Step Process - Desktop */}
-              <div className="hidden lg:grid grid-cols-3 gap-6 mt-8">
-                <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-14 h-14 bg-white/15 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <File className="w-7 h-7 text-white" />
+              {/* Three Step Process - Desktop only */}
+              <div className="hidden lg:grid grid-cols-3 gap-4 mt-8">
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <File className="w-6 h-6 text-primary" />
                   </div>
-                  <span className="text-base font-medium text-white/90">You share</span>
+                  <span className="text-sm font-medium">You share</span>
                 </div>
-                <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-14 h-14 bg-white/15 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <Users className="w-7 h-7 text-white" />
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="w-6 h-6 text-primary" />
                   </div>
-                  <span className="text-base font-medium text-white/90">We match</span>
+                  <span className="text-sm font-medium">We match</span>
                 </div>
-                <div className="flex flex-col items-center text-center space-y-3">
-                  <div className="w-14 h-14 bg-white/15 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <Rocket className="w-7 h-7 text-white" />
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Rocket className="w-6 h-6 text-primary" />
                   </div>
-                  <span className="text-base font-medium text-white/90">Results delivered</span>
+                  <span className="text-sm font-medium">Results delivered</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Improved Brand Experience */}
-        <div className="pb-6 sm:pb-8 overflow-hidden">
-          <div className="container mb-4 sm:mb-6">
-            <div className="flex items-center justify-center gap-3">
-              <h3 className="text-base sm:text-lg font-medium text-center text-white/70">Trusted by leading brands</h3>
+        {/* Brand Experience - Compressed for mobile */}
+        <div className="pb-4 sm:pb-8 overflow-hidden">
+          <div className="container mb-3 sm:mb-6">
+            <div className="flex items-center justify-center gap-2">
+              <h3 className="text-base sm:text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
               <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
                 <DialogTrigger asChild>
-                  <button className="flex items-center gap-1 p-2 hover:bg-white/10 rounded-full transition-colors">
-                    <HelpCircle className="h-4 w-4 text-white/60" />
+                  <button className="flex items-center gap-1 p-1 hover:bg-gray-100 rounded-full transition-colors">
+                    <HelpCircle className="h-4 w-4 text-muted-foreground" />
                   </button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
@@ -504,27 +487,27 @@ export default function Index() {
             </div>
           </div>
           
-          {/* Improved Logo Carousel */}
+          {/* Auto-scrolling logo carousel - Smaller on mobile */}
           <div className="relative">
-            <div className="flex animate-scroll-left space-x-4 sm:space-x-6">
+            <div className="flex animate-scroll-left space-x-3 sm:space-x-6">
               {/* First set of logos */}
               {brandLogos.map((logo, index) => (
-                <div key={index} className="flex-shrink-0 w-16 h-10 sm:w-20 sm:h-12 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                <div key={index} className="flex-shrink-0 w-16 h-8 sm:w-24 sm:h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
                   <img 
                     src={logo} 
                     alt={`Brand ${index + 1}`}
-                    className="max-w-full max-h-full object-contain filter grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                    className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     loading="lazy"
                   />
                 </div>
               ))}
               {/* Duplicate set for seamless loop */}
               {brandLogos.map((logo, index) => (
-                <div key={`duplicate-${index}`} className="flex-shrink-0 w-16 h-10 sm:w-20 sm:h-12 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                <div key={`duplicate-${index}`} className="flex-shrink-0 w-16 h-8 sm:w-24 sm:h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
                   <img 
                     src={logo} 
                     alt={`Brand ${index + 1} duplicate`}
-                    className="max-w-full max-h-full object-contain filter grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                    className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
                     loading="lazy"
                   />
                 </div>
