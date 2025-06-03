@@ -1,10 +1,8 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
-// Remove the duplicate useState import
 import { Card, CardContent } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, File, Users, Rocket } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
@@ -340,18 +338,12 @@ export default function Index() {
           <div className="flex-1 text-center lg:text-left space-y-8">
             <div className="space-y-2">
               <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-normal leading-none">
-                TaaS
+                Team as a Service
               </h1>
-              <div className="space-y-2">
-                <p className="text-2xl sm:text-3xl lg:text-[40px] font-normal leading-tight">
-                  Team as a Service
-                </p>
-              </div>
+              <p className="text-2xl sm:text-3xl lg:text-[24px] font-normal leading-tight text-muted-foreground">
+                On-demand AI + human experts for marketing, development & growth.
+              </p>
             </div>
-            
-            <p className="text-lg sm:text-xl font-normal max-w-md mx-auto lg:mx-0">
-              On-demand team solutions to scale your business.
-            </p>
 
             {/* Prompt Bar */}
             <div className="flex flex-col sm:flex-row gap-4">
@@ -371,15 +363,6 @@ export default function Index() {
               </Button>
             </div>
 
-            {/* Show image on mobile between title and buttons */}
-            <div className="lg:hidden w-full max-w-md mx-auto">
-              <img 
-                src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
-                alt="TaaS product interface"
-                className="w-full rounded-lg shadow-xl"
-              />
-            </div>
-
             <div className="flex justify-center lg:justify-start">
               <Button 
                 variant="outline" 
@@ -392,12 +375,55 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="flex-1 hidden lg:block">
-            <img 
-              src="https://cdn.prod.website-files.com/626be00c396339c5a816353b/676ab103bbd3ff402b1c65a3_hero.webp"
-              alt="TaaS product interface"
-              className="w-full max-w-xl mx-auto rounded-lg shadow-xl"
-            />
+          <div className="flex-1">
+            {/* Video Section */}
+            <div className="space-y-6">
+              {/* Watch How It Works Label */}
+              <div className="flex justify-center">
+                <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
+                  WATCH HOW IT WORKS
+                </div>
+              </div>
+
+              {/* Video with Play Button */}
+              <div className="relative rounded-lg overflow-hidden shadow-xl">
+                <video 
+                  className="w-full aspect-video object-cover"
+                  poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
+                  controls
+                >
+                  <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Meet Sophie Label */}
+                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                  Meet Sophie, our Head of Operations
+                </div>
+              </div>
+
+              {/* Three Step Process */}
+              <div className="grid grid-cols-3 gap-4 mt-8">
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <File className="w-6 h-6 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">You share</span>
+                </div>
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="w-6 h-6 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">We match</span>
+                </div>
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Rocket className="w-6 h-6 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">Results delivered</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
