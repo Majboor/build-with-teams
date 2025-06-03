@@ -203,6 +203,39 @@ const plans = [
   },
 ];
 
+// Brand logos for the moving carousel
+const brandLogos = [
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-01-4.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-02-4.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-03-3.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-04-4.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-05-3.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-06-3.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-07-4.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-08-2.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-09-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-10-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-11-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-12-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-13-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-14-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-15-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-16-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-17-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-18-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-20-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-21-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-22-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-23-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-24-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-25-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-26-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-27-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-28-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-29-1.avif",
+  "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-30-1.avif",
+];
+
 export function CrmFeatures() {
   return (
     <section className="container py-20">
@@ -364,6 +397,39 @@ export default function Index() {
               alt="TaaS product interface"
               className="w-full max-w-xl mx-auto rounded-lg shadow-xl"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Brand Experience Section */}
+      <section className="py-16 bg-muted/50 overflow-hidden">
+        <div className="container mb-12">
+          <h2 className="text-3xl font-bold text-center">Brand Experience</h2>
+        </div>
+        
+        {/* Auto-scrolling logo carousel */}
+        <div className="relative">
+          <div className="flex animate-scroll-left space-x-8">
+            {/* First set of logos */}
+            {brandLogos.map((logo, index) => (
+              <div key={index} className="flex-shrink-0 w-32 h-16 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                <img 
+                  src={logo} 
+                  alt={`Brand ${index + 1}`}
+                  className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                />
+              </div>
+            ))}
+            {/* Duplicate set for seamless loop */}
+            {brandLogos.map((logo, index) => (
+              <div key={`duplicate-${index}`} className="flex-shrink-0 w-32 h-16 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                <img 
+                  src={logo} 
+                  alt={`Brand ${index + 1} duplicate`}
+                  className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
