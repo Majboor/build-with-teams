@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, File, Users, Rocket } from "lucide-react";
+import { Check, File, Users, Rocket, Play } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
+import { PromptModal } from "@/components/PromptModal";
 import {
   Carousel,
   CarouselContent,
@@ -20,7 +21,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
 import { WorkflowSection } from "@/components/WorkflowSection";
 import { TeamSection } from "@/components/TeamSection";
 import { Link } from "react-router-dom";
@@ -264,8 +264,8 @@ export function CrmFeatures() {
 
 export default function Index() {
   const [showBetaDialog, setShowBetaDialog] = useState(false);
+  const [showPromptModal, setShowPromptModal] = useState(false);
   const [showAllIndustries, setShowAllIndustries] = useState(false);
-  const [appIdea, setAppIdea] = useState("");
   const [selectedApp, setSelectedApp] = useState<typeof builtProjects[0] | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -304,17 +304,9 @@ export default function Index() {
     loadAllImages();
   }, []);
 
-  // Store the user's prompt in localStorage when it changes
-  React.useEffect(() => {
-    if (prompt) {
-      localStorage.setItem("userPrompt", prompt);
-    }
-  }, [prompt]);
-
-  const handleStartBuild = () => {
-    if (prompt.trim()) {
-      setShowBetaDialog(true);
-    }
+  const handlePromptSubmit = (prompt: string) => {
+    localStorage.setItem("userPrompt", prompt);
+    setShowBetaDialog(true);
   };
 
   if (!imagesLoaded) {
@@ -332,130 +324,114 @@ export default function Index() {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col px-6 pt-20">
-        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-12 py-8">
-          <div className="flex-1 text-center lg:text-left space-y-8">
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-normal leading-none">
-                Team as a Service
-              </h1>
-              <p className="text-2xl sm:text-3xl lg:text-[24px] font-normal leading-tight text-muted-foreground">
-                On-demand AI + human experts for marketing, development & growth.
-              </p>
-            </div>
-
-            {/* Prompt Bar */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Input
-                type="text"
-                placeholder="Enter your idea or prompt..."
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                className="h-12 sm:h-14 text-lg"
-              />
-              <Button 
-                onClick={handleStartBuild}
-                className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
-                size="lg"
-              >
-                Try for free
-              </Button>
-            </div>
-
-            <div className="flex justify-center lg:justify-start">
-              <Button 
-                variant="outline" 
-                onClick={() => setShowBetaDialog(true)}
-                className="h-12 sm:h-14 text-lg rounded-full border-2 flex items-center justify-center"
-                size="lg"
-              >
-                Get a demo
-              </Button>
-            </div>
+      {/* Optimized Hero Section - Above the Fold */}
+      <section className="min-h-screen flex flex-col px-4 sm:px-6 pt-16 sm:pt-20">
+        <div className="container flex-1 flex flex-col items-center justify-center text-center space-y-6 sm:space-y-8 py-4 sm:py-8">
+          {/* Main Headlines - Tightened */}
+          <div className="space-y-2 sm:space-y-4">
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight">
+              Team as a Service
+            </h1>
+            <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground leading-tight max-w-4xl">
+              On-demand AI + human experts for marketing, development & growth.
+            </p>
           </div>
 
-          <div className="flex-1">
-            {/* Video Section */}
-            <div className="space-y-6">
-              {/* Watch How It Works Label */}
-              <div className="flex justify-center">
-                <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
-                  WATCH HOW IT WORKS
-                </div>
-              </div>
+          {/* Primary CTA - Above the Fold */}
+          <Button 
+            onClick={() => setShowBetaDialog(true)}
+            className="h-12 sm:h-14 px-8 sm:px-12 text-lg sm:text-xl rounded-full bg-black text-white hover:bg-black/90 min-w-[44px] min-h-[44px]"
+            size="lg"
+          >
+            Try for free
+          </Button>
 
-              {/* Video with Play Button */}
-              <div className="relative rounded-lg overflow-hidden shadow-xl">
-                <video 
-                  className="w-full aspect-video object-cover"
-                  poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
-                  controls
-                >
-                  <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Meet Sophie Label */}
-                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
-                  Meet Sophie, our Head of Operations
-                </div>
-              </div>
-
-              {/* Three Step Process */}
-              <div className="grid grid-cols-3 gap-4 mt-8">
-                <div className="flex flex-col items-center text-center space-y-2">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <File className="w-6 h-6 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium">You share</span>
-                </div>
-                <div className="flex flex-col items-center text-center space-y-2">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium">We match</span>
-                </div>
-                <div className="flex flex-col items-center text-center space-y-2">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Rocket className="w-6 h-6 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium">Results delivered</span>
-                </div>
-              </div>
-            </div>
+          {/* Input Field as Modal Trigger */}
+          <div 
+            onClick={() => setShowPromptModal(true)}
+            className="w-full max-w-2xl p-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-colors min-h-[44px] flex items-center justify-center"
+          >
+            <span className="text-muted-foreground text-lg">💡 Enter your idea or prompt...</span>
           </div>
-        </div>
 
-        {/* Brand Experience - Auto-scrolling logos within hero section */}
-        <div className="pb-8 overflow-hidden">
-          <div className="container mb-6">
-            <h3 className="text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
-          </div>
-          
-          {/* Auto-scrolling logo carousel */}
-          <div className="relative">
-            <div className="flex animate-scroll-left space-x-6">
-              {/* First set of logos */}
-              {brandLogos.map((logo, index) => (
-                <div key={index} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
+          {/* Secondary CTA */}
+          <Button 
+            variant="outline" 
+            onClick={() => setShowBetaDialog(true)}
+            className="h-12 sm:h-14 px-6 sm:px-8 text-lg rounded-full border-2 min-w-[44px] min-h-[44px]"
+            size="lg"
+          >
+            Get a demo
+          </Button>
+
+          {/* Compact Brand Logos - Swipeable Row */}
+          <div className="w-full py-4">
+            <h3 className="text-sm sm:text-base font-medium text-muted-foreground mb-3">Trusted by leading brands</h3>
+            <div className="flex overflow-x-auto space-x-4 pb-2 scrollbar-hide">
+              {brandLogos.slice(0, 8).map((logo, index) => (
+                <div key={index} className="flex-shrink-0 w-16 h-8 sm:w-20 sm:h-10 flex items-center justify-center bg-white rounded shadow-sm">
                   <img 
                     src={logo} 
                     alt={`Brand ${index + 1}`}
                     className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    loading="lazy"
                   />
                 </div>
               ))}
-              {/* Duplicate set for seamless loop */}
-              {brandLogos.map((logo, index) => (
-                <div key={`duplicate-${index}`} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
-                  <img 
-                    src={logo} 
-                    alt={`Brand ${index + 1} duplicate`}
-                    className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                  />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Section - Below the Fold */}
+      <section className="py-8 sm:py-16 bg-gray-50">
+        <div className="container">
+          {/* Watch How It Works Label */}
+          <div className="flex justify-center mb-6">
+            <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
+              WATCH HOW IT WORKS
+            </div>
+          </div>
+
+          {/* Video with Thumbnail Overlay */}
+          <div className="max-w-4xl mx-auto">
+            <div className="relative rounded-lg overflow-hidden shadow-xl">
+              <video 
+                className="w-full aspect-video object-cover"
+                poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
+                controls
+                preload="metadata"
+              >
+                <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              
+              {/* Meet Sophie Label - Responsive Size */}
+              <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-black/70 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
+                Meet Sophie, our Head of Operations
+              </div>
+            </div>
+
+            {/* Three Step Process - Improved Touch Targets */}
+            <div className="grid grid-cols-3 gap-4 mt-8">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-full flex items-center justify-center min-w-[44px] min-h-[44px]">
+                  <File className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                 </div>
-              ))}
+                <span className="text-sm sm:text-base font-medium">You share</span>
+              </div>
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-full flex items-center justify-center min-w-[44px] min-h-[44px]">
+                  <Users className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                </div>
+                <span className="text-sm sm:text-base font-medium">We match</span>
+              </div>
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-full flex items-center justify-center min-w-[44px] min-h-[44px]">
+                  <Rocket className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                </div>
+                <span className="text-sm sm:text-base font-medium">Results delivered</span>
+              </div>
             </div>
           </div>
         </div>
@@ -470,8 +446,8 @@ export default function Index() {
       <TeamSection />
 
       {/* What TaaS Has Built Section */}
-      <section className="container py-20 border-t">
-        <h2 className="text-3xl font-bold text-center mb-12">
+      <section className="container py-12 sm:py-20 border-t">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">
           What TaaS Has Built
         </h2>
         {isMobile ? (
@@ -488,11 +464,12 @@ export default function Index() {
                         src={project.image}
                         alt={project.title}
                         className="object-cover w-full h-full"
+                        loading="lazy"
                       />
                     </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                      <p className="text-muted-foreground">{project.description}</p>
+                    <CardContent className="p-4 sm:p-6">
+                      <h3 className="text-lg sm:text-xl font-semibold mb-2">{project.title}</h3>
+                      <p className="text-sm sm:text-base text-muted-foreground">{project.description}</p>
                     </CardContent>
                   </Card>
                 </CarouselItem>
@@ -502,7 +479,7 @@ export default function Index() {
             <CarouselNext />
           </Carousel>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {builtProjects.map((project, index) => (
               <Card 
                 key={index} 
@@ -514,11 +491,12 @@ export default function Index() {
                     src={project.image}
                     alt={project.title}
                     className="object-cover w-full h-full"
+                    loading="lazy"
                   />
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-muted-foreground">{project.description}</p>
+                <CardContent className="p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2">{project.title}</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground">{project.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -527,24 +505,25 @@ export default function Index() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16">
+      <section className="py-12 sm:py-16">
         <div className="container">
-          <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
-          <div className="space-y-16">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Key Features</h2>
+          <div className="space-y-12 sm:space-y-16">
             {features.map((feature, index) => (
               <div 
                 key={feature.title} 
-                className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}
+                className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6 sm:gap-8 items-center`}
               >
-                <div className="flex-1 space-y-4">
-                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                <div className="flex-1 space-y-3 sm:space-y-4">
+                  <h3 className="text-xl sm:text-2xl font-semibold">{feature.title}</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground">{feature.description}</p>
                 </div>
                 <div className="flex-1">
                   <img 
                     src={feature.image} 
                     alt={feature.title} 
                     className="rounded-lg shadow-lg w-full"
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -554,29 +533,29 @@ export default function Index() {
       </section>
 
       {/* Industries We Serve */}
-      <section className="container py-20 border-t" id="industries">
-        <h2 className="text-3xl font-bold text-center mb-12">Industries We Serve</h2>
-        <div className="grid sm:grid-cols-2 gap-6">
+      <section className="container py-12 sm:py-20 border-t" id="industries">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Industries We Serve</h2>
+        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
           {(showAllIndustries ? industries : industries.slice(0, 4)).map((industry, i) => (
             <div 
               key={i} 
-              className="glass p-6 space-y-4 animate-slide-up rounded-lg hover:shadow-lg transition-all"
+              className="glass p-4 sm:p-6 space-y-3 sm:space-y-4 animate-slide-up rounded-lg hover:shadow-lg transition-all"
               style={{ animationDelay: `${i * 50}ms` }}
             >
-              <div className="text-4xl">{industry.icon}</div>
-              <h3 className="text-xl font-semibold">{industry.title}</h3>
-              <p className="text-muted-foreground text-sm">{industry.description}</p>
+              <div className="text-3xl sm:text-4xl">{industry.icon}</div>
+              <h3 className="text-lg sm:text-xl font-semibold">{industry.title}</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">{industry.description}</p>
             </div>
           ))}
         </div>
         
         {industries.length > 4 && (
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-center mt-6 sm:mt-8">
             <Button
               variant="outline"
               size="lg"
               onClick={() => setShowAllIndustries(!showAllIndustries)}
-              className="rounded-full"
+              className="rounded-full min-w-[44px] min-h-[44px]"
             >
               {showAllIndustries ? 'Show Less' : 'View More Industries'}
             </Button>
@@ -585,13 +564,13 @@ export default function Index() {
       </section>
 
       {/* How It Works */}
-      <section className="container py-20 border-t" id="features">
-        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <section className="container py-12 sm:py-20 border-t" id="features">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">How It Works</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {steps.map((step, i) => (
-            <div key={i} className="glass p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-              <h3 className="text-xl font-semibold">{step.title}</h3>
-              <p className="text-muted-foreground mb-2">{step.description}</p>
+            <div key={i} className="glass p-4 sm:p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+              <h3 className="text-lg sm:text-xl font-semibold">{step.title}</h3>
+              <p className="text-sm sm:text-base text-muted-foreground mb-2">{step.description}</p>
               {step.link && (
                 <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                   Learn more →
@@ -603,66 +582,66 @@ export default function Index() {
       </section>
 
       {/* Features - Changed to What Others Can't Do */}
-      <section className="container py-20 border-t">
-        <h2 className="text-3xl font-bold text-center mb-12">What Others Can't Do</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+      <section className="container py-12 sm:py-20 border-t">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">What Others Can't Do</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-4xl mx-auto">
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "0ms" }}>
-            <Check className="h-5 w-5 text-primary" />
-            <span>Instant AI + Human Team</span>
+            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+            <span className="text-sm sm:text-base">Instant AI + Human Team</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "100ms" }}>
-            <Check className="h-5 w-5 text-primary" />
-            <span>End-to-End in One Workspace</span>
+            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+            <span className="text-sm sm:text-base">End-to-End in One Workspace</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "200ms" }}>
-            <Check className="h-5 w-5 text-primary" />
-            <span>On-Demand Expert Meetings</span>
+            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+            <span className="text-sm sm:text-base">On-Demand Expert Meetings</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "300ms" }}>
-            <Check className="h-5 w-5 text-primary" />
-            <span>Hire Developers Permanently</span>
+            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+            <span className="text-sm sm:text-base">Hire Developers Permanently</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "400ms" }}>
-            <Check className="h-5 w-5 text-primary" />
-            <span>Seamless Hosting & Bundling</span>
+            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+            <span className="text-sm sm:text-base">Seamless Hosting & Bundling</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "500ms" }}>
-            <Check className="h-5 w-5 text-primary" />
-            <span>Continuous AI-Driven Optimization</span>
+            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+            <span className="text-sm sm:text-base">Continuous AI-Driven Optimization</span>
           </div>
         </div>
       </section>
 
       {/* Pricing */}
-      <section className="container py-20 border-t" id="pricing">
-        <h2 className="text-3xl font-bold text-center mb-12">Simple Pricing</h2>
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <section className="container py-12 sm:py-20 border-t" id="pricing">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Simple Pricing</h2>
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
-            <div key={i} className="glass p-6 space-y-4 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-              <h3 className="text-xl font-semibold">{plan.name}</h3>
-              <div className="text-3xl font-bold">{plan.price}</div>
+            <div key={i} className="glass p-4 sm:p-6 space-y-3 sm:space-y-4 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+              <h3 className="text-lg sm:text-xl font-semibold">{plan.name}</h3>
+              <div className="text-2xl sm:text-3xl font-bold">{plan.price}</div>
               <ul className="space-y-2">
                 {plan.features.map((feature, j) => (
                   <li key={j} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-primary" />
-                    <span className="text-sm">{feature}</span>
+                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
+                    <span className="text-xs sm:text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full">Choose {plan.name}</Button>
+              <Button className="w-full min-h-[44px]">Choose {plan.name}</Button>
             </div>
           ))}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-12 mt-20">
+      <footer className="border-t py-8 sm:py-12 mt-12 sm:mt-20">
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs sm:text-sm text-muted-foreground">
               © 2024 TaaS - Team as a Service. All rights reserved.
             </div>
-            <div className="flex gap-6 text-sm">
+            <div className="flex gap-4 sm:gap-6 text-xs sm:text-sm">
               <Link to="/ai-marketing" className="hover:text-primary">AI Marketing</Link>
               <Link to="/careers" className="hover:text-primary">Careers</Link>
               <Link to="/about" className="hover:text-primary">About</Link>
@@ -675,6 +654,12 @@ export default function Index() {
       <BetaSignupDialog 
         open={showBetaDialog} 
         onOpenChange={setShowBetaDialog}
+      />
+
+      <PromptModal
+        open={showPromptModal}
+        onOpenChange={setShowPromptModal}
+        onSubmit={handlePromptSubmit}
       />
 
       <AppDetailsDialog
