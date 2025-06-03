@@ -27,7 +27,7 @@ const teamMembers: TeamMember[] = [{
   name: "Asad",
   role: "AI & ML Engineer",
   description: "AI team as a service",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Passionate AI engineer with expertise in machine learning, deep learning, and AI automation. Leading innovative AI solutions and building intelligent systems that transform businesses.",
   skills: ["Machine Learning", "Deep Learning", "Python", "TensorFlow", "PyTorch", "Computer Vision", "NLP"],
   experience: "5+ years in AI development",
