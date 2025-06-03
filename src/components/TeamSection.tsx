@@ -198,22 +198,34 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
     setShowDetails(true);
   };
 
-  const handleMediaClick = (e: React.MouseEvent) => {
+  const handleMediaClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    console.log('Media clicked, current isPlaying:', isPlaying);
+    
     if (!isPlaying) {
       setIsPlaying(true);
-      if (videoRef.current) {
-        videoRef.current.play();
-      }
+      // Small delay to ensure video element is rendered
+      setTimeout(async () => {
+        if (videoRef.current) {
+          console.log('Playing video');
+          try {
+            await videoRef.current.play();
+          } catch (error) {
+            console.error('Error playing video:', error);
+          }
+        }
+      }, 100);
     } else {
       setIsPlaying(false);
       if (videoRef.current) {
+        console.log('Pausing video');
         videoRef.current.pause();
       }
     }
   };
 
   const handleVideoEnd = () => {
+    console.log('Video ended');
     setIsPlaying(false);
   };
 
@@ -250,11 +262,12 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                   src={member.videoUrl}
                   className="w-full h-full object-cover"
                   onEnded={handleVideoEnd}
-                  onClick={handleMediaClick}
                   controls={false}
+                  playsInline
+                  muted={false}
                 />
                 <div 
-                  className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                  className="absolute inset-0 flex items-center justify-center bg-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                   onClick={handleMediaClick}
                 >
                   <div className="bg-white/90 rounded-full p-3 transform hover:scale-110 transition-transform duration-200">
