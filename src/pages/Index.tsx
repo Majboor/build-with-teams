@@ -464,7 +464,6 @@ export default function Index() {
                 <PopoverTrigger asChild>
                   <button className="flex items-center gap-1 p-1 hover:bg-gray-100 rounded-full transition-colors">
                     <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                    <AlertTriangle className="h-3 w-3 text-orange-500" />
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-80 p-4">
