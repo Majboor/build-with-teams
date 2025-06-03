@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -184,18 +185,20 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const [videoError, setVideoError] = useState(false);
   const [thumbnailReady, setThumbnailReady] = useState(false);
 
-  const handlePlayPause = (e: React.MouseEvent) => {
+  const handlePlayPause = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef && !videoError) {
-      if (isPlaying) {
-        videoRef.pause();
-      } else {
-        // Start from beginning when playing
-        videoRef.currentTime = 0;
-        videoRef.play().catch((error) => {
-          console.log('Video play error:', error);
-          setVideoError(true);
-        });
+      try {
+        if (isPlaying) {
+          videoRef.pause();
+        } else {
+          // Start from beginning when playing
+          videoRef.currentTime = 0;
+          await videoRef.play();
+        }
+      } catch (error) {
+        console.log('Video play error:', error);
+        setVideoError(true);
       }
     }
   };
@@ -217,8 +220,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   };
 
   const handleVideoCanPlay = () => {
-    if (videoRef && !thumbnailReady && !isPlaying) {
-      // Set thumbnail only once when video is ready and not playing
+    if (videoRef && !thumbnailReady) {
+      // Set thumbnail to 10 seconds when video is ready
       try {
         videoRef.currentTime = 10;
         setThumbnailReady(true);
