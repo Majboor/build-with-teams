@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Play, Pause, User, Mail, MapPin, Calendar, Info, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -179,67 +178,24 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null);
   const [showDetails, setShowDetails] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isVideoLoading, setIsVideoLoading] = useState(true);
-  const [videoError, setVideoError] = useState(false);
-  const [thumbnailReady, setThumbnailReady] = useState(false);
 
-  const handlePlayPause = async (e: React.MouseEvent) => {
+  const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (videoRef && !videoError) {
-      try {
-        if (isPlaying) {
-          videoRef.pause();
-          setIsPlaying(false);
-        } else {
-          // Start from beginning when playing
-          videoRef.currentTime = 0;
-          setIsPlaying(true);
-          await videoRef.play();
-        }
-      } catch (error) {
-        console.log('Video play error:', error);
-        setVideoError(true);
-        setIsPlaying(false);
+    if (videoRef) {
+      if (isPlaying) {
+        videoRef.pause();
+      } else {
+        videoRef.play();
       }
     }
-  };
-
-  const handleVideoEnd = () => {
-    setIsPlaying(false);
-    // Set back to thumbnail position when video ends
-    if (videoRef) {
-      videoRef.currentTime = 10;
-    }
-  };
-
-  const handleVideoPause = () => {
-    setIsPlaying(false);
   };
 
   const handleVideoPlay = () => {
     setIsPlaying(true);
   };
 
-  const handleVideoCanPlay = () => {
-    if (videoRef && !thumbnailReady) {
-      // Set thumbnail to 10 seconds when video is ready
-      try {
-        videoRef.currentTime = 10;
-        setThumbnailReady(true);
-        setIsVideoLoading(false);
-      } catch (error) {
-        console.log('Error setting video thumbnail:', error);
-        setVideoError(true);
-        setIsVideoLoading(false);
-      }
-    }
-  };
-
-  const handleVideoError = () => {
-    console.log('Video loading error for:', member.name);
-    setVideoError(true);
-    setIsVideoLoading(false);
+  const handleVideoPause = () => {
+    setIsPlaying(false);
   };
 
   const handleCardClick = () => {
@@ -249,83 +205,36 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   return (
     <>
       <motion.div 
-        initial={{
-          opacity: 0,
-          y: 30
-        }} 
-        whileInView={{
-          opacity: 1,
-          y: 0
-        }} 
-        viewport={{
-          once: true
-        }} 
-        transition={{
-          duration: 0.5,
-          delay: index * 0.1
-        }} 
-        onMouseEnter={() => setIsHovered(true)} 
-        onMouseLeave={() => setIsHovered(false)}
+        initial={{ opacity: 0, y: 30 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        viewport={{ once: true }} 
+        transition={{ duration: 0.5, delay: index * 0.1 }}
       >
-        <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer relative" onClick={handleCardClick}>
+        <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer" onClick={handleCardClick}>
           <div className="relative aspect-video bg-gray-900">
-            {isVideoLoading && !videoError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
-                <Skeleton className="w-full h-full" />
-              </div>
-            )}
-            
-            {videoError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
-                <div className="text-center text-white">
-                  <User className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm opacity-70">Video unavailable</p>
-                </div>
-              </div>
-            )}
-
-            {!videoError && (
-              <video 
-                ref={setVideoRef} 
-                className={`w-full h-full object-cover transition-opacity duration-300 ${isVideoLoading ? 'opacity-0' : 'opacity-100'}`}
-                preload="metadata"
-                onCanPlay={handleVideoCanPlay}
-                onError={handleVideoError}
-                onEnded={handleVideoEnd}
-                onPause={handleVideoPause}
-                onPlay={handleVideoPlay}
-                playsInline
-                muted
-              >
-                <source src={member.videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            )}
+            <video 
+              ref={setVideoRef} 
+              className="w-full h-full object-cover"
+              onPlay={handleVideoPlay}
+              onPause={handleVideoPause}
+              playsInline
+              muted
+            >
+              <source src={member.videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
             
             {/* Video Overlay */}
-            {!isVideoLoading && (
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-100 group-hover:opacity-90 transition-opacity duration-300">
-                <Button 
-                  onClick={handlePlayPause} 
-                  variant="secondary" 
-                  size="lg" 
-                  className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
-                  disabled={videoError}
-                >
-                  {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-1" />}
-                </Button>
-              </div>
-            )}
-
-            {/* Profile View Overlay - appears on hover */}
-            {isHovered && !isVideoLoading && (
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-16 transition-all duration-300">
-                <div className="text-white text-center">
-                  <Info className="h-5 w-5 mx-auto mb-1" />
-                  <p className="text-sm font-medium">Click to view full profile</p>
-                </div>
-              </div>
-            )}
+            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-100 group-hover:opacity-90 transition-opacity duration-300">
+              <Button 
+                onClick={handlePlayPause} 
+                variant="secondary" 
+                size="lg" 
+                className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+              >
+                {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-1" />}
+              </Button>
+            </div>
 
             {/* Name overlay at bottom */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -372,11 +281,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                   className="w-full h-full object-cover" 
                   controls 
                   preload="metadata"
-                  onCanPlay={(e) => {
-                    const video = e.target as HTMLVideoElement;
-                    video.currentTime = 0; // Start from beginning in dialog
-                  }}
-                  onError={() => console.log('Dialog video error')}
                 >
                   <source src={member.videoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -447,51 +351,52 @@ export const TeamSection: React.FC = () => {
     <section className="py-20 bg-muted">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <motion.h2 className="text-3xl md:text-4xl font-bold mb-4" initial={{
-          opacity: 0,
-          y: 20
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.6
-        }}>
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold mb-4" 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.6 }}
+          >
             Meet Our Expert Team
           </motion.h2>
-          <motion.p className="text-lg text-muted-foreground max-w-2xl mx-auto" initial={{
-          opacity: 0,
-          y: 20
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.6,
-          delay: 0.2
-        }}>Our diverse team of more than 300 experts brings together cutting-edge skills in AI, development, design, and project management to deliver exceptional results for your projects.</motion.p>
+          <motion.p 
+            className="text-lg text-muted-foreground max-w-2xl mx-auto" 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Our diverse team of more than 300 experts brings together cutting-edge skills in AI, development, design, and project management to deliver exceptional results for your projects.
+          </motion.p>
         </div>
 
-        {isMobile ? <div className="relative">
-            <Carousel opts={{
-          align: "start",
-          loop: true
-        }} className="w-full max-w-sm mx-auto">
+        {isMobile ? (
+          <div className="relative">
+            <Carousel 
+              opts={{ align: "start", loop: true }} 
+              className="w-full max-w-sm mx-auto"
+            >
               <CarouselContent>
-                {teamMembers.map((member, index) => <CarouselItem key={member.id}>
+                {teamMembers.map((member, index) => (
+                  <CarouselItem key={member.id}>
                     <div className="p-1">
                       <TeamMemberCard member={member} index={index} />
                     </div>
-                  </CarouselItem>)}
+                  </CarouselItem>
+                ))}
               </CarouselContent>
               <CarouselPrevious className="left-2" />
               <CarouselNext className="right-2" />
             </Carousel>
-          </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => <TeamMemberCard key={member.id} member={member} index={index} />)}
-          </div>}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
