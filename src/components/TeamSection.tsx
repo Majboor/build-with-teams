@@ -1,7 +1,8 @@
+
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, User, Mail, MapPin, Calendar, Info, ArrowRight } from "lucide-react";
+import { Play, Pause, User, Mail, MapPin, Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -178,24 +179,31 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [thumbnailGenerated, setThumbnailGenerated] = useState(false);
 
   const handlePlayPause = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef) {
       if (isPlaying) {
         videoRef.pause();
+        setIsPlaying(false);
       } else {
         videoRef.play();
+        setIsPlaying(true);
       }
     }
   };
 
-  const handleVideoPlay = () => {
-    setIsPlaying(true);
+  const generateThumbnail = () => {
+    if (videoRef && !thumbnailGenerated) {
+      // Set video to a specific time for thumbnail (e.g., 1 second)
+      videoRef.currentTime = 1;
+      setThumbnailGenerated(true);
+    }
   };
 
-  const handleVideoPause = () => {
-    setIsPlaying(false);
+  const handleVideoLoadedData = () => {
+    generateThumbnail();
   };
 
   const handleCardClick = () => {
@@ -215,26 +223,42 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             <video 
               ref={setVideoRef} 
               className="w-full h-full object-cover"
-              onPlay={handleVideoPlay}
-              onPause={handleVideoPause}
+              onLoadedData={handleVideoLoadedData}
               playsInline
               muted
+              preload="metadata"
             >
               <source src={member.videoUrl} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             
-            {/* Video Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-100 group-hover:opacity-90 transition-opacity duration-300">
-              <Button 
-                onClick={handlePlayPause} 
-                variant="secondary" 
-                size="lg" 
-                className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
-              >
-                {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-1" />}
-              </Button>
-            </div>
+            {/* Video Overlay - shows when not playing */}
+            {!isPlaying && (
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-100 group-hover:opacity-90 transition-opacity duration-300">
+                <Button 
+                  onClick={handlePlayPause} 
+                  variant="secondary" 
+                  size="lg" 
+                  className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+                >
+                  <Play className="h-6 w-6 ml-1" />
+                </Button>
+              </div>
+            )}
+
+            {/* Pause button overlay - shows when playing */}
+            {isPlaying && (
+              <div className="absolute inset-0 bg-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <Button 
+                  onClick={handlePlayPause} 
+                  variant="secondary" 
+                  size="lg" 
+                  className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+                >
+                  <Pause className="h-6 w-6" />
+                </Button>
+              </div>
+            )}
 
             {/* Name overlay at bottom */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
