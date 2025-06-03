@@ -237,18 +237,18 @@ const brandLogos = [
 
 export function CrmFeatures() {
   return (
-    <section className="container py-12 sm:py-20">
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-8 sm:mb-16">
+    <section className="container py-20">
+      <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-16">
         Finally, an AI that works <span className="text-primary">for you</span>
       </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
         {crmFeatures.map((feature, index) => (
           <TooltipProvider key={index}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="space-y-3 sm:space-y-4 p-4 sm:p-6 border rounded-lg cursor-help transition-all hover:shadow-lg">
+                <div className="space-y-4 p-6 border rounded-lg cursor-help transition-all hover:shadow-lg">
                   {feature.content}
-                  <h3 className="text-lg sm:text-2xl font-semibold">{feature.title}</h3>
+                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
                 </div>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="max-w-[200px] text-center">
@@ -297,13 +297,14 @@ export default function Index() {
         setImagesLoaded(true);
       } catch (error) {
         console.error('Error loading images:', error);
-        setImagesLoaded(true);
+        setImagesLoaded(true); // Show content even if some images fail to load
       }
     };
 
     loadAllImages();
   }, []);
 
+  // Store the user's prompt in localStorage when it changes
   React.useEffect(() => {
     if (prompt) {
       localStorage.setItem("userPrompt", prompt);
@@ -331,44 +332,42 @@ export default function Index() {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section - Mobile Optimized */}
-      <section className="min-h-screen flex flex-col px-4 sm:px-6 pt-16 sm:pt-20">
-        <div className="container flex-1 flex flex-col items-center justify-start py-4 sm:py-8">
-          
-          {/* Main Content - Above the Fold */}
-          <div className="w-full max-w-4xl text-center space-y-4 sm:space-y-6 mb-6 sm:mb-8">
-            <div className="space-y-2 sm:space-y-4">
-              <h1 className="text-3xl sm:text-4xl lg:text-[64px] font-normal leading-tight">
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col px-6 pt-20">
+        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-12 py-8">
+          <div className="flex-1 text-center lg:text-left space-y-8">
+            <div className="space-y-2">
+              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-normal leading-none">
                 Team as a Service
               </h1>
-              <p className="text-lg sm:text-2xl lg:text-[24px] font-normal leading-tight text-muted-foreground px-2">
+              <p className="text-2xl sm:text-3xl lg:text-[24px] font-normal leading-tight text-muted-foreground">
                 On-demand AI + human experts for marketing, development & growth.
               </p>
             </div>
 
-            {/* Prompt Bar - Mobile Optimized */}
-            <div className="flex flex-col gap-3 sm:gap-4 max-w-2xl mx-auto px-2">
+            {/* Prompt Bar */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <Input
                 type="text"
                 placeholder="Enter your idea or prompt..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="h-12 sm:h-14 text-base sm:text-lg"
+                className="h-12 sm:h-14 text-lg"
               />
               <Button 
                 onClick={handleStartBuild}
-                className="h-12 sm:h-14 text-base sm:text-lg rounded-full bg-black text-white hover:bg-black/90 w-full sm:w-auto min-h-[44px]"
+                className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
                 size="lg"
               >
                 Try for free
               </Button>
             </div>
 
-            <div className="pt-2">
+            <div className="flex justify-center lg:justify-start">
               <Button 
                 variant="outline" 
                 onClick={() => setShowBetaDialog(true)}
-                className="h-12 sm:h-14 text-base sm:text-lg rounded-full border-2 w-full sm:w-auto min-h-[44px]"
+                className="h-12 sm:h-14 text-lg rounded-full border-2 flex items-center justify-center"
                 size="lg"
               >
                 Get a demo
@@ -376,83 +375,84 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Three Step Process - Above Video on Mobile */}
-          <div className="w-full max-w-md mb-6 sm:mb-8">
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
-              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <File className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
+          <div className="flex-1">
+            {/* Video Section */}
+            <div className="space-y-6">
+              {/* Watch How It Works Label */}
+              <div className="flex justify-center">
+                <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
+                  WATCH HOW IT WORKS
                 </div>
-                <span className="text-xs sm:text-sm font-medium">You share</span>
               </div>
-              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
-                </div>
-                <span className="text-xs sm:text-sm font-medium">We match</span>
-              </div>
-              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Rocket className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
-                </div>
-                <span className="text-xs sm:text-sm font-medium">Results delivered</span>
-              </div>
-            </div>
-          </div>
 
-          {/* Video Section - Mobile Optimized */}
-          <div className="w-full max-w-2xl space-y-3 sm:space-y-6">
-            {/* Watch How It Works Label - Smaller on Mobile */}
-            <div className="flex justify-center">
-              <div className="bg-black text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
-                WATCH HOW IT WORKS
+              {/* Video with Play Button */}
+              <div className="relative rounded-lg overflow-hidden shadow-xl">
+                <video 
+                  className="w-full aspect-video object-cover"
+                  poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
+                  controls
+                >
+                  <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Meet Sophie Label */}
+                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                  Meet Sophie, our Head of Operations
+                </div>
               </div>
-            </div>
 
-            {/* Video with Play Button - Fixed loading attribute */}
-            <div className="relative rounded-lg overflow-hidden shadow-xl">
-              <video 
-                className="w-full aspect-[16/10] sm:aspect-video object-cover"
-                poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
-              >
-                <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              
-              {/* Meet Sophie Label - Much Smaller on Mobile */}
-              <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-black/70 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm">
-                Meet Sophie, our Head of Operations
+              {/* Three Step Process */}
+              <div className="grid grid-cols-3 gap-4 mt-8">
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <File className="w-6 h-6 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">You share</span>
+                </div>
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="w-6 h-6 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">We match</span>
+                </div>
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Rocket className="w-6 h-6 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">Results delivered</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Brand Experience - Compact Mobile Version */}
-        <div className="pb-4 sm:pb-8 overflow-hidden">
-          <div className="container mb-3 sm:mb-6">
-            <h3 className="text-sm sm:text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
+        {/* Brand Experience - Auto-scrolling logos within hero section */}
+        <div className="pb-8 overflow-hidden">
+          <div className="container mb-6">
+            <h3 className="text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
           </div>
           
-          {/* Compact logo carousel for mobile */}
+          {/* Auto-scrolling logo carousel */}
           <div className="relative">
-            <div className="flex animate-scroll-left space-x-3 sm:space-x-6">
+            <div className="flex animate-scroll-left space-x-6">
+              {/* First set of logos */}
               {brandLogos.map((logo, index) => (
-                <div key={index} className="flex-shrink-0 w-16 h-8 sm:w-24 sm:h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                <div key={index} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
                   <img 
                     src={logo} 
                     alt={`Brand ${index + 1}`}
                     className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                    loading="lazy"
                   />
                 </div>
               ))}
+              {/* Duplicate set for seamless loop */}
               {brandLogos.map((logo, index) => (
-                <div key={`duplicate-${index}`} className="flex-shrink-0 w-16 h-8 sm:w-24 sm:h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                <div key={`duplicate-${index}`} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
                   <img 
                     src={logo} 
                     alt={`Brand ${index + 1} duplicate`}
                     className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                    loading="lazy"
                   />
                 </div>
               ))}
@@ -462,12 +462,16 @@ export default function Index() {
       </section>
 
       <CrmFeatures />
+
+      {/* Workflow Section */}
       <WorkflowSection />
+
+      {/* Team Section */}
       <TeamSection />
 
       {/* What TaaS Has Built Section */}
-      <section className="container py-12 sm:py-20 border-t">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">
+      <section className="container py-20 border-t">
+        <h2 className="text-3xl font-bold text-center mb-12">
           What TaaS Has Built
         </h2>
         {isMobile ? (
@@ -484,12 +488,11 @@ export default function Index() {
                         src={project.image}
                         alt={project.title}
                         className="object-cover w-full h-full"
-                        loading="lazy"
                       />
                     </div>
-                    <CardContent className="p-4 sm:p-6">
-                      <h3 className="text-lg sm:text-xl font-semibold mb-2">{project.title}</h3>
-                      <p className="text-sm sm:text-base text-muted-foreground">{project.description}</p>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                      <p className="text-muted-foreground">{project.description}</p>
                     </CardContent>
                   </Card>
                 </CarouselItem>
@@ -499,7 +502,7 @@ export default function Index() {
             <CarouselNext />
           </Carousel>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {builtProjects.map((project, index) => (
               <Card 
                 key={index} 
@@ -511,12 +514,11 @@ export default function Index() {
                     src={project.image}
                     alt={project.title}
                     className="object-cover w-full h-full"
-                    loading="lazy"
                   />
                 </div>
-                <CardContent className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-sm sm:text-base text-muted-foreground">{project.description}</p>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                  <p className="text-muted-foreground">{project.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -525,25 +527,24 @@ export default function Index() {
       </section>
 
       {/* Features Section */}
-      <section className="py-12 sm:py-16">
+      <section className="py-16">
         <div className="container">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Key Features</h2>
-          <div className="space-y-12 sm:space-y-16">
+          <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
+          <div className="space-y-16">
             {features.map((feature, index) => (
               <div 
                 key={feature.title} 
-                className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-6 sm:gap-8 items-center`}
+                className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}
               >
-                <div className="flex-1 space-y-3 sm:space-y-4 text-center md:text-left">
-                  <h3 className="text-xl sm:text-2xl font-semibold">{feature.title}</h3>
-                  <p className="text-sm sm:text-base text-muted-foreground">{feature.description}</p>
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
                 </div>
                 <div className="flex-1">
                   <img 
                     src={feature.image} 
                     alt={feature.title} 
                     className="rounded-lg shadow-lg w-full"
-                    loading="lazy"
                   />
                 </div>
               </div>
@@ -553,29 +554,29 @@ export default function Index() {
       </section>
 
       {/* Industries We Serve */}
-      <section className="container py-12 sm:py-20 border-t" id="industries">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Industries We Serve</h2>
-        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+      <section className="container py-20 border-t" id="industries">
+        <h2 className="text-3xl font-bold text-center mb-12">Industries We Serve</h2>
+        <div className="grid sm:grid-cols-2 gap-6">
           {(showAllIndustries ? industries : industries.slice(0, 4)).map((industry, i) => (
             <div 
               key={i} 
-              className="glass p-4 sm:p-6 space-y-3 sm:space-y-4 animate-slide-up rounded-lg hover:shadow-lg transition-all"
+              className="glass p-6 space-y-4 animate-slide-up rounded-lg hover:shadow-lg transition-all"
               style={{ animationDelay: `${i * 50}ms` }}
             >
-              <div className="text-3xl sm:text-4xl">{industry.icon}</div>
-              <h3 className="text-lg sm:text-xl font-semibold">{industry.title}</h3>
-              <p className="text-muted-foreground text-xs sm:text-sm">{industry.description}</p>
+              <div className="text-4xl">{industry.icon}</div>
+              <h3 className="text-xl font-semibold">{industry.title}</h3>
+              <p className="text-muted-foreground text-sm">{industry.description}</p>
             </div>
           ))}
         </div>
         
         {industries.length > 4 && (
-          <div className="flex justify-center mt-6 sm:mt-8">
+          <div className="flex justify-center mt-8">
             <Button
               variant="outline"
               size="lg"
               onClick={() => setShowAllIndustries(!showAllIndustries)}
-              className="rounded-full min-h-[44px]"
+              className="rounded-full"
             >
               {showAllIndustries ? 'Show Less' : 'View More Industries'}
             </Button>
@@ -584,15 +585,15 @@ export default function Index() {
       </section>
 
       {/* How It Works */}
-      <section className="container py-12 sm:py-20 border-t" id="features">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">How It Works</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+      <section className="container py-20 border-t" id="features">
+        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, i) => (
-            <div key={i} className="glass p-4 sm:p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-              <h3 className="text-lg sm:text-xl font-semibold">{step.title}</h3>
-              <p className="text-muted-foreground mb-2 text-sm sm:text-base">{step.description}</p>
+            <div key={i} className="glass p-6 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+              <h3 className="text-xl font-semibold">{step.title}</h3>
+              <p className="text-muted-foreground mb-2">{step.description}</p>
               {step.link && (
-                <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-medium">
+                <Link to={step.link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                   Learn more →
                 </Link>
               )}
@@ -602,66 +603,66 @@ export default function Index() {
       </section>
 
       {/* Features - Changed to What Others Can't Do */}
-      <section className="container py-12 sm:py-20 border-t">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">What Others Can't Do</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-4xl mx-auto">
+      <section className="container py-20 border-t">
+        <h2 className="text-3xl font-bold text-center mb-12">What Others Can't Do</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "0ms" }}>
-            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
-            <span className="text-sm sm:text-base">Instant AI + Human Team</span>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Instant AI + Human Team</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "100ms" }}>
-            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
-            <span className="text-sm sm:text-base">End-to-End in One Workspace</span>
+            <Check className="h-5 w-5 text-primary" />
+            <span>End-to-End in One Workspace</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "200ms" }}>
-            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
-            <span className="text-sm sm:text-base">On-Demand Expert Meetings</span>
+            <Check className="h-5 w-5 text-primary" />
+            <span>On-Demand Expert Meetings</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "300ms" }}>
-            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
-            <span className="text-sm sm:text-base">Hire Developers Permanently</span>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Hire Developers Permanently</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "400ms" }}>
-            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
-            <span className="text-sm sm:text-base">Seamless Hosting & Bundling</span>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Seamless Hosting & Bundling</span>
           </div>
           <div className="flex items-center gap-2 animate-slide-up" style={{ animationDelay: "500ms" }}>
-            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
-            <span className="text-sm sm:text-base">Continuous AI-Driven Optimization</span>
+            <Check className="h-5 w-5 text-primary" />
+            <span>Continuous AI-Driven Optimization</span>
           </div>
         </div>
       </section>
 
       {/* Pricing */}
-      <section className="container py-12 sm:py-20 border-t" id="pricing">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Simple Pricing</h2>
-        <div className="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
+      <section className="container py-20 border-t" id="pricing">
+        <h2 className="text-3xl font-bold text-center mb-12">Simple Pricing</h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
-            <div key={i} className="glass p-4 sm:p-6 space-y-3 sm:space-y-4 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
-              <h3 className="text-lg sm:text-xl font-semibold">{plan.name}</h3>
-              <div className="text-2xl sm:text-3xl font-bold">{plan.price}</div>
+            <div key={i} className="glass p-6 space-y-4 animate-slide-up" style={{ animationDelay: `${i * 100}ms` }}>
+              <h3 className="text-xl font-semibold">{plan.name}</h3>
+              <div className="text-3xl font-bold">{plan.price}</div>
               <ul className="space-y-2">
                 {plan.features.map((feature, j) => (
                   <li key={j} className="flex items-center gap-2">
-                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-                    <span className="text-xs sm:text-sm">{feature}</span>
+                    <Check className="h-4 w-4 text-primary" />
+                    <span className="text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full min-h-[44px]">Choose {plan.name}</Button>
+              <Button className="w-full">Choose {plan.name}</Button>
             </div>
           ))}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-8 sm:py-12 mt-12 sm:mt-20">
+      <footer className="border-t py-12 mt-20">
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-xs sm:text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground">
               © 2024 TaaS - Team as a Service. All rights reserved.
             </div>
-            <div className="flex gap-4 sm:gap-6 text-xs sm:text-sm">
+            <div className="flex gap-6 text-sm">
               <Link to="/ai-marketing" className="hover:text-primary">AI Marketing</Link>
               <Link to="/careers" className="hover:text-primary">Careers</Link>
               <Link to="/about" className="hover:text-primary">About</Link>
