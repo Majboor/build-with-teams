@@ -215,10 +215,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
   const handleVideoPause = () => {
     setIsPlaying(false);
-    // Only set to thumbnail if we're not actively trying to play
-    if (videoRef && !isPlaying) {
-      videoRef.currentTime = 10;
-    }
   };
 
   const handleVideoPlay = () => {
@@ -447,7 +443,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
 export const TeamSection: React.FC = () => {
   const isMobile = useIsMobile();
-  return <section className="py-20 bg-muted">
+  return (
+    <section className="py-20 bg-muted">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <motion.h2 className="text-3xl md:text-4xl font-bold mb-4" initial={{
@@ -496,5 +493,6 @@ export const TeamSection: React.FC = () => {
             {teamMembers.map((member, index) => <TeamMemberCard key={member.id} member={member} index={index} />)}
           </div>}
       </div>
-    </section>;
+    </section>
+  );
 };
