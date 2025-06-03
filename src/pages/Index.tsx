@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -410,13 +409,11 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Video with Play Button - Optimized Aspect Ratio */}
+            {/* Video with Play Button - Fixed loading attribute */}
             <div className="relative rounded-lg overflow-hidden shadow-xl">
               <video 
                 className="w-full aspect-[16/10] sm:aspect-video object-cover"
                 poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
-                controls
-                loading="lazy"
               >
                 <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
