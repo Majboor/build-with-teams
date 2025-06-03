@@ -1,8 +1,9 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, File, Users, Rocket, HelpCircle, AlertTriangle } from "lucide-react";
+import { Check, File, Users, Rocket, HelpCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
@@ -21,10 +22,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { WorkflowSection } from "@/components/WorkflowSection";
 import { TeamSection } from "@/components/TeamSection";
@@ -275,6 +278,7 @@ export default function Index() {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [prompt, setPrompt] = useState("");
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -460,24 +464,26 @@ export default function Index() {
           <div className="container mb-3 sm:mb-6">
             <div className="flex items-center justify-center gap-2">
               <h3 className="text-base sm:text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
-              <Popover>
-                <PopoverTrigger asChild>
+              <Dialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
+                <DialogTrigger asChild>
                   <button className="flex items-center gap-1 p-1 hover:bg-gray-100 rounded-full transition-colors">
                     <HelpCircle className="h-4 w-4 text-muted-foreground" />
                   </button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80 p-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4 text-orange-500" />
-                      <span className="font-medium text-sm">Important Notice</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <HelpCircle className="h-5 w-5 text-orange-500" />
+                      Important Notice
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       These logos do not represent direct partnerships with our company. Instead, we work through Digital Software Market—a Microsoft and major vendor partner that maintains direct relationships with these organizations—and have received authorization from Digital Software Market to display their logos.
                     </p>
                   </div>
-                </PopoverContent>
-              </Popover>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
           
