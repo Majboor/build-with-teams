@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -255,7 +254,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
     setShowDetails(true);
   };
 
-  return <>
+  return (
+    <>
       <motion.div 
         initial={{
           opacity: 0,
@@ -389,7 +389,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                 >
                   <source src={member.videoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
-                </source>
                 </video>
               </div>
               
@@ -447,7 +446,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           </div>
         </DialogContent>
       </Dialog>
-    </>;
+    </>
+  );
 };
 
 export const TeamSection: React.FC = () => {
