@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, User, Mail, MapPin, Calendar, ArrowRight } from "lucide-react";
+import { User, Mail, MapPin, Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -13,7 +13,7 @@ interface TeamMember {
   name: string;
   role: string;
   description: string;
-  videoUrl: string;
+  imageUrl: string;
   bio: string;
   skills: string[];
   experience: string;
@@ -22,12 +22,13 @@ interface TeamMember {
   email: string;
   joinedDate: string;
 }
+
 const teamMembers: TeamMember[] = [{
   id: 1,
   name: "Asad",
   role: "AI & ML Engineer",
   description: "AI team as a service",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Passionate AI engineer with expertise in machine learning, deep learning, and AI automation. Leading innovative AI solutions and building intelligent systems that transform businesses.",
   skills: ["Machine Learning", "Deep Learning", "Python", "TensorFlow", "PyTorch", "Computer Vision", "NLP"],
   experience: "5+ years in AI development",
@@ -40,7 +41,7 @@ const teamMembers: TeamMember[] = [{
   name: "Sarah Johnson",
   role: "Frontend Developer",
   description: "React & UI/UX specialist",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Creative frontend developer specializing in modern React applications and exceptional user experiences. Passionate about clean code and innovative design solutions.",
   skills: ["React", "TypeScript", "Next.js", "Tailwind CSS", "JavaScript", "HTML5", "CSS3"],
   experience: "4+ years in frontend development",
@@ -53,7 +54,7 @@ const teamMembers: TeamMember[] = [{
   name: "Michael Chen",
   role: "Backend Developer",
   description: "API & Database architect",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Expert backend engineer with deep knowledge in scalable architectures, database optimization, and API design. Building robust systems that power modern applications.",
   skills: ["Node.js", "Python", "PostgreSQL", "MongoDB", "AWS", "Docker", "Kubernetes"],
   experience: "6+ years in backend development",
@@ -66,7 +67,7 @@ const teamMembers: TeamMember[] = [{
   name: "Emily Rodriguez",
   role: "UI/UX Designer",
   description: "Design systems & user experience",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Creative designer focused on user-centered design and creating intuitive digital experiences. Expert in design systems and accessibility best practices.",
   skills: ["Figma", "Adobe Creative Suite", "User Research", "Prototyping", "Design Systems", "Accessibility"],
   experience: "5+ years in UI/UX design",
@@ -79,7 +80,7 @@ const teamMembers: TeamMember[] = [{
   name: "David Wilson",
   role: "Project Manager",
   description: "Agile delivery & team coordination",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Experienced project manager with expertise in Agile methodologies and cross-functional team leadership. Ensuring successful project delivery and team efficiency.",
   skills: ["Agile/Scrum", "Project Planning", "Team Leadership", "Risk Management", "Stakeholder Management"],
   experience: "7+ years in project management",
@@ -92,7 +93,7 @@ const teamMembers: TeamMember[] = [{
   name: "Lisa Thompson",
   role: "DevOps Engineer",
   description: "Cloud infrastructure & automation",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "DevOps specialist with expertise in cloud infrastructure, CI/CD pipelines, and automation. Building scalable and reliable deployment systems.",
   skills: ["AWS", "Docker", "Kubernetes", "Terraform", "Jenkins", "CI/CD", "Monitoring"],
   experience: "5+ years in DevOps",
@@ -105,7 +106,7 @@ const teamMembers: TeamMember[] = [{
   name: "Alex Kumar",
   role: "Full Stack Developer",
   description: "End-to-end application development",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Versatile full-stack developer with expertise across the entire technology stack. Building complete web applications from conception to deployment.",
   skills: ["React", "Node.js", "TypeScript", "PostgreSQL", "GraphQL", "REST APIs", "Git"],
   experience: "4+ years in full-stack development",
@@ -118,7 +119,7 @@ const teamMembers: TeamMember[] = [{
   name: "Maria Garcia",
   role: "QA Engineer",
   description: "Testing & quality assurance",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Quality assurance specialist ensuring software excellence through comprehensive testing strategies and automation. Committed to delivering bug-free experiences.",
   skills: ["Test Automation", "Selenium", "Jest", "Cypress", "Manual Testing", "Bug Tracking", "Performance Testing"],
   experience: "4+ years in QA testing",
@@ -131,7 +132,7 @@ const teamMembers: TeamMember[] = [{
   name: "James Park",
   role: "Data Scientist",
   description: "Analytics & machine learning",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Data scientist with expertise in statistical analysis, machine learning models, and data visualization. Turning complex data into actionable business insights.",
   skills: ["Python", "R", "SQL", "Machine Learning", "Data Visualization", "Statistics", "Big Data"],
   experience: "5+ years in data science",
@@ -144,7 +145,7 @@ const teamMembers: TeamMember[] = [{
   name: "Rachel Adams",
   role: "Mobile Developer",
   description: "iOS & Android applications",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Mobile development expert creating high-performance native and cross-platform applications. Focused on delivering exceptional mobile user experiences.",
   skills: ["React Native", "Swift", "Kotlin", "Flutter", "iOS Development", "Android Development", "Mobile UI/UX"],
   experience: "4+ years in mobile development",
@@ -157,7 +158,7 @@ const teamMembers: TeamMember[] = [{
   name: "Tom Mitchell",
   role: "Security Engineer",
   description: "Cybersecurity & compliance",
-  videoUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/public/videos/video_1748197943291.mp4",
+  imageUrl: "https://jpaxhfoyaytpmcqlwrfv.supabase.co/storage/v1/object/sign/applications/Copy-of-Newbie-Introduction-Vi-unscreen.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80NTI4N2JmMC00ZmM4LTQ1ZDItOWQ5My1kNzJkM2Y5M2Q4MmYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJhcHBsaWNhdGlvbnMvQ29weS1vZi1OZXdiaWUtSW50cm9kdWN0aW9uLVZpLXVuc2NyZWVuLmdpZiIsImlhdCI6MTc0ODk0NjQ0MSwiZXhwIjoxNzgwNDgyNDQxfQ.5MbaNlil9axkUaiwqipdOtfqPpxWi_Rova9aIcG_pCQ",
   bio: "Cybersecurity expert specializing in application security, infrastructure protection, and compliance frameworks. Ensuring robust security across all systems.",
   skills: ["Penetration Testing", "Security Auditing", "Compliance", "Encryption", "Network Security", "OWASP"],
   experience: "6+ years in cybersecurity",
@@ -176,35 +177,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   member,
   index
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null);
   const [showDetails, setShowDetails] = useState(false);
-  const [thumbnailGenerated, setThumbnailGenerated] = useState(false);
-
-  const handlePlayPause = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (videoRef) {
-      if (isPlaying) {
-        videoRef.pause();
-        setIsPlaying(false);
-      } else {
-        videoRef.play();
-        setIsPlaying(true);
-      }
-    }
-  };
-
-  const generateThumbnail = () => {
-    if (videoRef && !thumbnailGenerated) {
-      // Set video to a specific time for thumbnail (e.g., 1 second)
-      videoRef.currentTime = 1;
-      setThumbnailGenerated(true);
-    }
-  };
-
-  const handleVideoLoadedData = () => {
-    generateThumbnail();
-  };
 
   const handleCardClick = () => {
     setShowDetails(true);
@@ -219,47 +192,13 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
         transition={{ duration: 0.5, delay: index * 0.1 }}
       >
         <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer" onClick={handleCardClick}>
-          <div className="relative aspect-video bg-gray-900">
-            <video 
-              ref={setVideoRef} 
+          <div className="relative aspect-video">
+            <img 
+              src={member.imageUrl}
+              alt={`${member.name} - ${member.role}`}
               className="w-full h-full object-cover"
-              onLoadedData={handleVideoLoadedData}
-              playsInline
-              muted
-              preload="metadata"
-            >
-              <source src={member.videoUrl} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            />
             
-            {/* Video Overlay - shows when not playing */}
-            {!isPlaying && (
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-100 group-hover:opacity-90 transition-opacity duration-300">
-                <Button 
-                  onClick={handlePlayPause} 
-                  variant="secondary" 
-                  size="lg" 
-                  className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
-                >
-                  <Play className="h-6 w-6 ml-1" />
-                </Button>
-              </div>
-            )}
-
-            {/* Pause button overlay - shows when playing */}
-            {isPlaying && (
-              <div className="absolute inset-0 bg-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <Button 
-                  onClick={handlePlayPause} 
-                  variant="secondary" 
-                  size="lg" 
-                  className="rounded-full bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-all duration-300"
-                >
-                  <Pause className="h-6 w-6" />
-                </Button>
-              </div>
-            )}
-
             {/* Name overlay at bottom */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <h3 className="text-white font-semibold text-lg">{member.name}</h3>
@@ -298,17 +237,14 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           </DialogHeader>
           
           <div className="grid md:grid-cols-2 gap-6 mt-4">
-            {/* Video Section */}
+            {/* Image Section */}
             <div className="space-y-4">
-              <div className="relative aspect-video bg-gray-900 rounded-lg overflow-hidden">
-                <video 
-                  className="w-full h-full object-cover" 
-                  controls 
-                  preload="metadata"
-                >
-                  <source src={member.videoUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+              <div className="relative aspect-video rounded-lg overflow-hidden">
+                <img 
+                  src={member.imageUrl}
+                  alt={`${member.name} - ${member.role}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
               
               {/* Contact Info */}
