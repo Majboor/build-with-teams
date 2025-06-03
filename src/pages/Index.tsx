@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -332,31 +333,31 @@ export default function Index() {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col px-6 pt-20">
-        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-12 py-8">
-          <div className="flex-1 text-center lg:text-left space-y-8">
+      {/* Hero Section - Mobile Optimized */}
+      <section className="min-h-screen flex flex-col px-4 sm:px-6 pt-16 sm:pt-20">
+        <div className="container flex-1 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-12 py-4 sm:py-8">
+          <div className="flex-1 text-center lg:text-left space-y-4 sm:space-y-8">
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-normal leading-none">
+              <h1 className="text-2xl sm:text-4xl lg:text-[64px] font-normal leading-tight sm:leading-none">
                 Team as a Service
               </h1>
-              <p className="text-2xl sm:text-3xl lg:text-[24px] font-normal leading-tight text-muted-foreground">
+              <p className="text-base sm:text-2xl lg:text-[24px] font-normal leading-tight text-muted-foreground">
                 On-demand AI + human experts for marketing, development & growth.
               </p>
             </div>
 
-            {/* Prompt Bar */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            {/* Prompt Bar - Mobile First */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
               <Input
                 type="text"
                 placeholder="Enter your idea or prompt..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                className="h-12 sm:h-14 text-lg"
+                className="h-12 sm:h-14 text-base sm:text-lg w-full"
               />
               <Button 
                 onClick={handleStartBuild}
-                className="h-12 sm:h-14 text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center"
+                className="h-12 sm:h-14 text-base sm:text-lg rounded-full bg-black text-white hover:bg-black/90 flex items-center justify-center min-h-[44px] w-full sm:w-auto"
                 size="lg"
               >
                 Try for free
@@ -367,43 +368,66 @@ export default function Index() {
               <Button 
                 variant="outline" 
                 onClick={() => setShowBetaDialog(true)}
-                className="h-12 sm:h-14 text-lg rounded-full border-2 flex items-center justify-center"
+                className="h-12 sm:h-14 text-base sm:text-lg rounded-full border-2 flex items-center justify-center min-h-[44px] w-full sm:w-auto"
                 size="lg"
               >
                 Get a demo
               </Button>
             </div>
+
+            {/* Three Step Process - Above video on mobile */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-6 sm:mt-8 lg:hidden">
+              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center min-h-[44px] min-w-[44px]">
+                  <File className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <span className="text-xs sm:text-sm font-medium">You share</span>
+              </div>
+              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center min-h-[44px] min-w-[44px]">
+                  <Users className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <span className="text-xs sm:text-sm font-medium">We match</span>
+              </div>
+              <div className="flex flex-col items-center text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center min-h-[44px] min-w-[44px]">
+                  <Rocket className="w-4 h-4 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <span className="text-xs sm:text-sm font-medium">Results delivered</span>
+              </div>
+            </div>
           </div>
 
           <div className="flex-1">
-            {/* Video Section */}
-            <div className="space-y-6">
-              {/* Watch How It Works Label */}
+            {/* Video Section - Compressed for mobile */}
+            <div className="space-y-3 sm:space-y-6">
+              {/* Watch How It Works Label - Smaller on mobile */}
               <div className="flex justify-center">
-                <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium">
+                <div className="bg-black text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
                   WATCH HOW IT WORKS
                 </div>
               </div>
 
-              {/* Video with Play Button */}
+              {/* Video with Play Button - Compressed aspect ratio on mobile */}
               <div className="relative rounded-lg overflow-hidden shadow-xl">
                 <video 
-                  className="w-full aspect-video object-cover"
+                  className="w-full aspect-[4/3] sm:aspect-video object-cover"
                   poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
                   controls
+                  preload="metadata"
                 >
                   <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
                 
-                {/* Meet Sophie Label */}
-                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                {/* Meet Sophie Label - Much smaller on mobile */}
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-black/70 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm">
                   Meet Sophie, our Head of Operations
                 </div>
               </div>
 
-              {/* Three Step Process */}
-              <div className="grid grid-cols-3 gap-4 mt-8">
+              {/* Three Step Process - Desktop only */}
+              <div className="hidden lg:grid grid-cols-3 gap-4 mt-8">
                 <div className="flex flex-col items-center text-center space-y-2">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                     <File className="w-6 h-6 text-primary" />
@@ -427,32 +451,34 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Brand Experience - Auto-scrolling logos within hero section */}
-        <div className="pb-8 overflow-hidden">
-          <div className="container mb-6">
-            <h3 className="text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
+        {/* Brand Experience - Compressed for mobile */}
+        <div className="pb-4 sm:pb-8 overflow-hidden">
+          <div className="container mb-3 sm:mb-6">
+            <h3 className="text-base sm:text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
           </div>
           
-          {/* Auto-scrolling logo carousel */}
+          {/* Auto-scrolling logo carousel - Smaller on mobile */}
           <div className="relative">
-            <div className="flex animate-scroll-left space-x-6">
+            <div className="flex animate-scroll-left space-x-3 sm:space-x-6">
               {/* First set of logos */}
               {brandLogos.map((logo, index) => (
-                <div key={index} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                <div key={index} className="flex-shrink-0 w-16 h-8 sm:w-24 sm:h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
                   <img 
                     src={logo} 
                     alt={`Brand ${index + 1}`}
                     className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    loading="lazy"
                   />
                 </div>
               ))}
               {/* Duplicate set for seamless loop */}
               {brandLogos.map((logo, index) => (
-                <div key={`duplicate-${index}`} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                <div key={`duplicate-${index}`} className="flex-shrink-0 w-16 h-8 sm:w-24 sm:h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
                   <img 
                     src={logo} 
                     alt={`Brand ${index + 1} duplicate`}
                     className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    loading="lazy"
                   />
                 </div>
               ))}
