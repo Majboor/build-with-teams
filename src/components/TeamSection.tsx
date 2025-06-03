@@ -302,13 +302,15 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           </DialogHeader>
           
           <div className="grid md:grid-cols-2 gap-6 mt-4">
-            {/* Image Section */}
+            {/* Video Section */}
             <div className="space-y-4">
               <div className="relative aspect-video rounded-lg overflow-hidden">
-                <img 
-                  src={member.gifUrl}
-                  alt={`${member.name} - ${member.role}`}
+                <video 
+                  src={member.videoUrl}
                   className="w-full h-full object-cover"
+                  controls
+                  autoPlay
+                  muted={false}
                 />
               </div>
               
