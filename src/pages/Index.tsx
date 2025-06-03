@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -399,37 +400,37 @@ export default function Index() {
             />
           </div>
         </div>
-      </section>
 
-      {/* Brand Experience Section */}
-      <section className="py-16 bg-muted/50 overflow-hidden">
-        <div className="container mb-12">
-          <h2 className="text-3xl font-bold text-center">Brand Experience</h2>
-        </div>
-        
-        {/* Auto-scrolling logo carousel */}
-        <div className="relative">
-          <div className="flex animate-scroll-left space-x-8">
-            {/* First set of logos */}
-            {brandLogos.map((logo, index) => (
-              <div key={index} className="flex-shrink-0 w-32 h-16 flex items-center justify-center bg-white rounded-lg shadow-sm">
-                <img 
-                  src={logo} 
-                  alt={`Brand ${index + 1}`}
-                  className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                />
-              </div>
-            ))}
-            {/* Duplicate set for seamless loop */}
-            {brandLogos.map((logo, index) => (
-              <div key={`duplicate-${index}`} className="flex-shrink-0 w-32 h-16 flex items-center justify-center bg-white rounded-lg shadow-sm">
-                <img 
-                  src={logo} 
-                  alt={`Brand ${index + 1} duplicate`}
-                  className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                />
-              </div>
-            ))}
+        {/* Brand Experience - Auto-scrolling logos within hero section */}
+        <div className="pb-8 overflow-hidden">
+          <div className="container mb-6">
+            <h3 className="text-xl font-semibold text-center text-muted-foreground">Trusted by leading brands</h3>
+          </div>
+          
+          {/* Auto-scrolling logo carousel */}
+          <div className="relative">
+            <div className="flex animate-scroll-left space-x-6">
+              {/* First set of logos */}
+              {brandLogos.map((logo, index) => (
+                <div key={index} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                  <img 
+                    src={logo} 
+                    alt={`Brand ${index + 1}`}
+                    className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                  />
+                </div>
+              ))}
+              {/* Duplicate set for seamless loop */}
+              {brandLogos.map((logo, index) => (
+                <div key={`duplicate-${index}`} className="flex-shrink-0 w-24 h-12 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                  <img 
+                    src={logo} 
+                    alt={`Brand ${index + 1} duplicate`}
+                    className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
