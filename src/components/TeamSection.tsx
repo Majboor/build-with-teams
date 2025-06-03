@@ -1,8 +1,7 @@
-
 import React, { useState, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Mail, MapPin, Calendar, ArrowRight, Play, Pause } from "lucide-react";
+import { User, Mail, MapPin, Calendar, ArrowRight, Play, Pause, ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -387,6 +386,21 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
 export const TeamSection: React.FC = () => {
   const isMobile = useIsMobile();
+  const [showAll, setShowAll] = useState(false);
+
+  // Calculate how many items to show initially (2 rows worth)
+  const getInitialItemCount = () => {
+    if (isMobile) return teamMembers.length; // Mobile uses carousel, show all
+    // For desktop: 2 rows worth of items
+    // xl: 4 items per row = 8 items total
+    // lg: 3 items per row = 6 items total  
+    // md: 2 items per row = 4 items total
+    return 8; // Use xl breakpoint as default for "2 rows"
+  };
+
+  const visibleMembers = showAll ? teamMembers : teamMembers.slice(0, getInitialItemCount());
+  const hasMoreToShow = teamMembers.length > getInitialItemCount();
+
   return (
     <section className="py-20 bg-muted">
       <div className="container mx-auto px-4">
@@ -431,11 +445,42 @@ export const TeamSection: React.FC = () => {
             </Carousel>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <TeamMemberCard key={member.id} member={member} index={index} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {visibleMembers.map((member, index) => (
+                <TeamMemberCard key={member.id} member={member} index={index} />
+              ))}
+            </div>
+
+            {hasMoreToShow && (
+              <motion.div 
+                className="flex justify-center mt-12"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <Button
+                  onClick={() => setShowAll(!showAll)}
+                  variant="outline"
+                  size="lg"
+                  className="flex items-center gap-2 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+                >
+                  {showAll ? (
+                    <>
+                      Show Less
+                      <ChevronUp className="h-4 w-4" />
+                    </>
+                  ) : (
+                    <>
+                      Show More Team Members
+                      <ChevronDown className="h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            )}
+          </>
         )}
       </div>
     </section>
