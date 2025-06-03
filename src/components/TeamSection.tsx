@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+
+import React, { useState, useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { User, Mail, MapPin, Calendar, ArrowRight, Play, Pause, ChevronDown, ChevronUp } from "lucide-react";
@@ -387,15 +388,32 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 export const TeamSection: React.FC = () => {
   const isMobile = useIsMobile();
   const [showAll, setShowAll] = useState(false);
+  const [itemsPerRow, setItemsPerRow] = useState(4);
 
-  // Calculate how many items to show initially (2 rows worth)
+  // Detect screen size and update items per row
+  useEffect(() => {
+    const updateItemsPerRow = () => {
+      const width = window.innerWidth;
+      if (width >= 1280) {
+        setItemsPerRow(4); // xl: 4 items per row
+      } else if (width >= 1024) {
+        setItemsPerRow(3); // lg: 3 items per row
+      } else if (width >= 768) {
+        setItemsPerRow(2); // md: 2 items per row
+      } else {
+        setItemsPerRow(1); // mobile
+      }
+    };
+
+    updateItemsPerRow();
+    window.addEventListener('resize', updateItemsPerRow);
+    return () => window.removeEventListener('resize', updateItemsPerRow);
+  }, []);
+
+  // Calculate how many items to show initially (exactly 2 rows worth)
   const getInitialItemCount = () => {
     if (isMobile) return teamMembers.length; // Mobile uses carousel, show all
-    // For desktop: 2 rows worth of items
-    // xl: 4 items per row = 8 items total
-    // lg: 3 items per row = 6 items total  
-    // md: 2 items per row = 4 items total
-    return 8; // Use xl breakpoint as default for "2 rows"
+    return itemsPerRow * 2; // Exactly 2 rows worth of items
   };
 
   const visibleMembers = showAll ? teamMembers : teamMembers.slice(0, getInitialItemCount());
