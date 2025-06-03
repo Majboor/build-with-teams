@@ -190,16 +190,17 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       try {
         if (isPlaying) {
           videoRef.pause();
-          // Return to thumbnail position when paused
-          videoRef.currentTime = 10;
+          setIsPlaying(false);
         } else {
           // Start from beginning when playing
           videoRef.currentTime = 0;
+          setIsPlaying(true);
           await videoRef.play();
         }
       } catch (error) {
         console.log('Video play error:', error);
         setVideoError(true);
+        setIsPlaying(false);
       }
     }
   };
@@ -214,6 +215,10 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
   const handleVideoPause = () => {
     setIsPlaying(false);
+    // Only set to thumbnail if we're not actively trying to play
+    if (videoRef && !isPlaying) {
+      videoRef.currentTime = 10;
+    }
   };
 
   const handleVideoPlay = () => {
@@ -239,15 +244,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
     console.log('Video loading error for:', member.name);
     setVideoError(true);
     setIsVideoLoading(false);
-  };
-
-  const handleVideoSeeked = () => {
-    // When seeking is complete, if we're not playing and thumbnail is ready, ensure we're at 10s
-    if (!isPlaying && thumbnailReady && videoRef) {
-      if (Math.abs(videoRef.currentTime - 10) > 0.5) {
-        videoRef.currentTime = 10;
-      }
-    }
   };
 
   const handleCardClick = () => {
@@ -302,7 +298,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                 onEnded={handleVideoEnd}
                 onPause={handleVideoPause}
                 onPlay={handleVideoPlay}
-                onSeeked={handleVideoSeeked}
                 playsInline
                 muted
               >
