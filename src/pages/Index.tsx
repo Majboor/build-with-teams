@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, File, Users, Rocket, HelpCircle } from "lucide-react";
+import { Check, File, Users, Rocket, HelpCircle, Play } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
@@ -279,6 +279,7 @@ export default function Index() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [prompt, setPrompt] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -416,22 +417,41 @@ export default function Index() {
                 </div>
               </div>
 
-              {/* Video with Play Button - Compressed aspect ratio on mobile */}
+              {/* Video/GIF Section */}
               <div className="relative rounded-lg overflow-hidden shadow-xl">
-                <video 
-                  className="w-full aspect-[4/3] sm:aspect-video object-cover"
-                  poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PC9zdmc+"
-                  controls
-                  preload="metadata"
-                >
-                  <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Meet Sophie Label - Much smaller on mobile */}
-                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-black/70 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm">
-                  Meet Sophie, our Head of Operations
-                </div>
+                {!showVideo ? (
+                  /* GIF with Play Button Overlay */
+                  <div className="relative cursor-pointer" onClick={() => setShowVideo(true)}>
+                    <img 
+                      src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749059432/WhatsAppVideo2025-06-03at19.05.19-ezgif.com-video-to-gif-converter_vxmpou.gif"
+                      alt="Team as a Service Demo"
+                      className="w-full aspect-[4/3] sm:aspect-video object-cover"
+                    />
+                    
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg">
+                        <Play className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1" fill="currentColor" />
+                      </div>
+                    </div>
+                    
+                    {/* Meet Sophie Label */}
+                    <div className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-black/70 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm">
+                      Meet Sophie, our Head of Operations
+                    </div>
+                  </div>
+                ) : (
+                  /* Actual Video Player */
+                  <video 
+                    className="w-full aspect-[4/3] sm:aspect-video object-cover"
+                    controls
+                    autoPlay
+                    preload="metadata"
+                  >
+                    <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1748962455/WhatsApp_Video_2025-06-03_at_19.05.19_udcd7v.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                )}
               </div>
 
               {/* Three Step Process - Desktop only */}
