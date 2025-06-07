@@ -279,8 +279,6 @@ export default function Index() {
   const [prompt, setPrompt] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
-  const [showCaseStudyVideo, setShowCaseStudyVideo] = useState(false);
-  const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -650,25 +648,6 @@ export default function Index() {
               <Button className="bg-black text-white hover:bg-black/90 rounded-full px-8 py-3">
                 View case study
               </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Case Study Video Section */}
-      <section className="py-16 border-t">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative rounded-lg overflow-hidden shadow-xl">
-              <video 
-                className="w-full aspect-video object-cover"
-                controls
-                autoPlay
-                preload="metadata"
-              >
-                <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
             </div>
           </div>
         </div>
