@@ -152,25 +152,56 @@ const plans = [{
 // Brand logos for the moving carousel
 const brandLogos = ["https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-01-4.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-02-4.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-03-3.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-04-4.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-05-3.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-06-3.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-07-4.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-08-2.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-09-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-10-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-11-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-12-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-13-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-14-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-15-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-16-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-17-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-18-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-20-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-21-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-22-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-23-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-24-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-25-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-26-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-27-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-28-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-29-1.avif", "https://digitalsoftwaremarkett.com/wp-content/uploads/2025/05/Logos-30-1.avif"];
 export function CrmFeatures() {
+  const isMobile = useIsMobile();
+  
   return <section className="container py-20">
       <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-16">
         Finally, an AI that works <span className="text-primary">for you</span>
       </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {crmFeatures.map((feature, index) => <TooltipProvider key={index}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="space-y-4 p-6 border rounded-lg cursor-help transition-all hover:shadow-lg">
-                  {feature.content}
-                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="max-w-[200px] text-center">
-                <p>{feature.tooltip}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>)}
-      </div>
+      
+      {isMobile ? (
+        <Carousel className="w-full max-w-sm mx-auto">
+          <CarouselContent>
+            {crmFeatures.map((feature, index) => (
+              <CarouselItem key={index}>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="space-y-4 p-6 border rounded-lg cursor-help transition-all hover:shadow-lg">
+                        {feature.content}
+                        <h3 className="text-2xl font-semibold">{feature.title}</h3>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="max-w-[200px] text-center">
+                      <p>{feature.tooltip}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {crmFeatures.map((feature, index) => (
+            <TooltipProvider key={index}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="space-y-4 p-6 border rounded-lg cursor-help transition-all hover:shadow-lg">
+                    {feature.content}
+                    <h3 className="text-2xl font-semibold">{feature.title}</h3>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-[200px] text-center">
+                  <p>{feature.tooltip}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ))}
+        </div>
+      )}
     </section>;
 }
 export default function Index() {
