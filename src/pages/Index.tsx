@@ -279,6 +279,7 @@ export default function Index() {
   const [prompt, setPrompt] = useState("");
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -593,14 +594,34 @@ export default function Index() {
 
                 {/* Video Container */}
                 <div className="relative rounded-lg overflow-hidden shadow-xl">
-                  <video 
-                    className="w-full aspect-video object-cover"
-                    controls
-                    preload="metadata"
-                  >
-                    <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  {!showTestimonialVideo ? (
+                    /* GIF with Play Button Overlay */
+                    <div className="relative cursor-pointer" onClick={() => setShowTestimonialVideo(true)}>
+                      <img 
+                        src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749324243/VN20250607-002652-vmake-unscreen_klhnog.gif"
+                        alt="Client testimonial preview"
+                        className="w-full aspect-video object-cover"
+                      />
+                      
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg">
+                          <Play className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1" fill="currentColor" />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Actual Video Player */
+                    <video 
+                      className="w-full aspect-video object-cover"
+                      controls
+                      autoPlay
+                      preload="metadata"
+                    >
+                      <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
                 </div>
               </div>
             </div>
@@ -645,19 +666,19 @@ export default function Index() {
               </div>
 
               {/* View Case Study Button */}
-              <Button className="bg-black text-white hover:bg-black/90 rounded-full px-8 py-3">
-                View case study
-              </Button>
+              <Link to="/fashion-case-study">
+                <Button className="bg-black text-white hover:bg-black/90 rounded-full px-8 py-3">
+                  View case study
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* What TaaS Has Built Section */}
-      <section className="container py-20 border-t">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          What TaaS Has Built
-        </h2>
+      <section className="container py-20 border-t" id="industries">
+        <h2 className="text-3xl font-bold text-center mb-12">What TaaS Has Built</h2>
         {isMobile ? (
           <Carousel className="w-full max-w-xs mx-auto">
             <CarouselContent>
