@@ -487,7 +487,7 @@ export default function Index() {
             <div className="flex-1 space-y-6">
               {/* Profile Section */}
               <div className="flex items-center gap-4">
-                <img src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749323249/ff5d9b59f73329017acc7912c9d4c65c_tplv-tiktokx-cropcenter-1080-1080_f0zlnz.jpg" alt="Olha Metofor" className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md" />
+                <img alt="Olha Metofor" className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md" src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749327577/Screenshot_2025-06-08_at_1.19.24_AM_qsp1fe.png" />
                 <div>
                   <h3 className="text-xl font-semibold">Natali
  Shevaniuk</h3>
