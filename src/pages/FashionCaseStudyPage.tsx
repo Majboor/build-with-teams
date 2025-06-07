@@ -44,7 +44,7 @@ const FashionCaseStudyPage = () => {
             {/* Hero Image Placeholder */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=1200&h=600&fit=crop"
+                src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749327182/Screenshot_2025-06-08_at_1.12.07_AM_rx3b9q.png"
                 alt="Fashion stylist AI interface"
                 className="w-full h-[400px] md:h-[500px] object-cover"
               />
