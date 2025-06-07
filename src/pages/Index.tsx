@@ -1,10 +1,9 @@
 
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, File, Users, Rocket, HelpCircle, Play } from "lucide-react";
+import { Check, File, Users, Rocket, HelpCircle, Play, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { BetaSignupDialog } from "@/components/BetaSignupDialog";
 import { AppDetailsDialog } from "@/components/AppDetailsDialog";
@@ -282,6 +281,7 @@ export default function Index() {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showCaseStudyVideo, setShowCaseStudyVideo] = useState(false);
+  const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -578,14 +578,53 @@ export default function Index() {
       <section className="py-16 border-t bg-gray-50">
         <div className="container">
           <div className="flex flex-col lg:flex-row gap-12 items-center">
-            {/* Video/Image Section */}
+            {/* Video Section */}
             <div className="flex-1">
-              <div className="relative rounded-lg overflow-hidden shadow-xl">
-                <img 
-                  src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749323249/ff5d9b59f73329017acc7912c9d4c65c_tplv-tiktokx-cropcenter-1080-1080_f0zlnz.jpg"
-                  alt="Fashion Techrealm Success Story"
-                  className="w-full aspect-video object-cover"
-                />
+              <div className="relative">
+                {/* Clutch Rating - Top Right */}
+                <div className="absolute top-4 right-4 z-10 bg-white rounded-lg shadow-lg p-3">
+                  <div className="flex items-center gap-2">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <span className="font-semibold text-sm">5.0</span>
+                  </div>
+                  <div className="text-xs text-gray-600 mt-1">Clutch</div>
+                </div>
+
+                {/* Video Container */}
+                <div className="relative rounded-lg overflow-hidden shadow-xl">
+                  {!showTestimonialVideo ? (
+                    /* Video Thumbnail with Play Button Overlay */
+                    <div className="relative cursor-pointer" onClick={() => setShowTestimonialVideo(true)}>
+                      <img 
+                        src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749323249/ff5d9b59f73329017acc7912c9d4c65c_tplv-tiktokx-cropcenter-1080-1080_f0zlnz.jpg"
+                        alt="Client Testimonial Video"
+                        className="w-full aspect-video object-cover"
+                      />
+                      
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg">
+                          <Play className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1" fill="currentColor" />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Actual Video Player */
+                    <video 
+                      className="w-full aspect-video object-cover"
+                      controls
+                      autoPlay
+                      preload="metadata"
+                    >
+                      <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -595,18 +634,18 @@ export default function Index() {
               <div className="flex items-center gap-4">
                 <img 
                   src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749323249/ff5d9b59f73329017acc7912c9d4c65c_tplv-tiktokx-cropcenter-1080-1080_f0zlnz.jpg"
-                  alt="Natali Shevaniuk"
-                  className="w-16 h-16 rounded-full object-cover"
+                  alt="Olha Metofor"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
                 />
                 <div>
-                  <h3 className="text-xl font-semibold">Natali Shevaniuk</h3>
-                  <p className="text-muted-foreground">Founder of Fashion Techrealm</p>
+                  <h3 className="text-xl font-semibold">Olha Metofor</h3>
+                  <p className="text-muted-foreground">PM of Milla Nova</p>
                 </div>
               </div>
 
               {/* Testimonial Text */}
               <blockquote className="text-lg leading-relaxed">
-                "TaaS transformed our vision into reality with their AI-powered team approach. The seamless integration of AI and human expertise delivered results beyond our expectations. Their platform made complex development feel effortless."
+                "Working with TaaS has been a game-changer for our business. Their AI-powered approach combined with expert human oversight delivered exceptional results that exceeded our expectations. The seamless collaboration and innovative solutions they provided transformed our project timeline and quality."
               </blockquote>
 
               {/* Social Media Icons */}
