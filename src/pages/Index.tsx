@@ -491,7 +491,7 @@ export default function Index() {
                 <div>
                   <h3 className="text-xl font-semibold">Natali
  Shevaniuk</h3>
-                  <p className="text-muted-foreground">PM of Milla Nova</p>
+                  <p className="text-muted-foreground">CEO of AI Stylist</p>
                 </div>
               </div>
 
