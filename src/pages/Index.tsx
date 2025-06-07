@@ -280,6 +280,7 @@ export default function Index() {
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showTestimonialVideo, setShowTestimonialVideo] = useState(false);
+  const [videoRef, setVideoRef] = useState<HTMLVideoElement | null>(null);
   const isMobile = useIsMobile();
 
   React.useEffect(() => {
@@ -314,6 +315,15 @@ export default function Index() {
     loadAllImages();
   }, []);
 
+  // Preload testimonial video
+  React.useEffect(() => {
+    const video = document.createElement('video');
+    video.src = "https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4";
+    video.preload = "metadata";
+    video.load();
+    setVideoRef(video);
+  }, []);
+
   // Store the user's prompt in localStorage when it changes
   React.useEffect(() => {
     if (prompt) {
@@ -325,6 +335,17 @@ export default function Index() {
     if (prompt.trim()) {
       setShowBetaDialog(true);
     }
+  };
+
+  const handleTestimonialVideoPlay = () => {
+    setShowTestimonialVideo(true);
+    // Small delay to ensure video element is rendered before playing
+    setTimeout(() => {
+      const videoElement = document.querySelector('.testimonial-video') as HTMLVideoElement;
+      if (videoElement) {
+        videoElement.play();
+      }
+    }, 100);
   };
 
   if (!imagesLoaded) {
@@ -595,8 +616,8 @@ export default function Index() {
                 {/* Video Container */}
                 <div className="relative rounded-lg overflow-hidden shadow-xl">
                   {!showTestimonialVideo ? (
-                    /* GIF with Play Button Overlay */
-                    <div className="relative cursor-pointer" onClick={() => setShowTestimonialVideo(true)}>
+                    /* GIF Thumbnail with Play Button */
+                    <div className="relative cursor-pointer group" onClick={handleTestimonialVideoPlay}>
                       <img 
                         src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749324243/VN20250607-002652-vmake-unscreen_klhnog.gif"
                         alt="Client testimonial preview"
@@ -604,19 +625,25 @@ export default function Index() {
                       />
                       
                       {/* Play Button Overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg">
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center group-hover:bg-white transition-colors shadow-lg group-hover:scale-110 transition-transform">
                           <Play className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1" fill="currentColor" />
                         </div>
+                      </div>
+
+                      {/* Video Quality Indicator */}
+                      <div className="absolute bottom-4 left-4 bg-black/70 text-white px-2 py-1 rounded-md text-xs">
+                        HD Quality
                       </div>
                     </div>
                   ) : (
                     /* Actual Video Player */
                     <video 
-                      className="w-full aspect-video object-cover"
+                      className="w-full aspect-video object-cover testimonial-video"
                       controls
                       autoPlay
                       preload="metadata"
+                      poster="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749324243/VN20250607-002652-vmake-unscreen_klhnog.gif"
                     >
                       <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
