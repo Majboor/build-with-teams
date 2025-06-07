@@ -23,6 +23,7 @@ import CareerSuccessPage from "./pages/CareerSuccessPage";
 import CareersPage from "./pages/CareersPage";
 import JobDetailPage from "./pages/JobDetailPage";
 import AIMarketingPage from "./pages/AIMarketingPage";
+import FashionCaseStudyPage from "./pages/FashionCaseStudyPage";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/careers/:jobId" element={<JobDetailPage />} />
             <Route path="/ai-marketing" element={<AIMarketingPage />} />
+            <Route path="/fashion-case-study" element={<FashionCaseStudyPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />
