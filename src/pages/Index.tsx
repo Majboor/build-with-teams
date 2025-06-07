@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -596,6 +597,11 @@ export default function Index() {
       {/* Testimonial Section */}
       <section className="py-16 border-t bg-gray-50">
         <div className="container">
+          {/* Section Heading */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Long-term partnerships is what we are always striving to build</h2>
+          </div>
+
           <div className="flex flex-col lg:flex-row gap-12 items-center">
             {/* Video Section */}
             <div className="flex-1">
