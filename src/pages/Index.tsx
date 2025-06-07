@@ -448,7 +448,41 @@ export default function Index() {
       {/* Team Section */}
       <TeamSection />
 
-      {/* Testimonial Section - Moved here */}
+
+
+      {/* What TaaS Has Built Section */}
+      <section className="container py-20 border-t" id="industries">
+        <h2 className="text-3xl font-bold text-center mb-12">What TaaS Has Built</h2>
+        {isMobile ? <Carousel className="w-full max-w-xs mx-auto">
+            <CarouselContent>
+              {builtProjects.map((project, index) => <CarouselItem key={index}>
+                  <Card className="overflow-hidden cursor-pointer" onClick={() => setSelectedApp(project)}>
+                    <div className="aspect-video relative overflow-hidden rounded-t-lg">
+                      <img src={project.image} alt={project.title} className="object-cover w-full h-full" />
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                      <p className="text-muted-foreground">{project.description}</p>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>)}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel> : <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {builtProjects.map((project, index) => <Card key={index} className="overflow-hidden transform hover:scale-105 transition-transform duration-200 cursor-pointer" onClick={() => setSelectedApp(project)}>
+                <div className="aspect-video relative overflow-hidden rounded-t-lg">
+                  <img src={project.image} alt={project.title} className="object-cover w-full h-full" />
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                  <p className="text-muted-foreground">{project.description}</p>
+                </CardContent>
+              </Card>)}
+          </div>}
+      </section>
+
+          {/* Testimonial Section - Moved here */}
       <section className="py-16 border-t bg-muted/30">
         <div className="container">
           {/* Section Heading */}
@@ -543,39 +577,7 @@ export default function Index() {
           </div>
         </div>
       </section>
-
-      {/* What TaaS Has Built Section */}
-      <section className="container py-20 border-t" id="industries">
-        <h2 className="text-3xl font-bold text-center mb-12">What TaaS Has Built</h2>
-        {isMobile ? <Carousel className="w-full max-w-xs mx-auto">
-            <CarouselContent>
-              {builtProjects.map((project, index) => <CarouselItem key={index}>
-                  <Card className="overflow-hidden cursor-pointer" onClick={() => setSelectedApp(project)}>
-                    <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                      <img src={project.image} alt={project.title} className="object-cover w-full h-full" />
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                      <p className="text-muted-foreground">{project.description}</p>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>)}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel> : <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {builtProjects.map((project, index) => <Card key={index} className="overflow-hidden transform hover:scale-105 transition-transform duration-200 cursor-pointer" onClick={() => setSelectedApp(project)}>
-                <div className="aspect-video relative overflow-hidden rounded-t-lg">
-                  <img src={project.image} alt={project.title} className="object-cover w-full h-full" />
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-muted-foreground">{project.description}</p>
-                </CardContent>
-              </Card>)}
-          </div>}
-      </section>
-
+    
       {/* Features Section */}
       <section className="py-16">
         <div className="container">
