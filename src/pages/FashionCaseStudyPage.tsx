@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Navigation } from '@/components/navigation';
 import { Button } from '@/components/ui/button';
@@ -342,7 +341,7 @@ const FashionCaseStudyPage = () => {
               </blockquote>
               <div className="flex items-center justify-center gap-4">
                 <img 
-                  src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=64&h=64&fit=crop&crop=face"
+                  src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749327347/61XrR_oB-gL._CR0_0_894_894_._US500_SCLZZZZZZZ__dximxg.jpg"
                   alt="Sarah Ahmed"
                   className="w-16 h-16 rounded-full object-cover"
                 />
