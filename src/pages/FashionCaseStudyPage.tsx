@@ -4,10 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Zap, Target, TrendingUp, Users, Palette, Sparkles, Brain, Star, ChevronRight } from 'lucide-react';
-
 const FashionCaseStudyPage = () => {
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Navigation />
       
       {/* Hero Section */}
@@ -42,11 +40,7 @@ const FashionCaseStudyPage = () => {
             
             {/* Hero Image Placeholder */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img 
-                src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749327182/Screenshot_2025-06-08_at_1.12.07_AM_rx3b9q.png"
-                alt="Fashion stylist AI interface"
-                className="w-full h-[400px] md:h-[500px] object-cover"
-              />
+              <img src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749327182/Screenshot_2025-06-08_at_1.12.07_AM_rx3b9q.png" alt="Fashion stylist AI interface" className="w-full h-[400px] md:h-[500px] object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-6 left-6 text-white">
                 <p className="text-lg font-medium">AI-Powered Style Recommendations</p>
@@ -83,11 +77,7 @@ const FashionCaseStudyPage = () => {
                 </div>
               </div>
               <div className="relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop"
-                  alt="Fashion consultant working"
-                  className="rounded-lg shadow-lg"
-                />
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&h=400&fit=crop" alt="Fashion consultant working" className="rounded-lg shadow-lg" />
                 <div className="absolute -bottom-6 -right-6 glass rounded-lg p-4 text-center">
                   <p className="text-2xl font-bold">50K+</p>
                   <p className="text-sm text-muted-foreground">Active Users</p>
@@ -332,21 +322,16 @@ const FashionCaseStudyPage = () => {
           <div className="max-w-4xl mx-auto text-center">
             <div className="mb-8">
               <div className="flex justify-center mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="w-6 h-6 fill-primary text-primary" />
-                ))}
+                {[1, 2, 3, 4, 5].map(star => <Star key={star} className="w-6 h-6 fill-primary text-primary" />)}
               </div>
               <blockquote className="text-2xl md:text-3xl font-medium mb-6">
                 "The AI stylist has completely transformed how we serve our clients. What used to take hours now happens in seconds, and the accuracy is remarkable. Our users love the personalized recommendations."
               </blockquote>
               <div className="flex items-center justify-center gap-4">
-                <img 
-                  src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749327347/61XrR_oB-gL._CR0_0_894_894_._US500_SCLZZZZZZZ__dximxg.jpg"
-                  alt="Sarah Ahmed"
-                  className="w-16 h-16 rounded-full object-cover"
-                />
+                <img src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749327347/61XrR_oB-gL._CR0_0_894_894_._US500_SCLZZZZZZZ__dximxg.jpg" alt="Sarah Ahmed" className="w-16 h-16 rounded-full object-cover" />
                 <div className="text-left">
-                  <p className="font-semibold">Sarah Ahmed</p>
+                  <p className="font-semibold">Natali
+ Shevaniuk</p>
                   <p className="text-muted-foreground">Founder, Fashion TechRealm</p>
                 </div>
               </div>
@@ -439,8 +424,6 @@ const FashionCaseStudyPage = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default FashionCaseStudyPage;
