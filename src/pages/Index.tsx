@@ -454,7 +454,7 @@ export default function Index() {
                     </div>
                     <span className="font-semibold text-sm">5.0</span>
                   </div>
-                  <div className="text-xs text-gray-600 mt-1">Clutch</div>
+                  
                 </div>
 
                 {/* Video Container */}
