@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -596,34 +595,14 @@ export default function Index() {
 
                 {/* Video Container */}
                 <div className="relative rounded-lg overflow-hidden shadow-xl">
-                  {!showTestimonialVideo ? (
-                    /* Video Thumbnail with Play Button Overlay */
-                    <div className="relative cursor-pointer" onClick={() => setShowTestimonialVideo(true)}>
-                      <img 
-                        src="https://res.cloudinary.com/dg4qodgmz/image/upload/v1749323249/ff5d9b59f73329017acc7912c9d4c65c_tplv-tiktokx-cropcenter-1080-1080_f0zlnz.jpg"
-                        alt="Client Testimonial Video"
-                        className="w-full aspect-video object-cover"
-                      />
-                      
-                      {/* Play Button Overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg">
-                          <Play className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1" fill="currentColor" />
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    /* Actual Video Player */
-                    <video 
-                      className="w-full aspect-video object-cover"
-                      controls
-                      autoPlay
-                      preload="metadata"
-                    >
-                      <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
+                  <video 
+                    className="w-full aspect-video object-cover"
+                    controls
+                    preload="metadata"
+                  >
+                    <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
             </div>
@@ -681,34 +660,15 @@ export default function Index() {
         <div className="container">
           <div className="max-w-4xl mx-auto">
             <div className="relative rounded-lg overflow-hidden shadow-xl">
-              {!showCaseStudyVideo ? (
-                /* Video Thumbnail with Play Button Overlay */
-                <div className="relative cursor-pointer" onClick={() => setShowCaseStudyVideo(true)}>
-                  <img 
-                    src="/lovable-uploads/40cabc24-e8af-485a-9480-274b48eb63d5.png"
-                    alt="TaaS Case Study"
-                    className="w-full aspect-video object-cover"
-                  />
-                  
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg">
-                      <Play className="w-8 h-8 sm:w-10 sm:h-10 text-black ml-1" fill="currentColor" />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                /* Actual Video Player */
-                <video 
-                  className="w-full aspect-video object-cover"
-                  controls
-                  autoPlay
-                  preload="metadata"
-                >
-                  <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              )}
+              <video 
+                className="w-full aspect-video object-cover"
+                controls
+                autoPlay
+                preload="metadata"
+              >
+                <source src="https://res.cloudinary.com/dg4qodgmz/video/upload/v1749322468/VN20250607_002652-vmake_dtrjab.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
         </div>
