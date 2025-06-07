@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -579,6 +580,33 @@ export default function Index() {
                 </video>
               )}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16">
+        <div className="container">
+          <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
+          <div className="space-y-16">
+            {features.map((feature, index) => (
+              <div 
+                key={feature.title} 
+                className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}
+              >
+                <div className="flex-1 space-y-4">
+                  <h3 className="text-2xl font-semibold">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </div>
+                <div className="flex-1">
+                  <img 
+                    src={feature.image} 
+                    alt={feature.title} 
+                    className="rounded-lg shadow-lg w-full"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
