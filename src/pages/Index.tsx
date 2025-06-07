@@ -448,8 +448,6 @@ export default function Index() {
       {/* Team Section */}
       <TeamSection />
 
-
-
       {/* What TaaS Has Built Section */}
       <section className="container py-20 border-t" id="industries">
         <h2 className="text-3xl font-bold text-center mb-12">What TaaS Has Built</h2>
@@ -482,7 +480,7 @@ export default function Index() {
           </div>}
       </section>
 
-          {/* Testimonial Section - Moved here */}
+      {/* Testimonial Section - Moved here */}
       <section className="py-16 border-t bg-muted/30">
         <div className="container">
           {/* Section Heading */}
@@ -552,7 +550,7 @@ export default function Index() {
               <div className="flex gap-4">
                 <a href="#" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                   </svg>
                 </a>
                 <a href="#" className="w-10 h-10 bg-blue-800 rounded-full flex items-center justify-center text-white hover:bg-blue-900 transition-colors">
@@ -582,8 +580,38 @@ export default function Index() {
       <section className="py-16">
         <div className="container">
           <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
-          <div className="space-y-16">
-            {features.map((feature, index) => <div key={feature.title} className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}>
+          
+          {/* Mobile Carousel */}
+          <div className="md:hidden">
+            <Carousel className="w-full max-w-sm mx-auto">
+              <CarouselContent>
+                {features.map((feature, index) => (
+                  <CarouselItem key={index}>
+                    <div className="space-y-6">
+                      <div className="aspect-video">
+                        <img 
+                          src={feature.image} 
+                          alt={feature.title} 
+                          className="rounded-lg shadow-lg w-full h-full object-cover" 
+                        />
+                      </div>
+                      <div className="space-y-4 text-center">
+                        <h3 className="text-2xl font-semibold">{feature.title}</h3>
+                        <p className="text-muted-foreground">{feature.description}</p>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:block space-y-16">
+            {features.map((feature, index) => (
+              <div key={feature.title} className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 items-center`}>
                 <div className="flex-1 space-y-4">
                   <h3 className="text-2xl font-semibold">{feature.title}</h3>
                   <p className="text-muted-foreground">{feature.description}</p>
@@ -591,7 +619,8 @@ export default function Index() {
                 <div className="flex-1">
                   <img src={feature.image} alt={feature.title} className="rounded-lg shadow-lg w-full" />
                 </div>
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </section>
