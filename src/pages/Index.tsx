@@ -446,13 +446,13 @@ export default function Index() {
             {/* Video Section */}
             <div className="flex-1">
               <div className="relative">
-                {/* Clutch Rating - Top Right */}
-                <div className="absolute top-4 right-4 z-10 bg-white rounded-lg shadow-lg p-3">
-                  <div className="flex items-center gap-2">
+                {/* Clutch Rating - Responsive and Dark Mode Fixed */}
+                <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 bg-background border border-border rounded-lg shadow-lg p-2 sm:p-3 hidden sm:block">
+                  <div className="flex items-center gap-1 sm:gap-2">
                     <div className="flex">
-                      {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
+                      {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />)}
                     </div>
-                    <span className="font-semibold text-sm">5.0</span>
+                    <span className="font-semibold text-xs sm:text-sm text-foreground">5.0</span>
                   </div>
                   
                 </div>
