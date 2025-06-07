@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/navigation";
@@ -595,7 +594,7 @@ export default function Index() {
       </section>
 
       {/* Testimonial Section */}
-      <section className="py-16 border-t bg-gray-50">
+      <section className="py-16 border-t bg-muted/30">
         <div className="container">
           {/* Section Heading */}
           <div className="text-center mb-12">
