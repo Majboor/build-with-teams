@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useLayoutEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
@@ -95,7 +96,7 @@ export function WorkflowSection() {
         <h2 className="text-4xl sm:text-5xl font-bold mb-16">
           How does an
           <br />
-          AI SaaS Team Work?
+          AI TaaS Team Work?
         </h2>
 
         <div className="relative" ref={containerRef}>
