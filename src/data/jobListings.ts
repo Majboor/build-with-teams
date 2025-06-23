@@ -1,4 +1,3 @@
-
 export type JobListing = {
   id: string;
   title: string;
@@ -10,6 +9,29 @@ export type JobListing = {
 };
 
 export const jobListings: JobListing[] = [
+  {
+    id: "video-model-reels-host",
+    title: "Entry-Level Video Model & Reels Host (On-Camera Content)",
+    taasDescription: "We're looking for an On-Camera Host & Video Model to create engaging, fashion-and-beauty-focused Reels and short-form videos from your own home studio. While we welcome applicants of all backgrounds, we especially encourage women and non-binary individuals with a strong affinity for beauty and fashion products to apply.",
+    note: "Remote, freelance / part-time contract. Flexible schedule aligned to video-delivery milestones. Compensation: 80–100 hours/month → ₱150–₱250 per hour. Optimum for university students. Entry-level; no prior skill required.",
+    requirements: [
+      "On-camera confidence and charisma (professional or influencer-style experience)",
+      "Deep understanding of female-focused beauty and fashion products",
+      "Proven ability to shoot and perform basic video editing using a smartphone and apps like CapCut or InShot",
+      "Access to a well-lit, visually appealing indoor space (home studio) ready for filming",
+      "Strong communication skills; responsive to direction and feedback"
+    ],
+    responsibilities: [
+      "Film and style fashion-and-beauty-driven short-form video content (Instagram Reels, TikTok-style)",
+      "Model, style, and showcase products clearly, authentically, and with flair",
+      "Host on-camera segments with energy, warmth, and a strong screen presence",
+      "Maintain a cohesive, visually appealing aesthetic in every clip",
+      "Coordinate with our marketing team to ensure content aligns with brand voice and campaign goals",
+      "Stay on top of emerging video trends and integrate fresh ideas",
+      "Deliver polished content on schedule, maintaining consistent quality"
+    ],
+    description: "🎬 Role Overview: We're looking for an On-Camera Host & Video Model to create engaging, fashion-and-beauty-focused Reels and short-form videos from your own home studio. While we welcome applicants of all backgrounds, we especially encourage women and non-binary individuals with a strong affinity for beauty and fashion products to apply.\n\n💡 Preferred / Bonus:\n- Active presence on social platforms (Instagram, TikTok, YouTube Shorts) with a style-oriented following\n- Portfolio of past on-camera or influencer-style work\n- Basic graphic or video-editing chops (e.g., CapCut, VN)\n\n🌍 Work Type & Compensation:\n- Remote, freelance / part-time contract\n- Flexible schedule aligned to video-delivery milestones\n- Compensation: 80–100 hours/month → ₱150–₱250 per hour\n- Optimum for university students\n- Entry-level; no prior skill required"
+  },
   {
     id: "ai-ml-engineer",
     title: "AI/ML Engineer / LLM Engineer (Senior/Lead)",
