@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { personalityQuestions } from "@/components/career/personalityQuestions";
+import { questions } from "@/components/career/personalityQuestions";
 
 interface JobDetails {
   jobId: string | null;
@@ -45,7 +46,7 @@ const initialFormValues: FormValues = {
   linkedinUrl: "",
   portfolioUrl: "",
   agreeTerms: false,
-  personalityAnswers: Array(personalityQuestions.length).fill(""),
+  personalityAnswers: Array(questions.length).fill(""),
 };
 
 export default function CareerApplyPage() {
@@ -96,8 +97,8 @@ export default function CareerApplyPage() {
     setFormValues(prev => ({ ...prev, personalityAnswers: newAnswers }));
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues(prev => ({ ...prev, agreeTerms: e.target.checked }));
+  const handleCheckboxChange = (checked: boolean) => {
+    setFormValues(prev => ({ ...prev, agreeTerms: checked }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,14 +146,24 @@ export default function CareerApplyPage() {
 
       // Prepare application data for submission to Supabase
       const applicationData = {
-        ...formValues,
-        resume_url: resumePublicUrlData.publicUrl,
-        job_id: jobDetails.jobId,
+        candidate_name: `${formValues.firstName} ${formValues.lastName}`,
+        email: formValues.email,
+        phone: formValues.phone,
+        cv_url: resumePublicUrlData.publicUrl,
+        cover_letter_text: formValues.coverLetter,
+        video_url: formValues.videoUrl,
+        job_post_id: jobDetails.jobId,
+        unique_id: `${Date.now()}_${formValues.email}`,
+        personality_data: {
+          answers: formValues.personalityAnswers,
+          linkedinUrl: formValues.linkedinUrl,
+          portfolioUrl: formValues.portfolioUrl,
+        },
       };
 
       // Submit application data to Supabase
       const { data, error } = await supabase
-        .from('applications')
+        .from('job_applications')
         .insert([applicationData]);
 
       if (error) {
@@ -431,25 +442,19 @@ export default function CareerApplyPage() {
               <CardTitle>Personality Questions</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
-              {personalityQuestions.map((question, index) => (
+              {questions.map((question, index) => (
                 <div key={index}>
-                  <Label>{question}</Label>
+                  <Label>{question.question}</Label>
                   <RadioGroup
                     defaultValue={formValues.personalityAnswers[index]}
                     onValueChange={(value) => handleRadioChange(index, value)}
                   >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="agree" id={`q${index}-agree`} />
-                      <Label htmlFor={`q${index}-agree`}>Agree</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="neutral" id={`q${index}-neutral`} />
-                      <Label htmlFor={`q${index}-neutral`}>Neutral</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="disagree" id={`q${index}-disagree`} />
-                      <Label htmlFor={`q${index}-disagree`}>Disagree</Label>
-                    </div>
+                    {question.options.map((option, optionIndex) => (
+                      <div key={optionIndex} className="flex items-center space-x-2">
+                        <RadioGroupItem value={option.text} id={`q${index}-option${optionIndex}`} />
+                        <Label htmlFor={`q${index}-option${optionIndex}`}>{option.text}</Label>
+                      </div>
+                    ))}
                   </RadioGroup>
                 </div>
               ))}
@@ -463,15 +468,13 @@ export default function CareerApplyPage() {
               <CardTitle>Terms and Conditions</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <div>
-                <Label htmlFor="agreeTerms" className="flex items-center space-x-2">
-                  <Checkbox
-                    id="agreeTerms"
-                    checked={formValues.agreeTerms}
-                    onCheckedChange={handleCheckboxChange}
-                  />
-                  <span>I agree to the terms and conditions *</span>
-                </Label>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="agreeTerms"
+                  checked={formValues.agreeTerms}
+                  onCheckedChange={handleCheckboxChange}
+                />
+                <Label htmlFor="agreeTerms">I agree to the terms and conditions *</Label>
               </div>
             </CardContent>
           </Card>
