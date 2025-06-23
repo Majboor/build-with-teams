@@ -9,54 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      job_applications: {
-        Row: {
-          candidate_name: string
-          cover_letter_text: string | null
-          cover_letter_url: string | null
-          created_at: string
-          cv_url: string | null
-          email: string
-          id: string
-          job_post_id: string | null
-          personality_data: Json | null
-          phone: string
-          unique_id: string
-          updated_at: string
-          video_url: string | null
-        }
-        Insert: {
-          candidate_name: string
-          cover_letter_text?: string | null
-          cover_letter_url?: string | null
-          created_at?: string
-          cv_url?: string | null
-          email: string
-          id?: string
-          job_post_id?: string | null
-          personality_data?: Json | null
-          phone: string
-          unique_id: string
-          updated_at?: string
-          video_url?: string | null
-        }
-        Update: {
-          candidate_name?: string
-          cover_letter_text?: string | null
-          cover_letter_url?: string | null
-          created_at?: string
-          cv_url?: string | null
-          email?: string
-          id?: string
-          job_post_id?: string | null
-          personality_data?: Json | null
-          phone?: string
-          unique_id?: string
-          updated_at?: string
-          video_url?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
