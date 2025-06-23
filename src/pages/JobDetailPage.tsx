@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -103,7 +104,7 @@ export default function JobDetailPage() {
         </DialogContent>
       </Dialog>
       
-      <div className="container py-12 flex-1">
+      <div className="container pt-20 pb-12 flex-1">
         {/* Special Alert Banner */}
         {showSpecialAlert && (
           <Alert className="mb-6 border-blue-200 bg-blue-50">
