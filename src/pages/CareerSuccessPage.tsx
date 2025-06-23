@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowLeft, Calendar, Mail } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Calendar, Mail, AlertCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,8 +29,7 @@ const CareerSuccessPage = () => {
   
   const [calendlyLoaded, setCalendlyLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [emailSent, setEmailSent] = useState(false);
-  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<'pending' | 'sending' | 'sent' | 'failed'>('pending');
 
   useEffect(() => {
     // Load Calendly script
@@ -38,27 +37,23 @@ const CareerSuccessPage = () => {
     script.src = "https://assets.calendly.com/assets/external/widget.js";
     script.async = true;
     
-    // Set up onload handler before appending to document
     script.onload = () => {
       console.log("Calendly script loaded");
-      // Add a small delay to ensure the widget initializes
       setTimeout(() => {
         setCalendlyLoaded(true);
         setIsLoading(false);
-      }, 500); // Further reduced delay for faster display
+      }, 500);
     };
     
     document.body.appendChild(script);
 
-    // Set a timeout for loading state in case script takes too long
     const loadingTimeout = setTimeout(() => {
       if (!calendlyLoaded) {
         setIsLoading(false);
       }
-    }, 2000); // Further reduced timeout for faster fallback
+    }, 2000);
 
     return () => {
-      // Clean up script on unmount
       document.body.removeChild(script);
       clearTimeout(loadingTimeout);
     };
@@ -66,7 +61,6 @@ const CareerSuccessPage = () => {
 
   // Allow direct access without redirection
   useEffect(() => {
-    // Only redirect if there's no state or query params
     if (!location.state && !searchParams.has("uniqueId")) {
       const timer = setTimeout(() => {
         navigate("/career/apply");
@@ -76,13 +70,12 @@ const CareerSuccessPage = () => {
     }
   }, [navigate, location.state, searchParams]);
 
-  // Send confirmation email
+  // Send confirmation email with improved handling
   useEffect(() => {
     const sendConfirmationEmail = async () => {
-      // Only send if we have required data and haven't sent already
-      if (candidateName && email && uniqueId && !emailSent) {
+      if (candidateName && email && uniqueId && emailStatus === 'pending') {
         try {
-          setSendingEmail(true);
+          setEmailStatus('sending');
           
           const { data, error } = await supabase.functions.invoke('send-confirmation-email', {
             body: {
@@ -95,7 +88,7 @@ const CareerSuccessPage = () => {
           if (error) throw error;
           
           console.log("Email confirmation response:", data);
-          setEmailSent(true);
+          setEmailStatus('sent');
           
           toast({
             title: "Confirmation Email Sent",
@@ -104,26 +97,50 @@ const CareerSuccessPage = () => {
           });
         } catch (error) {
           console.error("Failed to send confirmation email:", error);
+          setEmailStatus('failed');
+          
           toast({
             variant: "destructive",
             title: "Email Confirmation Failed",
-            description: "We couldn't send your confirmation email. Please check your application details.",
-            duration: 5000,
+            description: "We couldn't send your confirmation email, but your application was successfully submitted.",
+            duration: 8000,
           });
-        } finally {
-          setSendingEmail(false);
         }
       }
     };
     
     sendConfirmationEmail();
-  }, [candidateName, email, uniqueId, emailSent, toast]);
+  }, [candidateName, email, uniqueId, emailStatus, toast]);
 
-  // Get the appropriate Calendly URL
   const getCalendlyUrl = () => {
-    // Default Calendly URL
     let baseUrl = "https://calendly.com/acctechrealm/30min";
     return baseUrl;
+  };
+
+  const getEmailStatusMessage = () => {
+    switch (emailStatus) {
+      case 'sending':
+        return "Sending confirmation email...";
+      case 'sent':
+        return `Confirmation email sent to ${email}`;
+      case 'failed':
+        return "Email confirmation failed, but your application was submitted successfully";
+      default:
+        return "Preparing confirmation email...";
+    }
+  };
+
+  const getEmailStatusIcon = () => {
+    switch (emailStatus) {
+      case 'sending':
+        return <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-primary"></div>;
+      case 'sent':
+        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
+      case 'failed':
+        return <AlertCircle className="h-4 w-4 text-orange-500" />;
+      default:
+        return <Mail className="h-4 w-4" />;
+    }
   };
 
   return (
@@ -172,17 +189,13 @@ const CareerSuccessPage = () => {
 
             {/* Email confirmation status */}
             <div className="flex items-center justify-center space-x-2 text-sm">
-              <Mail className="h-4 w-4" />
-              <span>
-                {sendingEmail 
-                  ? "Sending confirmation email..." 
-                  : emailSent 
-                    ? `Confirmation email sent to ${email}` 
-                    : "Preparing your confirmation email..."}
+              {getEmailStatusIcon()}
+              <span className={emailStatus === 'failed' ? 'text-orange-600' : ''}>
+                {getEmailStatusMessage()}
               </span>
             </div>
 
-            {/* Display fields - Improved dark mode visibility */}
+            {/* Display fields */}
             <div className="space-y-4">              
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground dark:text-gray-300">Application ID</h3>
