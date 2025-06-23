@@ -1,28 +1,47 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Navigation } from "@/components/navigation";
 import { getJobById, JobListing } from "@/data/jobListings";
-import { ArrowLeft, Briefcase, Clock, Users } from "lucide-react";
+import { ArrowLeft, Briefcase, Clock, Users, AlertCircle, X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function JobDetailPage() {
   const { jobId } = useParams<{ jobId: string }>();
   const navigate = useNavigate();
   const [job, setJob] = useState<JobListing | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // State for special alert functionality
+  const [showSpecialPopup, setShowSpecialPopup] = useState(false);
+  const [showSpecialAlert, setShowSpecialAlert] = useState(false);
 
   useEffect(() => {
     if (jobId) {
       const foundJob = getJobById(jobId);
       if (foundJob) {
         setJob(foundJob);
+        
+        // Check if this is the video model job and show popup
+        if (jobId === "video-model-reels-host") {
+          setShowSpecialPopup(true);
+          setShowSpecialAlert(true);
+        }
       }
       setIsLoading(false);
     }
   }, [jobId]);
+
+  const handlePopupClose = () => {
+    setShowSpecialPopup(false);
+  };
+
+  const handleAlertClose = () => {
+    setShowSpecialAlert(false);
+  };
 
   if (isLoading) {
     return (
@@ -64,7 +83,47 @@ export default function JobDetailPage() {
     <div className="min-h-screen flex flex-col">
       <Navigation />
       
+      {/* Special Popup Dialog */}
+      <Dialog open={showSpecialPopup} onOpenChange={setShowSpecialPopup}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-blue-600" />
+              Important Notice
+            </DialogTitle>
+            <DialogDescription className="text-base pt-2">
+              While we welcome applicants of all backgrounds, we especially encourage women with a strong affinity for beauty and fashion products to apply.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end pt-4">
+            <Button onClick={handlePopupClose}>
+              Continue
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
       <div className="container py-12 flex-1">
+        {/* Special Alert Banner */}
+        {showSpecialAlert && (
+          <Alert className="mb-6 border-blue-200 bg-blue-50">
+            <AlertCircle className="h-4 w-4 text-blue-600" />
+            <AlertDescription className="flex items-center justify-between w-full">
+              <span className="text-blue-800">
+                While we welcome applicants of all backgrounds, we especially encourage women with a strong affinity for beauty and fashion products to apply.
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleAlertClose}
+                className="ml-4 h-6 w-6 p-0 text-blue-600 hover:text-blue-800"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+        
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <Link 
